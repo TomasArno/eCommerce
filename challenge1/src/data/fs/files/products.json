@@ -7,13 +7,6 @@
     "stock": 12
   },
   {
-    "id": "af84db28e50b5fd874732b9e",
-    "title": "web 2",
-    "photo": "micho",
-    "price": 1000,
-    "stock": 12
-  },
-  {
     "id": "74b8f83b034452ab88b5ebe9",
     "title": "producto web",
     "photo": "micho",
@@ -31,6 +24,13 @@
     "id": "053fd4fb41c8eaaf4fad51bd",
     "title": "dadadadadadd",
     "photo": "micho",
+    "price": 1000,
+    "stock": 12
+  },
+  {
+    "id": "8b889420fe4f6b5c753d9c3e",
+    "title": "producto web",
+    "photo": "img",
     "price": 1000,
     "stock": 12
   }

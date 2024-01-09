@@ -2,21 +2,17 @@ import { Router } from "express";
 
 import UsersManager from "../../data/fs/users.fs.js";
 
+import { checkUserId } from "../../middlewares/checkUserId.mid.js";
+
 const usersRouter = Router();
 
 usersRouter.post("/", async (req, res, next) => {
   try {
-    const data = await UsersManager.create(req.body);
-
-    if (typeof data === "string")
-      return res.json({
-        statusCode: 400,
-        response: data,
-      });
+    const userCreated = await UsersManager.create(req.body);
 
     res.json({
       statusCode: 200,
-      response: data,
+      response: userCreated,
     });
   } catch (e) {
     next(e);
@@ -42,17 +38,11 @@ usersRouter.get("/", async (req, res, next) => {
   }
 });
 
-usersRouter.get("/:uId", async (req, res, next) => {
+usersRouter.get("/:uId", checkUserId, async (req, res, next) => {
   try {
     const { uId } = req.params;
 
     const user = await UsersManager.readOne(uId);
-
-    if (!user)
-      return res.json({
-        statusCode: 404,
-        response: "User not found",
-      });
 
     res.json({
       statusCode: 200,

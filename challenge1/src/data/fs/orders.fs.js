@@ -1,5 +1,6 @@
 import fs from "node:fs/promises";
 import { existsSync, writeFileSync } from "node:fs";
+
 import crypto from "node:crypto";
 
 class OrdersManager {
@@ -18,40 +19,47 @@ class OrdersManager {
   }
 
   async create(data) {
-    const propsList = ["pId", "uId", "quantity", "state"];
-    const keyList = Object.keys(data);
+    try {
+      const propsList = ["pId", "uId", "quantity", "state"];
+      const keyList = Object.keys(data);
 
-    const missingProps = [];
+      const missingProps = [];
 
-    for (let i = 0; i < propsList.length; i++) {
-      !keyList.includes(propsList[i]) ? missingProps.push(propsList[i]) : null;
-    }
+      for (let i = 0; i < propsList.length; i++) {
+        !keyList.includes(propsList[i])
+          ? missingProps.push(propsList[i])
+          : null;
+      }
 
-    if (missingProps.length) {
-      return `Propiedades faltantes: ${missingProps.join()}`;
-    } else {
-      const { pId, uId, quantity, state } = data;
+      if (missingProps.length) {
+        const error = new Error(
+          `Propiedades faltantes: ${missingProps.join()}`
+        );
+        error.statusCode = 400;
 
-      const orders = await this.read();
+        throw error;
+      } else {
+        const { pId, uId, quantity, state } = data;
 
-      orders.push({
-        id: crypto.randomBytes(12).toString("hex"),
-        pId,
-        uId,
-        quantity,
-        state,
-      });
+        const orders = await this.read();
 
-      try {
+        orders.push({
+          id: crypto.randomBytes(12).toString("hex"),
+          pId,
+          uId,
+          quantity,
+          state,
+        });
+
         await fs.writeFile(
           OrdersManager.#path,
           JSON.stringify(orders, null, 2)
         );
 
         return orders[orders.length - 1];
-      } catch (e) {
-        throw e.message;
       }
+    } catch (e) {
+      throw e;
     }
   }
 
@@ -65,7 +73,19 @@ class OrdersManager {
 
       return orders;
     } catch (e) {
-      throw e.message;
+      throw e;
+    }
+  }
+
+  async readOne(oId) {
+    try {
+      const orders = await this.read();
+
+      const searchedOrder = orders.find((el) => el.id == oId);
+
+      return searchedOrder;
+    } catch (e) {
+      throw e;
     }
   }
 
@@ -73,14 +93,15 @@ class OrdersManager {
     try {
       const orders = await this.read();
 
-      return orders.filter((el) => el.uId == uId);
+      const searchedOrders = orders.filter((el) => el.uId == uId);
+
+      return searchedOrders;
     } catch (e) {
-      throw e.message;
+      throw e;
     }
   }
 
   async update(oId, quantity, state) {
-    //opcional?
     try {
       const orders = await this.read();
 
@@ -89,13 +110,14 @@ class OrdersManager {
       const searchedOrder = orders[indexOrder];
       if (!searchedOrder) return null;
 
-      orders[indexOrder] = { ...searchedOrder };
+      if (quantity) orders[indexOrder] = { ...orders[indexOrder], quantity };
+      if (state) orders[indexOrder] = { ...orders[indexOrder], state };
 
       await fs.writeFile(OrdersManager.#path, JSON.stringify(orders, null, 2));
 
       return true;
     } catch (e) {
-      throw e.message;
+      throw e;
     }
   }
 
@@ -110,11 +132,11 @@ class OrdersManager {
 
       return true;
     } catch (e) {
-      throw e.message;
+      throw e;
     }
   }
 }
 
-const ordersManager = new OrdersManager();
+const Orders = new OrdersManager();
 
-export default ordersManager;
+export default Orders;

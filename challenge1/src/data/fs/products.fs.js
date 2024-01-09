@@ -1,5 +1,6 @@
 import fs from "node:fs/promises";
 import { existsSync, writeFileSync } from "node:fs";
+
 import crypto from "node:crypto";
 
 class ProductManager {
@@ -28,7 +29,11 @@ class ProductManager {
     }
 
     if (missingProps.length) {
-      return `Propiedades faltantes: ${missingProps.join()}`;
+      const error = new Error(`Propiedades faltantes: ${missingProps.join()}`);
+
+      error.statusCode = 400;
+
+      throw error;
     } else {
       const { title, photo, price, stock } = data;
 
@@ -50,7 +55,7 @@ class ProductManager {
 
         return products[products.length - 1];
       } catch (e) {
-        throw e.message;
+        throw e;
       }
     }
   }
@@ -65,7 +70,7 @@ class ProductManager {
 
       return products;
     } catch (e) {
-      throw e.message;
+      throw e;
     }
   }
 
@@ -75,7 +80,7 @@ class ProductManager {
 
       return products.find((el) => el.id == id);
     } catch (e) {
-      throw e.message;
+      throw e;
     }
   }
 
@@ -88,7 +93,6 @@ class ProductManager {
       const indexProduct = products.findIndex((obj) => obj.id == pId);
 
       const searchedProduct = products[indexProduct];
-      if (!searchedProduct) return null;
 
       products[indexProduct] = { ...searchedProduct, ...restData };
 
@@ -99,7 +103,7 @@ class ProductManager {
 
       return true;
     } catch (e) {
-      throw e.message;
+      throw e;
     }
   }
 
@@ -117,11 +121,11 @@ class ProductManager {
 
       return true;
     } catch (e) {
-      throw e.message;
+      throw e;
     }
   }
 }
 
-const ProductsManager = new ProductManager();
+const Products = new ProductManager();
 
-export default ProductsManager;
+export default Products;

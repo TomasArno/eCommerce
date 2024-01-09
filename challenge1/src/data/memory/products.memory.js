@@ -1,6 +1,6 @@
 import crypto from "node:crypto";
 
-class ProductManager {
+class ProductsManager {
   static #products = [];
 
   id;
@@ -23,11 +23,11 @@ class ProductManager {
       }
 
       if (missingProps.length) {
-        console.log(`Propiedades faltantes: ${missingProps.join()}`);
+        return `Propiedades faltantes: ${missingProps.join()}`;
       } else {
         const { title, photo, price, stock } = data;
 
-        ProductManager.#products.push({
+        ProductsManager.#products.push({
           id: crypto.randomBytes(12).toString("hex"),
           title,
           photo,
@@ -35,8 +35,8 @@ class ProductManager {
           stock,
         });
 
-        const index = ProductManager.#products.length - 1;
-        return ProductManager.#products[index];
+        const index = ProductsManager.#products.length - 1;
+        return ProductsManager.#products[index];
       }
     } catch (e) {
       throw e.message;
@@ -45,7 +45,7 @@ class ProductManager {
 
   read() {
     try {
-      return ProductManager.#products;
+      return ProductsManager.#products;
     } catch (e) {
       throw e.message;
     }
@@ -53,7 +53,7 @@ class ProductManager {
 
   readOne(id) {
     try {
-      return ProductManager.#products.find((el) => el.id == id);
+      return ProductsManager.#products.find((el) => el.id == id);
     } catch (e) {
       throw e.message;
     }
@@ -63,7 +63,7 @@ class ProductManager {
     try {
       const { id, ...restData } = data;
 
-      const products = ProductManager.#products;
+      const products = ProductsManager.#products;
 
       const indexProduct = products.findIndex((obj) => obj.id == pId);
 
@@ -80,12 +80,12 @@ class ProductManager {
 
   destroy(id) {
     try {
-      const products = ProductManager.#products;
+      const products = ProductsManager.#products;
       const newList = products.filter((el) => el.id !== id);
 
       if (products.length == newList.length) return null;
 
-      ProductManager.#products = newList;
+      ProductsManager.#products = newList;
 
       return true;
     } catch (e) {
@@ -94,18 +94,4 @@ class ProductManager {
   }
 }
 
-const ProductsManager = new ProductManager();
-
-ProductsManager.create({
-  title: "product web",
-  price: 500,
-  stock: 2,
-  photo: "img",
-});
-
-ProductsManager.create({
-  title: "product web 2",
-  price: 500,
-  stock: 2,
-  photo: "img",
-});
+const Products = new ProductsManager();

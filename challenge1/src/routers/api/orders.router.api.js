@@ -2,17 +2,15 @@ import { Router } from "express";
 
 import OrdersManager from "../../data/fs/orders.fs.js";
 
+import { checkUserId } from "../../middlewares/checkUserId.mid.js";
+import { checkOrderId } from "../../middlewares/checkOrderId.mid.js";
+import { checkProductId } from "../../middlewares/checkProductId.mid.js";
+
 const ordersRouter = Router();
 
-ordersRouter.post("/", async (req, res, next) => {
+ordersRouter.post("/", checkUserId, checkProductId, async (req, res, next) => {
   try {
     const data = await OrdersManager.create(req.body);
-
-    if (typeof data === "string")
-      return res.json({
-        statusCode: 400,
-        response: data,
-      });
 
     res.json({
       statusCode: 200,
@@ -23,17 +21,11 @@ ordersRouter.post("/", async (req, res, next) => {
   }
 });
 
-ordersRouter.get("/:uId", async (req, res, next) => {
+ordersRouter.get("/:uId", checkUserId, async (req, res, next) => {
   try {
     const { uId } = req.params;
 
     const user = await OrdersManager.readByUser(uId);
-
-    if (!user)
-      return res.json({
-        statusCode: 404,
-        response: "User not found",
-      });
 
     res.json({
       statusCode: 200,
@@ -44,19 +36,15 @@ ordersRouter.get("/:uId", async (req, res, next) => {
   }
 });
 
-ordersRouter.delete("/:oId", async (req, res, next) => {
+ordersRouter.delete("/:oId", checkOrderId, async (req, res, next) => {
   try {
-    const users = await OrdersManager.read();
+    const { oId } = req.params;
 
-    if (!users.length)
-      return res.json({
-        statusCode: 404,
-        response: "Users not found",
-      });
+    await OrdersManager.destroy(oId);
 
     res.json({
       statusCode: 200,
-      response: users,
+      response: "Order successfully deleted",
     });
   } catch (e) {
     next(e);

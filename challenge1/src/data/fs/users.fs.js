@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 import { existsSync, writeFileSync } from "node:fs";
 import crypto from "node:crypto";
 
-class UserManager {
+class UsersManager {
   static #path = "./src/data/fs/files/users.json";
 
   constructor() {
@@ -10,57 +10,65 @@ class UserManager {
   }
 
   init() {
-    if (!existsSync(UserManager.#path)) {
+    if (!existsSync(UsersManager.#path)) {
       const data = JSON.stringify([], null, 2);
 
-      writeFileSync(UserManager.#path, data);
+      writeFileSync(UsersManager.#path, data);
     }
   }
 
   async create(data) {
-    const propsList = ["name", "photo", "email"];
-    const keyList = Object.keys(data);
+    try {
+      const propsList = ["name", "photo", "email"];
+      const keyList = Object.keys(data);
 
-    const missingProps = [];
+      const missingProps = [];
 
-    for (let i = 0; i < propsList.length; i++) {
-      !keyList.includes(propsList[i]) ? missingProps.push(propsList[i]) : null;
-    }
+      for (let i = 0; i < propsList.length; i++) {
+        !keyList.includes(propsList[i])
+          ? missingProps.push(propsList[i])
+          : null;
+      }
 
-    if (missingProps.length) {
-      return `Propiedades faltantes: ${missingProps.join()}`;
-    } else {
-      const users = await this.read();
-      const { name, photo, email } = data;
+      if (missingProps.length) {
+        const error = new Error(
+          `Propiedades faltantes: ${missingProps.join()}`
+        );
 
-      users.push({
-        id: crypto.randomBytes(12).toString("hex"),
-        name,
-        photo,
-        email,
-      });
+        error.statusCode = 400;
 
-      try {
-        await fs.writeFile(UserManager.#path, JSON.stringify(users, null, 2));
+        throw error;
+      } else {
+        const users = await this.read();
+        const { name, photo, email } = data;
+
+        users.push({
+          id: crypto.randomBytes(12).toString("hex"),
+          name,
+          photo,
+          email,
+        });
+
+        await fs.writeFile(UsersManager.#path, JSON.stringify(users, null, 2));
 
         return users[users.length - 1];
-      } catch (e) {
-        throw e.message;
       }
+    } catch (e) {
+      throw e;
     }
   }
 
   async read() {
     try {
       const users = JSON.parse(
-        await fs.readFile(UserManager.#path, {
+        await fs.readFile(UsersManager.#path, {
           encoding: "utf-8",
         })
       );
 
       return users;
     } catch (e) {
-      throw e.message;
+      throw e;
     }
   }
 
@@ -70,7 +78,7 @@ class UserManager {
 
       return users.find((el) => el.id == id);
     } catch (e) {
-      throw e.message;
+      throw e;
     }
   }
 
@@ -83,15 +91,14 @@ class UserManager {
       const indexUser = users.findIndex((obj) => obj.id == id);
 
       const searchedUser = users[indexUser];
-      if (!searchedUser) return null;
 
       users[indexUser] = { ...searchedUser, ...restData };
 
-      await fs.writeFile(UserManager.#path, JSON.stringify(users, null, 2));
+      await fs.writeFile(UsersManager.#path, JSON.stringify(users, null, 2));
 
       return true;
     } catch (e) {
-      throw e.message;
+      throw e;
     }
   }
 
@@ -102,15 +109,15 @@ class UserManager {
 
       if (users.length == newList.length) return false;
 
-      await fs.writeFile(UserManager.#path, JSON.stringify(newList, null, 2));
+      await fs.writeFile(UsersManager.#path, JSON.stringify(newList, null, 2));
 
       return true;
     } catch (e) {
-      throw e.message;
+      throw e;
     }
   }
 }
 
-const UsersManager = new UserManager();
+const Users = new UsersManager();
 
-export default UsersManager;
+export default Users;

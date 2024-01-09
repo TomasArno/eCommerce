@@ -2,17 +2,13 @@ import { Router } from "express";
 
 import ProductsManager from "../../data/fs/products.fs.js";
 
+import { checkProductId } from "../../middlewares/checkProductId.mid.js";
+
 const productsRouter = Router();
 
 productsRouter.post("/", async (req, res, next) => {
   try {
     const data = await ProductsManager.create(req.body);
-
-    if (typeof data === "string")
-      return res.json({
-        statusCode: 400,
-        response: data,
-      });
 
     res.json({
       statusCode: 200,
@@ -42,18 +38,12 @@ productsRouter.get("/", async (req, res, next) => {
   }
 });
 
-productsRouter.get("/:pId", async (req, res, next) => {
+productsRouter.get("/:pId", checkProductId, async (req, res, next) => {
   try {
     const { pId } = req.params;
 
     const product = await ProductsManager.readOne(pId);
 
-    if (!product)
-      return res.json({
-        statusCode: 404,
-        response: "Product not found",
-      });
-
     res.json({
       statusCode: 200,
       response: product,
@@ -63,38 +53,26 @@ productsRouter.get("/:pId", async (req, res, next) => {
   }
 });
 
-productsRouter.patch("/:pId", async (req, res, next) => {
+productsRouter.patch("/:pId", checkProductId, async (req, res, next) => {
   try {
     const { pId } = req.params;
 
-    const product = await ProductsManager.update(pId, req.body);
-
-    if (!product)
-      return res.json({
-        statusCode: 404,
-        response: "Product not found",
-      });
+    await ProductsManager.update(pId, req.body);
 
     res.json({
       statusCode: 200,
-      response: product,
+      response: "Product successfully modified",
     });
   } catch (e) {
     next(e);
   }
 });
 
-productsRouter.delete("/:pId", async (req, res, next) => {
+productsRouter.delete("/:pId", checkProductId, async (req, res, next) => {
   try {
     const { pId } = req.params;
 
-    const removedProduct = await ProductsManager.destroy(pId);
-
-    if (!removedProduct)
-      return res.json({
-        statusCode: 404,
-        response: "Product not found",
-      });
+    await ProductsManager.destroy(pId);
 
     res.json({
       statusCode: 200,

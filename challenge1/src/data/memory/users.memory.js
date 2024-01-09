@@ -1,6 +1,6 @@
 import crypto from "node:crypto";
 
-class UserManager {
+class UsersManager {
   static #users = [];
 
   id;
@@ -22,19 +22,19 @@ class UserManager {
       }
 
       if (missingProps.length) {
-        console.log(`Propiedades faltantes: ${missingProps.join()}`);
+        return `Propiedades faltantes: ${missingProps.join()}`;
       } else {
         const { name, photo, email } = data;
 
-        UserManager.#users.push({
+        UsersManager.#users.push({
           id: crypto.randomBytes(12).toString("hex"),
           name,
           photo,
           email,
         });
 
-        const index = UserManager.#users.length - 1;
-        return UserManager.#users[index];
+        const index = UsersManager.#users.length - 1;
+        return UsersManager.#users[index];
       }
     } catch (e) {
       throw e.message;
@@ -43,7 +43,7 @@ class UserManager {
 
   read() {
     try {
-      return UserManager.#users;
+      return UsersManager.#users;
     } catch (e) {
       throw e.message;
     }
@@ -51,7 +51,7 @@ class UserManager {
 
   readOne(id) {
     try {
-      return UserManager.#users.find((el) => el.id == id);
+      return UsersManager.#users.find((el) => el.id == id);
     } catch (e) {
       throw e.message;
     }
@@ -61,7 +61,7 @@ class UserManager {
     try {
       const { id, ...restData } = data;
 
-      const users = UserManager.#users;
+      const users = UsersManager.#users;
 
       const indexProduct = users.findIndex((obj) => obj.id == pId);
 
@@ -78,12 +78,12 @@ class UserManager {
 
   destroy(id) {
     try {
-      const users = UserManager.#users;
+      const users = UsersManager.#users;
       const newList = users.filter((el) => el.id !== id);
 
       if (users.length == newList.length) return null;
 
-      UserManager.#users = newList;
+      UsersManager.#users = newList;
 
       return true;
     } catch (e) {
@@ -92,16 +92,4 @@ class UserManager {
   }
 }
 
-const UsersManager = new UserManager();
-
-UsersManager.create({
-  name: "tomas",
-  email: "lala@gmail.com",
-  photo: "img",
-});
-
-UsersManager.create({
-  name: "Matias",
-  email: "mati@gmail.com",
-  photo: "img2",
-});
+const Users = new UsersManager();

@@ -15,11 +15,12 @@ const PORT = 8080;
 app.listen(PORT, () => console.log("Server running on port " + PORT));
 
 // MIDDLEWARES
-//usar los propsevents en los endpoint
+
 app.use(json());
 app.use(urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/public"));
 app.use(morgan("dev"));
+
 app.use("/", indexRouter);
 app.use(errorHandler);
 app.use(pathHandler);
