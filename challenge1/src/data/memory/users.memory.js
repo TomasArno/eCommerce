@@ -37,7 +37,7 @@ class UsersManager {
         return UsersManager.#users[index];
       }
     } catch (e) {
-      throw e.message;
+      throw e;
     }
   }
 
@@ -45,7 +45,7 @@ class UsersManager {
     try {
       return UsersManager.#users;
     } catch (e) {
-      throw e.message;
+      throw e;
     }
   }
 
@@ -53,7 +53,7 @@ class UsersManager {
     try {
       return UsersManager.#users.find((el) => el.id == id);
     } catch (e) {
-      throw e.message;
+      throw e;
     }
   }
 
@@ -72,7 +72,7 @@ class UsersManager {
 
       return true;
     } catch (e) {
-      throw e.message;
+      throw e;
     }
   }
 
@@ -87,7 +87,7 @@ class UsersManager {
 
       return true;
     } catch (e) {
-      throw e.message;
+      throw e;
     }
   }
 }

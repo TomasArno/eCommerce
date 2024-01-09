@@ -53,7 +53,7 @@ productsRouter.get("/:pId", checkProductId, async (req, res, next) => {
   }
 });
 
-productsRouter.patch("/:pId", checkProductId, async (req, res, next) => {
+productsRouter.put("/:pId", checkProductId, async (req, res, next) => {
   try {
     const { pId } = req.params;
 

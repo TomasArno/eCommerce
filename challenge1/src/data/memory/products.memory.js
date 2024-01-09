@@ -39,7 +39,7 @@ class ProductsManager {
         return ProductsManager.#products[index];
       }
     } catch (e) {
-      throw e.message;
+      throw e;
     }
   }
 
@@ -47,7 +47,7 @@ class ProductsManager {
     try {
       return ProductsManager.#products;
     } catch (e) {
-      throw e.message;
+      throw e;
     }
   }
 
@@ -55,7 +55,7 @@ class ProductsManager {
     try {
       return ProductsManager.#products.find((el) => el.id == id);
     } catch (e) {
-      throw e.message;
+      throw e;
     }
   }
 
@@ -74,7 +74,7 @@ class ProductsManager {
 
       return true;
     } catch (e) {
-      throw e.message;
+      throw e;
     }
   }
 
@@ -89,7 +89,7 @@ class ProductsManager {
 
       return true;
     } catch (e) {
-      throw e.message;
+      throw e;
     }
   }
 }

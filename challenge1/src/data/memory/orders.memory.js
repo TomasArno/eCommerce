@@ -40,7 +40,7 @@ class OrdersManager {
         return OrdersManager.#orders[lastOrder];
       }
     } catch (e) {
-      throw e.message;
+      throw e;
     }
   }
 
@@ -48,7 +48,7 @@ class OrdersManager {
     try {
       return OrdersManager.#orders;
     } catch (e) {
-      throw e.message;
+      throw e;
     }
   }
 
@@ -56,7 +56,7 @@ class OrdersManager {
     try {
       return OrdersManager.#orders.filter((el) => el.uId == uId);
     } catch (e) {
-      throw e.message;
+      throw e;
     }
   }
 
@@ -75,7 +75,7 @@ class OrdersManager {
 
       return true;
     } catch (e) {
-      throw e.message;
+      throw e;
     }
   }
 
@@ -90,7 +90,7 @@ class OrdersManager {
 
       return true;
     } catch (e) {
-      throw e.message;
+      throw e;
     }
   }
 }
