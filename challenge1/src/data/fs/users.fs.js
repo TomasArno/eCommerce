@@ -30,7 +30,7 @@ class UserManager {
     if (missingProps.length) {
       return `Propiedades faltantes: ${missingProps.join()}`;
     } else {
-      const users = await this.readFile();
+      const users = await this.read();
       const { name, photo, email } = data;
 
       users.push({
@@ -50,7 +50,7 @@ class UserManager {
     }
   }
 
-  async readFile() {
+  async read() {
     try {
       const users = JSON.parse(
         await fs.readFile(UserManager.#path, {
@@ -66,7 +66,7 @@ class UserManager {
 
   async readOne(id) {
     try {
-      const users = await this.readFile();
+      const users = await this.read();
 
       return users.find((el) => el.id == id);
     } catch (e) {
@@ -78,7 +78,7 @@ class UserManager {
     try {
       const { idObj, ...restData } = data;
 
-      const users = await this.readFile();
+      const users = await this.read();
 
       const indexUser = users.findIndex((obj) => obj.id == id);
 
@@ -97,7 +97,7 @@ class UserManager {
 
   async destroy(id) {
     try {
-      const users = await this.readFile();
+      const users = await this.read();
       const newList = users.filter((el) => el.id !== id);
 
       if (users.length == newList.length) return false;

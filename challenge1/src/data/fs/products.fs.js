@@ -32,7 +32,7 @@ class ProductManager {
     } else {
       const { title, photo, price, stock } = data;
 
-      const products = await this.readFile();
+      const products = await this.read();
 
       products.push({
         id: crypto.randomBytes(12).toString("hex"),
@@ -55,7 +55,7 @@ class ProductManager {
     }
   }
 
-  async readFile() {
+  async read() {
     try {
       const products = JSON.parse(
         await fs.readFile(ProductManager.#path, {
@@ -71,7 +71,7 @@ class ProductManager {
 
   async readOne(id) {
     try {
-      const products = await this.readFile();
+      const products = await this.read();
 
       return products.find((el) => el.id == id);
     } catch (e) {
@@ -79,13 +79,13 @@ class ProductManager {
     }
   }
 
-  async update(id, data) {
+  async update(pId, data) {
     try {
-      const { idObj, ...restData } = data;
+      const { id, ...restData } = data;
 
-      const products = await this.readFile();
+      const products = await this.read();
 
-      const indexProduct = products.findIndex((obj) => obj.id == id);
+      const indexProduct = products.findIndex((obj) => obj.id == pId);
 
       const searchedProduct = products[indexProduct];
       if (!searchedProduct) return null;
@@ -105,7 +105,7 @@ class ProductManager {
 
   async destroy(id) {
     try {
-      const products = await this.readFile();
+      const products = await this.read();
       const newList = products.filter((el) => el.id !== id);
 
       if (products.length == newList.length) return null;

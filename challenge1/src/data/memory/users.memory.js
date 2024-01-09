@@ -1,4 +1,6 @@
-class userManager {
+import crypto from "node:crypto";
+
+class UserManager {
   static #users = [];
 
   id;
@@ -7,51 +9,99 @@ class userManager {
   email;
 
   create(data) {
-    const propsList = ["name", "photo", "email"];
-    const keyList = Object.keys(data);
+    try {
+      const propsList = ["name", "photo", "email"];
+      const keyList = Object.keys(data);
 
-    const missingProps = [];
+      const missingProps = [];
 
-    for (let i = 0; i < propsList.length; i++) {
-      !propsList.includes(keyList[i]) ? missingProps.push(propsList[i]) : null;
-    }
+      for (let i = 0; i < propsList.length; i++) {
+        !keyList.includes(propsList[i])
+          ? missingProps.push(propsList[i])
+          : null;
+      }
 
-    if (missingProps.length) {
-      console.log(`Propiedades faltantes: ${missingProps.join(" ")}`);
-    } else {
-      const id = userManager.#users[userManager.#users.length - 1]?.id + 1 || 1;
+      if (missingProps.length) {
+        console.log(`Propiedades faltantes: ${missingProps.join()}`);
+      } else {
+        const { name, photo, email } = data;
 
-      userManager.#users.push({ id, ...data });
+        UserManager.#users.push({
+          id: crypto.randomBytes(12).toString("hex"),
+          name,
+          photo,
+          email,
+        });
+
+        const index = UserManager.#users.length - 1;
+        return UserManager.#users[index];
+      }
+    } catch (e) {
+      throw e.message;
     }
   }
 
   read() {
-    return userManager.#users;
+    try {
+      return UserManager.#users;
+    } catch (e) {
+      throw e.message;
+    }
   }
 
   readOne(id) {
-    return userManager.#users.find((el) => el.id == id);
+    try {
+      return UserManager.#users.find((el) => el.id == id);
+    } catch (e) {
+      throw e.message;
+    }
+  }
+
+  update(pId, data) {
+    try {
+      const { id, ...restData } = data;
+
+      const users = UserManager.#users;
+
+      const indexProduct = users.findIndex((obj) => obj.id == pId);
+
+      const searchedProduct = users[indexProduct];
+      if (!searchedProduct) return null;
+
+      users[indexProduct] = { ...searchedProduct, ...restData };
+
+      return true;
+    } catch (e) {
+      throw e.message;
+    }
+  }
+
+  destroy(id) {
+    try {
+      const users = UserManager.#users;
+      const newList = users.filter((el) => el.id !== id);
+
+      if (users.length == newList.length) return null;
+
+      UserManager.#users = newList;
+
+      return true;
+    } catch (e) {
+      throw e.message;
+    }
   }
 }
 
-const UserManager = new userManager();
+const UsersManager = new UserManager();
 
-UserManager.create({
-  name: "Tomás",
-  photo: "https://i.pravatar.cc/300",
-  email: "tomasTest123@gmail.com",
+UsersManager.create({
+  name: "tomas",
+  email: "lala@gmail.com",
+  photo: "img",
 });
 
-UserManager.create({
-  name: "Matías",
-  photo: "https://i.pravatar.cc/300",
-  email: "matiasTest1@gmail.com",
-});
-
-console.log(UserManager.read());
-console.log(UserManager.readOne(2));
-
-UserManager.create({
-  name: "Matías",
-  photo: "https://i.pravatar.cc/300",
+UsersManager.create({
+  name: "Matias",
+  email: "mati@gmail.com",
+  photo: "img2",
 });
