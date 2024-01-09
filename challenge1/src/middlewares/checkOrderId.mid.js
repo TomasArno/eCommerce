@@ -6,7 +6,7 @@ export async function checkOrderId(req, res, next) {
   const orderSearched = await OrdersManager.readOne(oId);
 
   if (!orderSearched) {
-    res.json({ statusCode: 404, message: "Order not found" });
+    res.json({ statusCode: 404, response: "Order not found" });
   } else {
     next();
   }

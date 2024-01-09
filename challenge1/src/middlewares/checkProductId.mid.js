@@ -6,7 +6,7 @@ export async function checkProductId(req, res, next) {
   const productSearched = await ProductsManager.readOne(pId);
 
   if (!productSearched) {
-    res.json({ statusCode: 404, message: "Product not found" });
+    res.json({ statusCode: 404, response: "Product not found" });
   } else {
     next();
   }

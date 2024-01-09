@@ -11,7 +11,7 @@ productsRouter.post("/", async (req, res, next) => {
     const data = await ProductsManager.create(req.body);
 
     res.json({
-      statusCode: 200,
+      statusCode: 201,
       response: data,
     });
   } catch (e) {

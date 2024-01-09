@@ -13,7 +13,7 @@ ordersRouter.post("/", checkUserId, checkProductId, async (req, res, next) => {
     const data = await OrdersManager.create(req.body);
 
     res.json({
-      statusCode: 200,
+      statusCode: 201,
       response: data,
     });
   } catch (e) {

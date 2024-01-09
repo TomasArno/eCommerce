@@ -6,7 +6,7 @@ export async function checkUserId(req, res, next) {
   const userSearched = await UsersManager.readOne(uId);
 
   if (!userSearched) {
-    res.json({ statusCode: 404, message: "User not found" });
+    res.json({ statusCode: 404, response: "User not found" });
   } else {
     next();
   }

@@ -11,7 +11,7 @@ usersRouter.post("/", async (req, res, next) => {
     const userCreated = await UsersManager.create(req.body);
 
     res.json({
-      statusCode: 200,
+      statusCode: 201,
       response: userCreated,
     });
   } catch (e) {
