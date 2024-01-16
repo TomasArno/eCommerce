@@ -1,27 +1,21 @@
-{{! DIRECTAMENTE DISEÑAR LA PAGINA DE INICIO }}
-{{! desde el endpoint me envian el objeto con la propiedad events }}
-{{! para loopear los eventos, utilizao la sintaxis de each de hbs }}
 <main class="flex-grow-1 p-3 m-auto my-2">
-  <h1>CODER CINEMA</h1>
-  <h3>{{date}}</h3>
-  {{#if details}}
-    <p>{{details}}</p>
-  {{else}}
-    <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Vitae qui quo
-      consequatur sit ex voluptatibus corporis aut porro quaerat laudantium
-      libero et inventore saepe nisi delectus, magni quas fugiat illo.
-      Praesentium cum voluptate tenetur laboriosam maiores quaerat sunt delectus
-      ducimus ipsam quam eos iure est voluptatum sapiente recusandae, at
-      suscipit corrupti tempora rem ea veniam omnis soluta. Iste, dolorem eos!
-      Voluptate pariatur suscipit, at iusto enim fugiat excepturi earum error
-      commodi, inventore libero eos porro consequuntur laborum, sit provident?
-      Explicabo molestiae quae architecto est quod iusto dicta, ut aspernatur
-    </p>
-  {{/if}}
+  <h1>MY FIRST ECOMMERCE</h1>
 
-  {{#each events}}
-    {{! cuerpo de lo que se quiere loopear }}
-    {{! this va a hacer de referencia de CADA UNO de los elementos a recorrer }}
-    <h3>{{this}}</h3>
+  {{#each products}}
+    <article class="d-flex flex-wrap justify-content-evenly">
+      <div class="card m-2" style="width: 320px">
+        <img
+          src={{this.photo}}
+          style="height: 300px"
+          class="card-img-top object-fit-cover"
+          alt=""
+        />
+        <div class="card-body d-flex flex-column justify-content-center">
+          <h5 class="card-title text-center">{{this.title}}</h5>
+          <p class="card-text text-center">{{this.price}}</p>
+          <button type="button" class="btn btn-success">ADD TO CART!</button>
+        </div>
+      </div>
+    </article>
   {{/each}}
 </main>

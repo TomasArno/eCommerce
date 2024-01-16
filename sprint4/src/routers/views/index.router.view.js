@@ -1,21 +1,22 @@
 import { Router } from "express";
 
-import eventsRouter from "./events.router.view.js";
-import usersRouter from "./users.router.view.js";
+import productsRouter from "./products.router.view.js";
+import ProductManager from "../../data/fs/products.fs.js";
 
 const viewsRouter = Router();
 
-viewsRouter.get("/", (req, res, next) => {
+viewsRouter.get("/", async (req, res, next) => {
   try {
-    const mainEvents = ["hp", "pokemon", "batman"];
-    const date = new Date();
-    return res.render("index", { events: mainEvents, date, title: "INDEX" });
-  } catch (error) {
-    next(error);
+    const products = await ProductManager.read();
+
+    return res.render("index", {
+      products,
+    });
+  } catch (e) {
+    next(e);
   }
 });
 
-viewsRouter.use("/events", eventsRouter);
-viewsRouter.use("/users", usersRouter);
+viewsRouter.use("/products", productsRouter);
 
 export default viewsRouter;

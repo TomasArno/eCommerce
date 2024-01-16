@@ -10,6 +10,7 @@ import pathHandler from "./src/middlewares/PathHandler.js";
 import indexRouter from "./src/routers/index.router.js";
 
 import __dirname from "./utils.js";
+import socketInit from "./socket.utils.js";
 
 const app = express();
 const httpServer = createServer(app);
@@ -19,9 +20,7 @@ const PORT = 8080;
 
 httpServer.listen(PORT, () => console.log("Server running on port " + PORT));
 
-socketServer.on("connection", (socket) => {
-  console.log(socket.id);
-});
+socketServer.on("connection", socketInit);
 
 // VIEWS
 

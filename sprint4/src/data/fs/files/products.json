@@ -2,36 +2,15 @@
   {
     "id": "17f19a078f0cd3e8ddbe686b",
     "title": "producto web",
-    "photo": "micho",
+    "photo": "https://picsum.photos/200/300",
     "price": 1000,
     "stock": 12
   },
   {
-    "id": "74b8f83b034452ab88b5ebe9",
-    "title": "producto web",
-    "photo": "micho",
-    "price": 1000,
-    "stock": 12
-  },
-  {
-    "id": "c6f0adf010ba7d4773e787ae",
-    "title": "producto web",
-    "photo": "micho",
-    "price": 1000,
-    "stock": 12
-  },
-  {
-    "id": "053fd4fb41c8eaaf4fad51bd",
-    "title": "dadadadadadd",
-    "photo": "micho",
-    "price": 1000,
-    "stock": 12
-  },
-  {
-    "id": "8b889420fe4f6b5c753d9c3e",
-    "title": "producto web",
-    "photo": "img",
-    "price": 1000,
-    "stock": 12
+    "id": "f6d10edbda098d78f7f9d833",
+    "title": "prueba",
+    "photo": "https://picsum.photos/200/300",
+    "price": "23233",
+    "stock": "23223"
   }
 ]
