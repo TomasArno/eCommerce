@@ -1,21 +1,16 @@
-<main class="flex-grow-1 p-3 m-auto my-2">
-  <h1>MY FIRST ECOMMERCE</h1>
+<main class="main">
+  <h1 class="main_title">MY FIRST ECOMMERCE</h1>
 
-  {{#each products}}
-    <article class="d-flex flex-wrap justify-content-evenly">
-      <div class="card m-2" style="width: 320px">
-        <img
-          src={{this.photo}}
-          style="height: 300px"
-          class="card-img-top object-fit-cover"
-          alt=""
-        />
-        <div class="card-body d-flex flex-column justify-content-center">
-          <h5 class="card-title text-center">{{this.title}}</h5>
-          <p class="card-text text-center">{{this.price}}</p>
-          <button type="button" class="btn btn-success">ADD TO CART!</button>
+  <div class="cards_container">
+    {{#each products}}
+      <div class="card">
+        <img src={{this.photo}} class="card_img" alt="product image" />
+        <div class="card_data">
+          <h5 class="card_data-title">{{this.title}}</h5>
+          <p class="card_data-price">${{this.price}}</p>
         </div>
+        <button type="button" class="btn">ADD TO CART!</button>
       </div>
-    </article>
-  {{/each}}
+    {{/each}}
+  </div>
 </main>

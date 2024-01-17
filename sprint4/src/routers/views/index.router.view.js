@@ -1,5 +1,7 @@
 import { Router } from "express";
 
+import usersRouter from "./users.router.view.js";
+
 import productsRouter from "./products.router.view.js";
 import ProductManager from "../../data/fs/products.fs.js";
 
@@ -17,6 +19,7 @@ viewsRouter.get("/", async (req, res, next) => {
   }
 });
 
+viewsRouter.use("/users", usersRouter);
 viewsRouter.use("/products", productsRouter);
 
 export default viewsRouter;
