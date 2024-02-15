@@ -2,11 +2,14 @@ import { Router } from "express";
 
 import { Users } from "../../data/mongo/mongo.manager.js";
 
+import has8Char from "../../middlewares/has8Char.mid.js";
+import isValidPass from "../../middlewares/isValidPass.mid.js";
+
 const sessionsRouter = Router();
 
-sessionsRouter.post("/register", async (req, res, next) => {
+sessionsRouter.post("/register", has8Char, async (req, res, next) => {
   try {
-    const data = req.body;
+    const { password, ...data } = req.body;
 
     await Users.create(data);
 
@@ -19,7 +22,7 @@ sessionsRouter.post("/register", async (req, res, next) => {
   }
 });
 
-sessionsRouter.post("/login", async (req, res, next) => {
+sessionsRouter.post("/login", isValidPass, async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
