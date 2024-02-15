@@ -105,7 +105,7 @@ class MongoManager {
 
   async readByEmail(email) {
     try {
-      const one = await this.model.read({ filter: { email } });
+      const one = await this.read({ filter: { email } });
 
       return one;
     } catch (error) {
