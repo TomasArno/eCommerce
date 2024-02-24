@@ -1,0 +1,30 @@
+[
+  {
+    "id": "17f19a078f0cd3e8ddbe686b",
+    "title": "producto web",
+    "photo": "https://picsum.photos/200/300",
+    "price": 1000,
+    "stock": 12
+  },
+  {
+    "id": "f6d10edbda098d78f7f9d833",
+    "title": "prueba",
+    "photo": "https://picsum.photos/200/300",
+    "price": "23233",
+    "stock": "23223"
+  },
+  {
+    "id": "f6d10edbda098d78f7f9d833",
+    "title": "prueba",
+    "photo": "https://picsum.photos/200/300",
+    "price": "23233",
+    "stock": "23223"
+  },
+  {
+    "id": "f6d10edbda098d78f7f9d833",
+    "title": "prueba",
+    "photo": "https://picsum.photos/200/300",
+    "price": "23233",
+    "stock": "23223"
+  }
+]
