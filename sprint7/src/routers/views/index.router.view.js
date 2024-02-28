@@ -1,32 +1,36 @@
-import { Router } from "express";
+import { Router } from 'express';
 
-import authRouter from "./auth.router.view.js";
-import usersRouter from "./users.router.view.js";
-import productsRouter from "./products.router.view.js";
+import authRouter from './auth.router.view.js';
+import usersRouter from './users.router.view.js';
+import productsRouter from './products.router.view.js';
+import ordersRouter from './orders.router.view.js';
 
-import { Products } from "../../data/mongo/mongo.manager.js";
+import { Products } from '../../data/mongo/mongo.manager.js';
 
 const viewsRouter = Router();
 
-viewsRouter.get("/", async (req, res, next) => {
-  try {
-    const data = {
-      filter: {},
-      sortAndPaginate: {},
-    };
+viewsRouter.get('/', async (req, res, next) => {
+	try {
+		const data = {
+			filter: {},
+			sortAndPaginate: {},
+		};
 
-    const { docs } = await Products.read(data);
+		data.filter = req.query;
 
-    return res.render("index", {
-      products: docs,
-    });
-  } catch (e) {
-    next(e);
-  }
+		const { docs } = await Products.read(data);
+
+		return res.render('index', {
+			products: docs,
+		});
+	} catch (e) {
+		next(e);
+	}
 });
 
-viewsRouter.use("/auth", authRouter);
-viewsRouter.use("/users", usersRouter);
-viewsRouter.use("/products", productsRouter);
+viewsRouter.use('/auth', authRouter);
+viewsRouter.use('/users', usersRouter);
+viewsRouter.use('/products', productsRouter);
+viewsRouter.use('/orders', ordersRouter);
 
 export default viewsRouter;
