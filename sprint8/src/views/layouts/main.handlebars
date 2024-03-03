@@ -1,0 +1,50 @@
+<html lang='en'>
+  <head>
+    <meta charset='UTF-8' />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+    <link rel='stylesheet' href='/index.css' />
+    <title>E-COMMERCE</title>
+    <script src='/checkLogin.js'></script>
+  </head>
+
+  <body>
+    <header class='header'>
+      <nav class='navbar'>
+        <div class='navbar_container'>
+          <a class='navbar_container-item' href='/'>HOME</a>
+          <a
+            class='navbar_container-item'
+            id='nav-register'
+            href='/auth/register'
+          >REGISTER</a>
+          <a
+            class='navbar_container-item'
+            id='nav-login'
+            href='/auth/login'
+          >LOGIN</a>
+          <a
+            class='navbar_container-item'
+            id='nav-form'
+            href='/products/form'
+          >FORM</a>
+          <a
+            class='navbar_container-item'
+            id='nav-orders'
+            href='/orders'
+          >ORDERS</a>
+          <a
+            class='navbar_container-item'
+            id='nav-signout'
+            style='cursor: hand'
+          >SIGNOUT</a>
+        </div>
+      </nav>
+    </header>
+
+    {{{body}}}
+
+    <footer class='footer'>
+      <p class='logo'>URANO</p>
+    </footer>
+  </body>
+</html>
