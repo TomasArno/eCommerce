@@ -1,0 +1,16 @@
+<main class='main'>
+	<h1 class='main_title'>MY FIRST ECOMMERCE</h1>
+
+	<div class='cards_container'>
+		{{#each products}}
+			<div class='card'>
+				<img src={{this.photo}} class='card_img' alt='product image' />
+				<div class='card_data'>
+					<h5 class='card_data-title'>{{this.title}}</h5>
+					<p class='card_data-price'>${{this.price}}</p>
+				</div>
+				<button type='button' class='btn'>ADD TO CART!</button>
+			</div>
+		{{/each}}
+	</div>
+</main>
