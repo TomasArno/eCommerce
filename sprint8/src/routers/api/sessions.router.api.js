@@ -1,14 +1,14 @@
 import { Router } from 'express';
 
 import passport from '../../middlewares/passport.mid.js';
-import verifyToken from '../../middlewares/verifyToken.mid.js';
+import passportCb from '../../middlewares/passportCb.mid.js';
 
 const opt = { session: false, failureRedirect: '/api/sessions/badauth' };
 const sessionsRouter = Router();
 
-sessionsRouter.get('/', verifyToken, async (req, res, next) => {
+sessionsRouter.get('/', passportCb('jwt'), async (req, res, next) => {
   try {
-    const { email, role } = req._user;
+    const { email, role } = req.user;
 
     return res.json({
       statusCode: 200,
@@ -21,7 +21,7 @@ sessionsRouter.get('/', verifyToken, async (req, res, next) => {
 
 sessionsRouter.post(
   '/register',
-  passport.authenticate('register', opt),
+  passportCb('register'),
   async (req, res, next) => {
     try {
       return res.json({
@@ -34,25 +34,21 @@ sessionsRouter.post(
   }
 );
 
-sessionsRouter.post(
-  '/login',
-  passport.authenticate('login', opt),
-  async (req, res, next) => {
-    try {
-      res
-        .cookie('token', req.token, {
-          maxAge: 7 * 24 * 60 * 60 * 1000,
-          httpOnly: true,
-        })
-        .json({
-          statusCode: 200,
-          message: 'Logged in!',
-        });
-    } catch (error) {
-      return next(error);
-    }
+sessionsRouter.post('/login', passportCb('login'), async (req, res, next) => {
+  try {
+    res
+      .cookie('token', req.token, {
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+        httpOnly: true,
+      })
+      .json({
+        statusCode: 200,
+        message: 'Logged in!',
+      });
+  } catch (error) {
+    return next(error);
   }
-);
+});
 
 sessionsRouter.post(
   '/google',
@@ -64,11 +60,15 @@ sessionsRouter.post(
   passport.authenticate('google', opt),
   async (req, res, next) => {
     try {
-      res.json({
-        statusCode: 200,
-        message: 'Logged in with google',
-        session: req.session,
-      });
+      res
+        .cookie('token', req.token, {
+          maxAge: 7 * 24 * 60 * 60 * 1000,
+          httpOnly: true,
+        })
+        .json({
+          statusCode: 200,
+          message: 'Logged in with google',
+        });
     } catch (error) {
       return next(error);
     }

@@ -5,27 +5,27 @@ import usersRouter from './users.router.view.js';
 import productsRouter from './products.router.view.js';
 import ordersRouter from './orders.router.view.js';
 
-import { Products } from '../../data/mongo/mongo.manager.js';
+import { products } from '../../data/mongo/mongo.manager.js';
 
 const viewsRouter = Router();
 
 viewsRouter.get('/', async (req, res, next) => {
-	try {
-		const data = {
-			filter: {},
-			sortAndPaginate: {},
-		};
+  try {
+    const data = {
+      filter: {},
+      sortAndPaginate: {},
+    };
 
-		data.filter = req.query;
+    data.filter = req.query;
 
-		const { docs } = await Products.read(data);
+    const { docs } = await products.read(data);
 
-		return res.render('index', {
-			products: docs,
-		});
-	} catch (e) {
-		next(e);
-	}
+    return res.render('index', {
+      products: docs,
+    });
+  } catch (e) {
+    next(e);
+  }
 });
 
 viewsRouter.use('/auth', authRouter);

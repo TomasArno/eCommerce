@@ -1,14 +1,16 @@
-import { Router } from "express";
+import { Router } from 'express';
 
-import { Users } from "../../data/mongo/mongo.manager.js";
+import { users } from '../../data/mongo/mongo.manager.js';
 
-import { checkUserId } from "../../middlewares/checkUserId.mid.js";
+import passportCb from '../../middlewares/passportCb.mid.js';
+import isAdmin from '../../middlewares/isAdmin.mid.js';
+import { checkUserId } from '../../middlewares/checkUserId.mid.js';
 
 const usersRouter = Router();
 
-usersRouter.post("/", async (req, res, next) => {
+usersRouter.post('/', passportCb('jwt'), isAdmin, async (req, res, next) => {
   try {
-    const newUser = await Users.create(req.body);
+    const newUser = await users.create(req.body);
 
     res.json({
       statusCode: 201,
@@ -19,7 +21,7 @@ usersRouter.post("/", async (req, res, next) => {
   }
 });
 
-usersRouter.get("/", async (req, res, next) => {
+usersRouter.get('/', passportCb('jwt'), isAdmin, async (req, res, next) => {
   try {
     const { name, email, page, limit } = req.query;
 
@@ -33,7 +35,7 @@ usersRouter.get("/", async (req, res, next) => {
     if (!page) sortAndPaginate.page = 1;
     if (!limit) sortAndPaginate.limit = 20;
 
-    const users = await Users.read({ filter, sortAndPaginate });
+    const users = await users.read({ filter, sortAndPaginate });
 
     res.json({
       statusCode: 200,
@@ -44,45 +46,63 @@ usersRouter.get("/", async (req, res, next) => {
   }
 });
 
-usersRouter.get("/:userId", checkUserId, async (req, res, next) => {
-  try {
-    res.json({
-      statusCode: 200,
-      response: req._user,
-    });
-  } catch (e) {
-    next(e);
+usersRouter.get(
+  '/:userId',
+  passportCb('jwt'),
+  isAdmin,
+  checkUserId,
+  async (req, res, next) => {
+    try {
+      res.json({
+        statusCode: 200,
+        response: req.user,
+      });
+    } catch (e) {
+      next(e);
+    }
   }
-});
+);
 
-usersRouter.put("/:userId", checkUserId, async (req, res, next) => {
-  try {
-    const { userId } = req.params;
+usersRouter.put(
+  '/:userId',
+  passportCb('jwt'),
+  isAdmin,
+  checkUserId,
+  async (req, res, next) => {
+    try {
+      const { userId } = req.params;
 
-    const modifiedUser = await Users.update(userId, req.body);
+      const modifiedUser = await users.update(userId, req.body);
 
-    res.json({
-      statusCode: 200,
-      response: modifiedUser,
-    });
-  } catch (e) {
-    next(e);
+      res.json({
+        statusCode: 200,
+        response: modifiedUser,
+      });
+    } catch (e) {
+      next(e);
+    }
   }
-});
+);
 
-usersRouter.delete("/:userId", checkUserId, async (req, res, next) => {
-  try {
-    const { userId } = req.params;
+usersRouter.delete(
+  '/:userId',
+  passportCb('jwt'),
+  isAdmin,
+  checkUserId,
+  async (req, res, next) => {
+    try {
+      const { userId } = req.params;
 
-    const deletedUser = await Products.destroy(userId);
+      const deletedUser = await Products.destroy(userId);
 
-    res.json({
-      statusCode: 200,
-      response: deletedUser,
-    });
-  } catch (e) {
-    next(e);
+      res.json({
+        statusCode: 200,
+        response: deletedUser,
+      });
+    } catch (e) {
+      next(e);
+    }
   }
-});
+);
 
 export default usersRouter;
