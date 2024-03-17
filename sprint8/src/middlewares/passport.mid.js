@@ -72,14 +72,18 @@ passport.use(
     },
     async (payload, done) => {
       try {
+        console.log('1');
         const userData = await users.readByEmail(payload.email);
 
         if (!userData) return done(null, false);
+        console.log('2');
 
         delete userData.password;
 
         done(null, userData);
+        console.log('3');
       } catch (error) {
+        console.log('entr');
         return done(error);
       }
     }

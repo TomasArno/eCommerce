@@ -26,13 +26,6 @@ class MongoManager {
 
       const all = await this.model.paginate(filter, opt);
 
-      // if (!all.totalDocs) {
-      //   const error = new Error("There aren't documents");
-      //   error.statusCode = 404;
-
-      //   throw error;
-      // }
-
       return all;
     } catch (error) {
       throw error;
