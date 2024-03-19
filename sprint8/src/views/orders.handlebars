@@ -1,0 +1,28 @@
+<main class='main'>
+  <div class='cards_container'>
+
+    <div class='table-container'>
+      <table>
+        <thead>
+          <tr>
+            <th>Photo</th>
+            <th>Product</th>
+            <th>Price</th>
+            <th>Quantity</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each orders}}
+
+            <tr>
+              <td><img src={{this.productId.title}} alt='Product Photo' /></td>
+              <td>{{this.productId.title}}</td>
+              <td>${{this.productId.price}}</td>
+              <td>{{this.quantity}}</td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</main>
