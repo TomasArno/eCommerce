@@ -1,4 +1,4 @@
-import productsService from '../services/products.service.js';
+import productsService from "../services/products.service.js";
 
 class ProductsController {
   constructor() {
@@ -21,7 +21,7 @@ class ProductsController {
       if (!limit) sortAndPaginate.limit = 20;
 
       console.log(this);
-      const products = await this.service.read({ filter, sortAndPaginate });
+      const products = await productsServiceread({ filter, sortAndPaginate });
 
       res.json({
         statusCode: 200,
@@ -32,61 +32,61 @@ class ProductsController {
     }
   }
 
-  // async create(req, res, next) {
-  //   try {
-  //     const data = await this.service.create(req.body);
+  async create(req, res, next) {
+    try {
+      const data = await productsServicecreate(req.body);
 
-  //     res.json({
-  //       statusCode: 201,
-  //       response: data,
-  //     });
-  //   } catch (e) {
-  //     next(e);
-  //   }
-  // }
+      res.json({
+        statusCode: 201,
+        response: data,
+      });
+    } catch (e) {
+      next(e);
+    }
+  }
 
-  // async readOne(req, res, next) {
-  //   async (req, res, next) => {
-  //     try {
-  //       res.json({
-  //         statusCode: 200,
-  //         response: req._product,
-  //       });
-  //     } catch (e) {
-  //       next(e);
-  //     }
-  //   };
-  // }
+  async readOne(req, res, next) {
+    async (req, res, next) => {
+      try {
+        res.json({
+          statusCode: 200,
+          response: req._product,
+        });
+      } catch (e) {
+        next(e);
+      }
+    };
+  }
 
-  // async update(req, res, next) {
-  //   try {
-  //     const { productId } = req.params;
+  async update(req, res, next) {
+    try {
+      const { productId } = req.params;
 
-  //     const modifiedProduct = await this.service.update(productId, req.body);
+      const modifiedProduct = await productsServiceupdate(productId, req.body);
 
-  //     res.json({
-  //       statusCode: 200,
-  //       response: modifiedProduct,
-  //     });
-  //   } catch (e) {
-  //     next(e);
-  //   }
-  // }
+      res.json({
+        statusCode: 200,
+        response: modifiedProduct,
+      });
+    } catch (e) {
+      next(e);
+    }
+  }
 
-  // async destroy(req, res, next) {
-  //   try {
-  //     const { productId } = req.params;
+  async destroy(req, res, next) {
+    try {
+      const { productId } = req.params;
 
-  //     const deletedProduct = await this.service.destroy(productId);
+      const deletedProduct = await productsServicedestroy(productId);
 
-  //     res.json({
-  //       statusCode: 200,
-  //       response: deletedProduct,
-  //     });
-  //   } catch (e) {
-  //     next(e);
-  //   }
-  // }
+      res.json({
+        statusCode: 200,
+        response: deletedProduct,
+      });
+    } catch (e) {
+      next(e);
+    }
+  }
 }
 
 const productsController = new ProductsController();

@@ -1,8 +1,8 @@
-import CustomRouter from '../customRouter.js';
+import CustomRouter from "../customRouter.js";
 
-// import isAdmin from '../../middlewares/isAdmin.mid.js';
-// import passportCb from '../../middlewares/passportCb.mid.js';
-// import { checkProductId } from '../../middlewares/checkProductId.mid.js';
+import isAdmin from "../../middlewares/isAdmin.mid.js";
+import passportCb from "../../middlewares/passportCb.mid.js";
+import { checkProductId } from "../../middlewares/checkProductId.mid.js";
 
 import {
   create,
@@ -10,44 +10,44 @@ import {
   readOne,
   update,
   destroy,
-} from '../../controllers/products.controller.js';
+} from "../../controllers/products.controller.js";
 
 class Router extends CustomRouter {
   init() {
-    // this.create(
-    //   '/',
-    //   ['PUBLIC'],
-    //   // passportCb('jwt'),
-    //   isAdmin,
-    //   create
-    // );
+    this.create(
+      "/",
+      ["PUBLIC"],
+      // passportCb('jwt'),
+      isAdmin,
+      create
+    );
 
-    this.read('/', ['PUBLIC'], read);
+    this.read("/", ["PUBLIC"], read);
 
-    // this.read(
-    //   '/:productId',
-    //   ['PUBLIC'],
-    //   //  passportCb('jwt'),
-    //   readOne
-    // );
+    this.read(
+      "/:productId",
+      ["PUBLIC"],
+      //  passportCb('jwt'),
+      readOne
+    );
 
-    // this.update(
-    //   '/:productId',
-    //   ['PUBLIC'],
-    //   // passportCb('jwt'),
-    //   isAdmin,
-    //   checkProductId,
-    //   update
-    // );
+    this.update(
+      "/:productId",
+      ["PUBLIC"],
+      // passportCb('jwt'),
+      isAdmin,
+      checkProductId,
+      update
+    );
 
-    // this.destroy(
-    //   '/:productId',
-    //   ['PUBLIC'],
-    //   // passportCb('jwt'),
-    //   isAdmin,
-    //   checkProductId,
-    //   destroy
-    // );
+    this.destroy(
+      "/:productId",
+      ["PUBLIC"],
+      // passportCb('jwt'),
+      isAdmin,
+      checkProductId,
+      destroy
+    );
   }
 }
 

@@ -1,16 +1,25 @@
-import { Router } from 'express';
+import CustomRouter from "../customRouter.js";
 
-import verifyToken from '../../middlewares/verifyToken.mid.js';
-import isAdmin from '../../middlewares/isAdmin.mid.js';
+import passportCb from "../../middlewares/passportCb.mid.js";
+import isAdmin from "../../middlewares/isAdmin.mid.js";
 
-const productsRouter = Router();
+class Router extends CustomRouter {
+  init() {
+    this.read(
+      "/form",
+      ["PUBLIC"],
+      passportCb("jwt"),
+      isAdmin,
+      (req, res, next) => {
+        try {
+          res.render("form");
+        } catch (e) {
+          next(e);
+        }
+      }
+    );
+  }
+}
 
-productsRouter.get('/form', verifyToken, isAdmin, (req, res, next) => {
-	try {
-		return res.render('form');
-	} catch (e) {
-		next(e);
-	}
-});
-
+const productsRouter = new Router().getRouter();
 export default productsRouter;

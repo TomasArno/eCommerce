@@ -1,21 +1,25 @@
-import { Router } from "express";
+import CustomRouter from "../customRouter.js";
 
-const authRouter = Router();
+class Router extends CustomRouter {
+  init() {
+    this.read("/register", ["PUBLIC"], (req, res, next) => {
+      try {
+        res.render("register");
+      } catch (e) {
+        next(e);
+      }
+    });
 
-authRouter.get("/register", (req, res, next) => {
-  try {
-    return res.render("register");
-  } catch (e) {
-    next(e);
+    this.read("/login", ["PUBLIC"], (req, res, next) => {
+      try {
+        res.render("login");
+      } catch (e) {
+        next(e);
+      }
+    });
   }
-});
+}
 
-authRouter.get("/login", (req, res, next) => {
-  try {
-    return res.render("login");
-  } catch (e) {
-    next(e);
-  }
-});
+const authRouter = new Router().getRouter();
 
 export default authRouter;

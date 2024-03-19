@@ -1,136 +1,71 @@
-import { Router } from 'express';
+import CustomRouter from "../customRouter.js";
 
-import { orders } from '../../data/mongo/mongo.manager.js';
+import {
+  create,
+  read,
+  readOne,
+  destroy,
+  update,
+} from "../../controllers/orders.controller.js";
 
-import passportCb from '../../middlewares/passportCb.mid.js';
-import { checkUserId } from '../../middlewares/checkUserId.mid.js';
-import { checkOrderId } from '../../middlewares/checkOrderId.mid.js';
-import { checkProductId } from '../../middlewares/checkProductId.mid.js';
+import passportCb from "../../middlewares/passportCb.mid.js";
+import { checkUserId } from "../../middlewares/checkUserId.mid.js";
+import { checkOrderId } from "../../middlewares/checkOrderId.mid.js";
+import { checkProductId } from "../../middlewares/checkProductId.mid.js";
 
-const ordersRouter = Router();
+class Router extends CustomRouter {
+  init() {
+    this.create(
+      "/",
+      ["PUBLIC"],
+      passportCb("jwt"),
+      checkUserId,
+      checkProductId,
+      create
+    );
 
-ordersRouter.post(
-  '/',
-  passportCb('jwt'),
-  checkUserId,
-  checkProductId,
-  async (req, res, next) => {
-    try {
-      const data = await orders.create(req.body);
+    this.read("/", ["PUBLIC"], passportCb("jwt"), read);
 
-      res.json({
-        statusCode: 201,
-        response: data,
-      });
-    } catch (e) {
-      next(e);
-    }
+    this.read("/:userId", ["PUBLIC"], passportCb("jwt"), checkUserId, readOne);
+
+    this.read(
+      "/total/:userId",
+      passportCb("jwt"),
+      checkUserId,
+      async (req, res, next) => {
+        try {
+          const { userId } = req.params;
+
+          const user = await orders.report(userId);
+
+          res.json({
+            statusCode: 200,
+            response: user,
+          });
+        } catch (e) {
+          next(e);
+        }
+      }
+    );
+
+    this.update(
+      "/:orderId",
+      ["PUBLIC"],
+      passportCb("jwt"),
+      checkOrderId,
+      update
+    );
+
+    this.destroy(
+      "/:orderId",
+      ["PUBLIC"],
+      passportCb("jwt"),
+      checkOrderId,
+      destroy
+    );
   }
-);
+}
 
-ordersRouter.get('/', passportCb('jwt'), async (req, res, next) => {
-  try {
-    const { state, quantity, page, limit } = req.query;
-
-    const filter = {};
-
-    if (state) filter.state = state;
-    if (quantity) filter.quantity = quantity;
-
-    const sortAndPaginate = { page, limit };
-
-    if (!page) sortAndPaginate.page = 1;
-    if (!limit) sortAndPaginate.limit = 20;
-
-    const orders = await orders.read({ filter, sortAndPaginate });
-
-    res.json({
-      statusCode: 200,
-      response: orders,
-    });
-  } catch (e) {
-    next(e);
-  }
-});
-
-ordersRouter.get(
-  '/:userId',
-  passportCb('jwt'),
-  checkUserId,
-  async (req, res, next) => {
-    try {
-      const { userId } = req.params;
-
-      const user = await orders.read({ filter: { userId } });
-
-      res.json({
-        statusCode: 200,
-        response: user,
-      });
-    } catch (e) {
-      next(e);
-    }
-  }
-);
-
-ordersRouter.get(
-  '/total/:userId',
-  passportCb('jwt'),
-  checkUserId,
-  async (req, res, next) => {
-    try {
-      const { userId } = req.params;
-
-      const user = await orders.report(userId);
-
-      res.json({
-        statusCode: 200,
-        response: user,
-      });
-    } catch (e) {
-      next(e);
-    }
-  }
-);
-
-ordersRouter.put(
-  '/:orderId',
-  passportCb('jwt'),
-  checkOrderId,
-  async (req, res, next) => {
-    try {
-      const { orderId } = req.params;
-
-      const modifiedOrder = await Products.update(orderId, req.body);
-
-      res.json({
-        statusCode: 200,
-        response: modifiedOrder,
-      });
-    } catch (e) {
-      next(e);
-    }
-  }
-);
-
-ordersRouter.delete(
-  '/:orderId',
-  passportCb('jwt'),
-  checkOrderId,
-  async (req, res, next) => {
-    try {
-      const { orderId } = req.params;
-
-      const deletedOrder = await orders.destroy(orderId);
-
-      res.json({
-        statusCode: 200,
-        response: deletedOrder,
-      });
-    } catch (e) {
-      next(e);
-    }
-  }
-);
+const ordersRouter = new Router().getRouter();
 
 export default ordersRouter;

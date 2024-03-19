@@ -1,22 +1,26 @@
-import { Router } from 'express';
+import CustomRouter from "../customRouter.js";
 
-import { orders } from '../../data/mongo/mongo.manager.js';
-import verifyToken from '../../middlewares/verifyToken.mid.js';
+import ordersService from "../../services/orders.service.js";
 
-const ordersRouter = Router();
+import passportCb from "../../middlewares/passportCb.mid.js";
 
-ordersRouter.get('/', verifyToken, async (req, res, next) => {
-  try {
-    const { email } = req._user;
+class Router extends CustomRouter {
+  init() {
+    this.read("/", ["PUBLIC"], passportCb("jwt"), async (req, res, next) => {
+      try {
+        const { email } = req.user;
 
-    const userOrders = await orders.read({ filter: { email } });
+        const userOrders = await ordersService.read({ filter: { email } });
 
-    return res.render('orders', {
-      orders: userOrders,
+        res.render("orders", {
+          orders: userOrders,
+        });
+      } catch (e) {
+        next(e);
+      }
     });
-  } catch (e) {
-    next(e);
   }
-});
+}
 
+const ordersRouter = new Router().getRouter();
 export default ordersRouter;

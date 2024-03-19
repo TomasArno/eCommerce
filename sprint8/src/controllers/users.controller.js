@@ -1,4 +1,4 @@
-import usersService from '../services/users.service.js';
+import usersService from "../services/users.service.js";
 
 class UsersController {
   constructor() {
@@ -19,7 +19,7 @@ class UsersController {
       if (!page) sortAndPaginate.page = 1;
       if (!limit) sortAndPaginate.limit = 20;
 
-      const users = await this.service.read({ filter, sortAndPaginate });
+      const users = await usersService.read({ filter, sortAndPaginate });
 
       res.json({
         statusCode: 200,
@@ -32,7 +32,7 @@ class UsersController {
 
   async create(req, res, next) {
     try {
-      const newUser = await this.service.create(req.body);
+      const newUser = await usersService.create(req.body);
 
       res.json({
         statusCode: 201,
@@ -60,7 +60,7 @@ class UsersController {
     try {
       const { userId } = req.params;
 
-      const modifiedUser = await this.service.update(userId, req.body);
+      const modifiedUser = await usersService.update(userId, req.body);
 
       res.json({
         statusCode: 200,
@@ -75,7 +75,7 @@ class UsersController {
     try {
       const { userId } = req.params;
 
-      const deletedUser = await this.service.destroy(userId);
+      const deletedUser = await usersService.destroy(userId);
 
       res.json({
         statusCode: 200,
