@@ -1,10 +1,9 @@
 import fs from "node:fs/promises";
 import { existsSync, writeFileSync } from "node:fs";
 
-import crypto from "node:crypto";
 
 class OrdersManager {
-  static #path = "./src/data/fs/files/orders.json";
+  static #path = "./src/dao/fs/files/orders.json";
 
   constructor() {
     this.init();
@@ -39,17 +38,10 @@ class OrdersManager {
 
         throw error;
       } else {
-        const { pId, uId, quantity, state } = data;
 
         const orders = await this.read();
 
-        orders.push({
-          id: crypto.randomBytes(12).toString("hex"),
-          pId,
-          uId,
-          quantity,
-          state,
-        });
+        orders.push(data);
 
         await fs.writeFile(
           OrdersManager.#path,
@@ -137,6 +129,6 @@ class OrdersManager {
   }
 }
 
-const Orders = new OrdersManager();
+const orders = new OrdersManager();
 
-export default Orders;
+export default orders;

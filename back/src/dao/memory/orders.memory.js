@@ -1,13 +1,5 @@
-import crypto from "node:crypto";
-
 class OrdersManager {
   static #orders = [];
-
-  id;
-  pId;
-  uId;
-  quantity;
-  state;
 
   async create(data) {
     try {
@@ -25,15 +17,7 @@ class OrdersManager {
       if (missingProps.length) {
         return `Propiedades faltantes: ${missingProps.join()}`;
       } else {
-        const { pId, uId, quantity, state } = data;
-
-        OrdersManager.#orders.push({
-          id: crypto.randomBytes(12).toString("hex"),
-          pId,
-          uId,
-          quantity,
-          state,
-        });
+        OrdersManager.#orders.push(data);
 
         const lastOrder = OrdersManager.#orders[OrdersManager.#orders - 1];
 
@@ -95,4 +79,6 @@ class OrdersManager {
   }
 }
 
-const Orders = new OrdersManager();
+const orders = new OrdersManager();
+export default orders;
+

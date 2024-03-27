@@ -1,12 +1,5 @@
-import crypto from "node:crypto";
-
 class UsersManager {
   static #users = [];
-
-  id;
-  name;
-  photo;
-  email;
 
   create(data) {
     try {
@@ -24,14 +17,7 @@ class UsersManager {
       if (missingProps.length) {
         return `Propiedades faltantes: ${missingProps.join()}`;
       } else {
-        const { name, photo, email } = data;
-
-        UsersManager.#users.push({
-          id: crypto.randomBytes(12).toString("hex"),
-          name,
-          photo,
-          email,
-        });
+        UsersManager.#users.push(data);
 
         const index = UsersManager.#users.length - 1;
         return UsersManager.#users[index];
@@ -49,9 +35,9 @@ class UsersManager {
     }
   }
 
-  readOne(field, value) {
+  readOne(id) {
     try {
-      return UsersManager.#users.find((el) => el.field == value);
+      return UsersManager.#users.find((el) => el.id == id);
     } catch (e) {
       throw e;
     }
@@ -92,4 +78,6 @@ class UsersManager {
   }
 }
 
-const Users = new UsersManager();
+const users = new UsersManager();
+export default users;
+

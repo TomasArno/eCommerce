@@ -1,0 +1,21 @@
+[
+  {
+    "_id": "7b89ea05c07b61c1070d3c53",
+    "createdAt": "2024-03-27T12:34:13.392Z",
+    "updatedAt": "2024-03-27T12:34:13.392Z",
+    "name": "Tomas",
+    "email": "arnotomas1@gmail.com",
+    "password": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "role": 0
+  },
+  {
+    "_id": "cc00768f456dadc53e92a135",
+    "createdAt": "2024-03-27T12:34:57.043Z",
+    "updatedAt": "2024-03-27T12:34:57.043Z",
+    "name": "Tomas",
+    "email": "arnotomas1@gmail.com",
+    "password": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "role": 0,
+    "photo": null
+  }
+]

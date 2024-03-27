@@ -1,4 +1,5 @@
-import { products } from '../data/mongo/mongo.manager.js';
+import products from '../services/products.service.js';
+
 
 export async function checkProductId(req, res, next) {
   try {

@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import { users } from '../data/mongo/mongo.manager.js';
+import users from '../services/users.service.js';
 
 import jwt from 'jsonwebtoken';
 
@@ -14,7 +14,7 @@ export default class CustomRouter {
     return this.router;
   }
 
-  init() {}
+  init() { }
 
   applyCbs(cbs) {
     return cbs.map((el) => async (...params) => {

@@ -1,10 +1,8 @@
 import fs from "node:fs/promises";
 import { existsSync, writeFileSync } from "node:fs";
 
-import crypto from "node:crypto";
-
 class ProductManager {
-  static #path = "./src/data/fs/files/products.json";
+  static #path = "./src/dao/fs/files/products.json";
 
   constructor() {
     this.init();
@@ -35,17 +33,9 @@ class ProductManager {
 
       throw error;
     } else {
-      const { title, photo, price, stock } = data;
-
       const products = await this.read();
 
-      products.push({
-        id: crypto.randomBytes(12).toString("hex"),
-        title,
-        photo,
-        price,
-        stock,
-      });
+      products.push(data);
 
       try {
         await fs.writeFile(
@@ -126,6 +116,6 @@ class ProductManager {
   }
 }
 
-const Products = new ProductManager();
+const products = new ProductManager();
 
-export default Products;
+export default products;

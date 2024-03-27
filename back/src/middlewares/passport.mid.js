@@ -3,10 +3,10 @@ import { Strategy as LocalStrategy } from "passport-local";
 import { ExtractJwt, Strategy as JwtStrategy } from "passport-jwt";
 import { Strategy as GoogleStrategy } from "passport-google-oauth2";
 
-import { users } from "../data/mongo/mongo.manager.js";
+import users from "../services/users.service.js";
 
-import { createHash, verifyHash } from "../../utils/hash.utils.js";
-import { createToken } from "../../utils/jtw.utils.js";
+import { createHash, verifyHash } from "../utils/hash.utils.js";
+import { createToken } from "../utils/jtw.utils.js";
 
 const { GOOGLE_ID, GOOGLE_SECRET, SECRET_JWT } = process.env;
 

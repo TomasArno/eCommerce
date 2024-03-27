@@ -1,9 +1,8 @@
 import fs from "node:fs/promises";
 import { existsSync, writeFileSync } from "node:fs";
-import crypto from "node:crypto";
 
 class UsersManager {
-  static #path = "./src/data/fs/files/users.json";
+  static #path = "./src/dao/fs/files/users.json";
 
   constructor() {
     this.init();
@@ -19,7 +18,7 @@ class UsersManager {
 
   async create(data) {
     try {
-      const propsList = ["name", "photo", "email"];
+      const propsList = ["name", "email"];
       const keyList = Object.keys(data);
 
       const missingProps = [];
@@ -40,14 +39,8 @@ class UsersManager {
         throw error;
       } else {
         const users = await this.read();
-        const { name, photo, email } = data;
 
-        users.push({
-          id: crypto.randomBytes(12).toString("hex"),
-          name,
-          photo,
-          email,
-        });
+        users.push(data);
 
         await fs.writeFile(UsersManager.#path, JSON.stringify(users, null, 2));
 
@@ -72,11 +65,11 @@ class UsersManager {
     }
   }
 
-  async readOne(field, value) {
+  async readOne(id) {
     try {
       const users = await this.read();
 
-      return users.find((el) => el.field == value);
+      return users.find((el) => el.id == id);
     } catch (e) {
       throw e;
     }
@@ -118,6 +111,6 @@ class UsersManager {
   }
 }
 
-const Users = new UsersManager();
+const users = new UsersManager();
 
-export default Users;
+export default users;

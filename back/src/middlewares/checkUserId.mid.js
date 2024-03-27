@@ -1,4 +1,4 @@
-import { users } from '../data/mongo/mongo.manager.js';
+import users from '../services/users.service.js';
 
 export async function checkUserId(req, res, next) {
   try {

@@ -1,4 +1,4 @@
-import { products } from "../data/mongo/mongo.manager.js";
+import products from "../repositories/products.rep.js"
 
 class ProductsService {
   constructor() {

@@ -1,10 +1,6 @@
 import { Types } from 'mongoose';
 import { paginate } from 'mongoose-paginate-v2';
 
-import UsersModel from './models/users.model.js';
-import ProductsModel from './models/products.model.js';
-import OrdersModel from './models/orders.model.js';
-
 class MongoManager {
   constructor(model) {
     this.model = model;
@@ -130,8 +126,4 @@ class MongoManager {
   }
 }
 
-const products = new MongoManager(ProductsModel);
-const users = new MongoManager(UsersModel);
-const orders = new MongoManager(OrdersModel);
-
-export { products, users, orders };
+export default MongoManager

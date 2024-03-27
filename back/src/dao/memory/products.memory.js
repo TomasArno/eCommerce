@@ -1,13 +1,5 @@
-import crypto from "node:crypto";
-
 class ProductsManager {
   static #products = [];
-
-  id;
-  title;
-  photo;
-  price;
-  stock;
 
   create(data) {
     try {
@@ -25,15 +17,7 @@ class ProductsManager {
       if (missingProps.length) {
         return `Propiedades faltantes: ${missingProps.join()}`;
       } else {
-        const { title, photo, price, stock } = data;
-
-        ProductsManager.#products.push({
-          id: crypto.randomBytes(12).toString("hex"),
-          title,
-          photo,
-          price,
-          stock,
-        });
+        ProductsManager.#products.push(data);
 
         const index = ProductsManager.#products.length - 1;
         return ProductsManager.#products[index];
@@ -94,4 +78,6 @@ class ProductsManager {
   }
 }
 
-const Products = new ProductsManager();
+const products = new ProductsManager();
+export default products;
+
