@@ -8,19 +8,4 @@ function createToken(data) {
 	return token;
 }
 
-function verifyTokenUtils(token) {
-	if (token) {
-		try {
-			const data = jwt.verify(token, process.env.SECRET_JWT);
-
-			return data;
-		} catch (err) {}
-	}
-
-	const error = new Error('Bad auth token');
-	error.statusCode = 401;
-
-	throw error;
-}
-
-export { createToken, verifyTokenUtils };
+export { createToken };

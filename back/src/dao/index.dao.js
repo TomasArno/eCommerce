@@ -1,25 +1,18 @@
 import dbConnection from "../utils/db.utils.js";
 
-const persistence = process.env.PERSISTENCE || "MONGO";
+import args from "../utils/arguments.utils.js";
+const { env } = args;
+
 
 let dao;
 
-switch (persistence) {
-  case "MEMORY":
-    const { default: ordersFS } = await import("./memory/orders.memory.js");
-    const { default: usersFS } = await import("./memory/users.memory.js");
-    const { default: productsFS } = await import("./memory/products.memory.js");
+switch (env) {
+  case "test":
+    const { default: ordersFS } = await import("./fs/orders.fs.js");
+    const { default: usersFS } = await import("./fs/users.fs.js");
+    const { default: productsFS } = await import("./fs/products.fs.js");
 
     dao = { users: usersFS, products: productsFS, orders: ordersFS };
-
-
-    break;
-  case "FS":
-    const { default: ordersMemory } = await import("./fs/orders.fs.js");
-    const { default: usersMemory } = await import("./fs/users.fs.js");
-    const { default: productsMemory } = await import("./fs/products.fs.js");
-
-    dao = { users: usersMemory, products: productsMemory, orders: ordersMemory };
 
     break;
   default:

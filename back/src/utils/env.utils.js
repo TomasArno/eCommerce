@@ -7,8 +7,10 @@ const setEnvironmentVariables = () => {
     let path
 
     if (env == "production") path = "./.env.prod"
-    else if (env == "dev") path = "./.env.dev"
-    else path = "./.env.test"
+    else if (env == "dev") path = "./.env.prod"
+    else {
+        path = "./.env.test"
+    }
 
     config({ path });
 }

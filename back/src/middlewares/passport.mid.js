@@ -29,6 +29,9 @@ passport.use(
 
         const user = await users.create(data);
 
+        const { role } = user
+        req.token = createToken({ email, role });
+
         done(null, user);
       } catch (error) {
         done(error);
@@ -61,30 +64,30 @@ passport.use(
   )
 );
 
-passport.use(
-  "jwt",
-  new JwtStrategy(
-    {
-      jwtFromRequest: ExtractJwt.fromExtractors([
-        (req) => req?.cookies["token"],
-      ]),
-      secretOrKey: SECRET_JWT,
-    },
-    async (payload, done) => {
-      try {
-        const userData = await users.readByEmail(payload.email);
+// passport.use(
+//   "jwt",
+//   new JwtStrategy(
+//     {
+//       jwtFromRequest: ExtractJwt.fromExtractors([
+//         (req) => req?.cookies["token"],
+//       ]),
+//       secretOrKey: SECRET_JWT,
+//     },
+//     async (payload, done) => {
+//       try {
+//         const userData = await users.readByEmail(payload.email);
 
-        if (!userData) return done(null, false);
+//         if (!userData) return done(null, false);
 
-        delete userData.password;
+//         delete userData.password;
 
-        done(null, userData);
-      } catch (error) {
-        done(error);
-      }
-    }
-  )
-);
+//         done(null, userData);
+//       } catch (error) {
+//         done(error);
+//       }
+//     }
+//   )
+// );
 
 // passport.use(
 //   "google",

@@ -1,28 +1,51 @@
-// import { useState } from 'react';
-import Index from './components/main/index.jsx';
+import { useEffect } from 'react';
+import { Outlet } from "react-router-dom";
+
+import axios from 'axios';
 
 import './App.css';
 
+function CheckLogin() {
+	useEffect(() => {
+		axios({
+			method: 'post',
+			url: 'http://localhost:8080/api/sessions/login',
+			data: {
+				email: "tomasio",
+				password: "tomasio",
+				name: "tomasio"
+			}
+		}, { withCredentials: true })
+			.then(() => {
+				document.cookie = "token=123";
+			}
+			)
+			.catch((err) => console.log(err));
+	}, []);
+}
+
 function App() {
+	CheckLogin()
+
 	return (
 		<>
 			<header className='header'>
 				<nav className='navbar'>
 					<div className='navbar_container'>
-						<a className='navbar_container-item'>HOME</a>
-						<a className='navbar_container-item' id='nav-register'>
+						<a href={`/`} className='navbar_container-item'>HOME</a>
+						<a href={`/register`} className='navbar_container-item' hidden={document.cookie.includes("123")} id='nav-register'>
 							REGISTER
 						</a>
-						<a className='navbar_container-item' id='nav-login'>
+						<a href={`/login`} className='navbar_container-item' hidden={document.cookie.includes("123")} id='nav-login'>
 							LOGIN
 						</a>
-						<a className='navbar_container-item' id='nav-form'>
+						<a href={`/form`} className='navbar_container-item' hidden={!document.cookie.includes("123")} id='nav-form'>
 							FORM
 						</a>
-						<a className='navbar_container-item' id='nav-orders'>
+						<a href={`/orders`} className='navbar_container-item' hidden={!document.cookie.includes("123")} id='nav-orders'>
 							ORDERS
 						</a>
-						<a className='navbar_container-item' id='nav-signout'>
+						<a href={`/signout`} className='navbar_container-item' hidden={!document.cookie.includes("123")} id='nav-signout'>
 							SIGNOUT
 						</a>
 					</div>
@@ -30,7 +53,7 @@ function App() {
 			</header>
 
 			<main className='main'>
-				<Index />
+				<Outlet />
 			</main>
 
 			<footer className='footer'>

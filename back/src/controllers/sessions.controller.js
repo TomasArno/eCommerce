@@ -3,28 +3,34 @@ class SessionsController {
     try {
       const { email, role } = req.user;
 
-      return res.json({
+      res.json({
         statusCode: 200,
         message: { email, role },
       });
     } catch (error) {
-      return next(error);
+      next(error);
     }
   }
 
   async register(req, res, next) {
     try {
-      return res.json({
+      res
+        .cookie("token", req.token, {
+          maxAge: 7 * 24 * 60 * 60 * 1000,
+          httpOnly: true,
+        })
+      res.json({
         statusCode: 201,
         message: "Registered!",
       });
     } catch (error) {
-      return next(error);
+      next(error);
     }
   }
 
   async login(req, res, next) {
     try {
+
       res
         .cookie("token", req.token, {
           maxAge: 7 * 24 * 60 * 60 * 1000,
@@ -55,7 +61,7 @@ class SessionsController {
 
       throw error;
     } catch (error) {
-      return next(error);
+      next(error);
     }
   }
 
@@ -71,18 +77,18 @@ class SessionsController {
           message: "Logged in with google",
         });
     } catch (error) {
-      return next(error);
+      next(error);
     }
   }
 
   async badauth(req, res, next) {
     try {
-      return res.json({
+      res.json({
         statusCode: 401,
         message: "Bad auth",
       });
     } catch (error) {
-      return next(error);
+      next(error);
     }
   }
 }

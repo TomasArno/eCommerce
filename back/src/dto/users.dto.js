@@ -1,9 +1,12 @@
 import crypto from "crypto";
 import { createHash } from "../utils/hash.utils.js";
 
+import args from "../utils/arguments.utils.js";
+const { env } = args;
+
 class UserDTO {
   constructor(data) {
-    if (process.env.PERSISTENTE !== "MONGO") {
+    if (env == "test") {
       this._id = crypto.randomBytes(12).toString("hex")
       this.createdAt = new Date();
       this.updatedAt = new Date();

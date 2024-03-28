@@ -1,7 +1,6 @@
 import CustomRouter from "../customRouter.js";
 
 import isAdmin from "../../middlewares/isAdmin.mid.js";
-import passportCb from "../../middlewares/passportCb.mid.js";
 import { checkProductId } from "../../middlewares/checkProductId.mid.js";
 
 import {
@@ -17,8 +16,7 @@ class Router extends CustomRouter {
     this.create(
       "/",
       ["PUBLIC"],
-      // passportCb('jwt'),
-      isAdmin,
+      // isAdmin,
       create
     );
 
@@ -27,14 +25,12 @@ class Router extends CustomRouter {
     this.read(
       "/:productId",
       ["PUBLIC"],
-      //  passportCb('jwt'),
       readOne
     );
 
     this.update(
       "/:productId",
       ["PUBLIC"],
-      // passportCb('jwt'),
       isAdmin,
       checkProductId,
       update
@@ -43,7 +39,6 @@ class Router extends CustomRouter {
     this.destroy(
       "/:productId",
       ["PUBLIC"],
-      // passportCb('jwt'),
       isAdmin,
       checkProductId,
       destroy

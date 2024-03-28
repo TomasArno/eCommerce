@@ -1,6 +1,5 @@
 import users from "../repositories/users.rep.js"
 
-
 class UsersService {
   constructor() {
     this.manager = users;

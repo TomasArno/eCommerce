@@ -8,7 +8,6 @@ import {
   update,
 } from "../../controllers/orders.controller.js";
 
-import passportCb from "../../middlewares/passportCb.mid.js";
 import { checkUserId } from "../../middlewares/checkUserId.mid.js";
 import { checkOrderId } from "../../middlewares/checkOrderId.mid.js";
 import { checkProductId } from "../../middlewares/checkProductId.mid.js";
@@ -18,19 +17,19 @@ class Router extends CustomRouter {
     this.create(
       "/",
       ["PUBLIC"],
-      passportCb("jwt"),
+
       checkUserId,
       checkProductId,
       create
     );
 
-    this.read("/", ["PUBLIC"], passportCb("jwt"), read);
+    this.read("/", ["PUBLIC"], read);
 
-    this.read("/:userId", ["PUBLIC"], passportCb("jwt"), checkUserId, readOne);
+    this.read("/:userId", ["PUBLIC"], checkUserId, readOne);
 
     this.read(
       "/total/:userId",
-      passportCb("jwt"),
+
       checkUserId,
       async (req, res, next) => {
         try {
@@ -51,7 +50,7 @@ class Router extends CustomRouter {
     this.update(
       "/:orderId",
       ["PUBLIC"],
-      passportCb("jwt"),
+
       checkOrderId,
       update
     );
@@ -59,7 +58,7 @@ class Router extends CustomRouter {
     this.destroy(
       "/:orderId",
       ["PUBLIC"],
-      passportCb("jwt"),
+
       checkOrderId,
       destroy
     );
