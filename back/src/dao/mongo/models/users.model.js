@@ -1,8 +1,8 @@
-import { model, Schema } from 'mongoose';
+import { model, Schema } from "mongoose";
 
-import moongosePaginate from 'mongoose-paginate-v2';
+import moongosePaginate from "mongoose-paginate-v2";
 
-const collection = 'users';
+const collection = "users";
 
 const userSchema = new Schema(
   {
@@ -11,6 +11,8 @@ const userSchema = new Schema(
     photo: { type: String },
     role: { type: Number, default: 0 },
     password: { type: String, required: true },
+    isVerified: { type: Boolean, default: false },
+    verifyCode: { type: String },
   },
   { timestamps: true }
 );

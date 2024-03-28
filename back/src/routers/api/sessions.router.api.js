@@ -9,6 +9,7 @@ import {
   signout,
   googleCb,
   badauth,
+  verifyCode,
 } from "../../controllers/sessions.controller.js";
 
 class Router extends CustomRouter {
@@ -16,6 +17,8 @@ class Router extends CustomRouter {
     const opt = { session: false, failureRedirect: "/api/sessions/badauth" };
 
     this.read("/", ["USER"], read);
+
+    this.create("/", ["PUBLIC"], verifyCode);
 
     this.create("/register", ["PUBLIC"], passportCb("register"), register);
 

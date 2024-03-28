@@ -1,3 +1,5 @@
+import users from "../services/users.service.js";
+
 class SessionsController {
   async read(req, res, next) {
     try {
@@ -12,13 +14,31 @@ class SessionsController {
     }
   }
 
+  async verifyCode(req, res, next) {
+    try {
+      const { email, verifyCode } = req.body;
+
+      const user = await users.readByEmail(email);
+
+      if (user.verifyCode !== verifyCode)
+        return res.json({
+          statusCode: 400,
+          message: "Invalid token",
+        });
+
+      await users.update(user._id, { verified: true });
+
+      res.json({
+        statusCode: 200,
+        message: "Verified user",
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
   async register(req, res, next) {
     try {
-      res
-        .cookie("token", req.token, {
-          maxAge: 7 * 24 * 60 * 60 * 1000,
-          httpOnly: true,
-        })
       res.json({
         statusCode: 201,
         message: "Registered!",
@@ -30,7 +50,6 @@ class SessionsController {
 
   async login(req, res, next) {
     try {
-
       res
         .cookie("token", req.token, {
           maxAge: 7 * 24 * 60 * 60 * 1000,
@@ -95,7 +114,7 @@ class SessionsController {
 
 const sessionsController = new SessionsController();
 
-const { register, read, login, googleCb, badauth, signout } =
+const { register, read, login, verifyCode, googleCb, badauth, signout } =
   sessionsController;
 
-export { register, read, login, googleCb, badauth, signout };
+export { register, read, login, verifyCode, googleCb, badauth, signout };

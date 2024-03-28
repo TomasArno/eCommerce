@@ -1,5 +1,5 @@
-import { Types } from 'mongoose';
-import { paginate } from 'mongoose-paginate-v2';
+import { Types } from "mongoose";
+import { paginate } from "mongoose-paginate-v2";
 
 class MongoManager {
   constructor(model) {
@@ -53,28 +53,28 @@ class MongoManager {
         },
         {
           $lookup: {
-            localField: 'productId',
-            foreignField: '_id',
-            from: 'products',
-            as: 'productId',
+            localField: "productId",
+            foreignField: "_id",
+            from: "products",
+            as: "productId",
           },
         },
         {
           $replaceRoot: {
             newRoot: {
-              $mergeObjects: [{ $arrayElemAt: ['$productId', 0] }, '$$ROOT'],
+              $mergeObjects: [{ $arrayElemAt: ["$productId", 0] }, "$$ROOT"],
             },
           },
         },
         {
-          $set: { subTotal: { $multiply: ['$quantity', '$price'] } },
+          $set: { subTotal: { $multiply: ["$quantity", "$price"] } },
         },
-        { $group: { _id: '$userId', total: { $sum: '$subTotal' } } },
+        { $group: { _id: "$userId", total: { $sum: "$subTotal" } } },
         {
           $project: {
             _id: 0,
-            userId: '$_id',
-            total: '$total',
+            userId: "$_id",
+            total: "$total",
           },
         },
       ]);
@@ -126,4 +126,4 @@ class MongoManager {
   }
 }
 
-export default MongoManager
+export default MongoManager;

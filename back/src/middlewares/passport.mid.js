@@ -3,10 +3,11 @@ import { Strategy as LocalStrategy } from "passport-local";
 import { ExtractJwt, Strategy as JwtStrategy } from "passport-jwt";
 import { Strategy as GoogleStrategy } from "passport-google-oauth2";
 
-import users from "../services/users.service.js";
+import users from "../repositories/users.rep.js";
 
 import { createHash, verifyHash } from "../utils/hash.utils.js";
 import { createToken } from "../utils/jtw.utils.js";
+import sendEmailCode from "../utils/sendEmail.utils.js";
 
 const { GOOGLE_ID, GOOGLE_SECRET, SECRET_JWT } = process.env;
 
@@ -14,7 +15,7 @@ passport.use(
   "register",
   new LocalStrategy(
     { passReqToCallback: true, usernameField: "email" },
-    async (req, email, password, done) => {
+    async (req, email, done) => {
       try {
         const searchedUser = await users.readByEmail(email);
 
@@ -24,13 +25,10 @@ passport.use(
             statusCode: 400,
           });
 
-        const data = req.body;
-        data.password = createHash(password);
+        const user = await users.create(req.body);
+        console.log("user de register", user);
 
-        const user = await users.create(data);
-
-        const { role } = user
-        req.token = createToken({ email, role });
+        sendEmailCode(user.email, user.verifyCode);
 
         done(null, user);
       } catch (error) {
@@ -49,7 +47,8 @@ passport.use(
         const searchedUser = await users.readByEmail(email);
 
         if (
-          !searchedUser ||
+          !searchedUser._id ||
+          !searchedUser.isVerified ||
           !verifyHash(createHash(password), searchedUser.password)
         )
           return done(null, false, { message: "bad auth" });
