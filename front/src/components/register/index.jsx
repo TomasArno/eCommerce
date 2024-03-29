@@ -1,10 +1,15 @@
 import axios from 'axios';
 import buildReqData from "../../utils/buildRequestData.js";
 
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom'
+
 import "./index.css"
 
 
-function Form() {
+function Register() {
+	const [registered, setRegister] = useState(false);
+	const navigate = useNavigate()
 
 	const handleSubmit = (e) => {
 		e.preventDefault()
@@ -16,8 +21,29 @@ function Form() {
 			data,
 			method: "post"
 		}, { withCredentials: true })
-			.then(() => {
-				// if (res.data.statusCode == 201) 
+			.then((res) => {
+				if (res.data.statusCode == 201) setRegister(true)
+				else alert(res.data.message)
+			})
+			.catch((err) => console.log(err));
+
+
+		e.target.reset()
+	}
+
+	const handleVerification = (e) => {
+		e.preventDefault()
+
+		let data = buildReqData()
+
+		axios({
+			url: 'http://localhost:8080/api/sessions/',
+			data,
+			method: "post"
+		}, { withCredentials: true })
+			.then((res) => {
+				if (res.data.statusCode == 200) navigate('/login')
+				else alert(res.data.message);
 			})
 			.catch((err) => console.log(err));
 
@@ -29,7 +55,7 @@ function Form() {
 		<>
 			<h2 className='main_title'>REGISTRARSE</h2>
 
-			<form id='registerForm' className='form' onSubmit={handleSubmit}>
+			{!registered ? <form id='registerForm' className='form' onSubmit={handleSubmit}>
 				<div className='field_container'>
 					<label htmlFor='email' className='label'>Email</label>
 					<input type='email' className='input' id='email' />
@@ -49,9 +75,21 @@ function Form() {
 				<button id='register' type='submit' className='btn'>REGISTRARSE</button>
 				<button id='registerGoogle' type='submit' className='btn'>REGISTRARSE CON
 					GOOGLE</button>
-			</form>
+			</form> :
+				<form id='registerForm' className='form' onSubmit={handleVerification}>
+					<div className='field_container'>
+						<label htmlFor='email' className='label'>Email</label>
+						<input type='email' className='input' id='email' />
+					</div>
+					<div className='field_container'>
+						<label htmlFor='verifyCode' className='label'>CODIGO VERIFICACIÓN</label>
+						<input type='text' className='input' id='verifyCode' />
+					</div>
+
+					<button id='register' type='submit' className='btn'>ENVÍAR</button>
+				</form>}
 		</>
 	);
 }
 
-export default Form;
+export default Register;

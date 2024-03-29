@@ -9,7 +9,6 @@ function Index() {
 	useEffect(() => {
 		axios('http://localhost:8080/api/products')
 			.then((res) => {
-				console.log(res.data);
 				if (res.data.response)
 					setProducts(res.data.response.docs);
 			})

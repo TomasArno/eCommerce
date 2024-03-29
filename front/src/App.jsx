@@ -33,19 +33,19 @@ function App() {
 				<nav className='navbar'>
 					<div className='navbar_container'>
 						<a href={`/`} className='navbar_container-item'>HOME</a>
-						<a href={`/register`} className='navbar_container-item' hidden={document.cookie.includes("123")} id='nav-register'>
+						<a href={`/register`} className='navbar_container-item' hidden={!document.cookie.includes("123")} id='nav-register'>
 							REGISTER
 						</a>
-						<a href={`/login`} className='navbar_container-item' hidden={document.cookie.includes("123")} id='nav-login'>
+						<a href={`/login`} className='navbar_container-item' hidden={!document.cookie.includes("123")} id='nav-login'>
 							LOGIN
 						</a>
-						<a href={`/form`} className='navbar_container-item' hidden={!document.cookie.includes("123")} id='nav-form'>
+						<a href={`/form`} className='navbar_container-item' hidden={document.cookie.includes("123")} id='nav-form'>
 							FORM
 						</a>
-						<a href={`/orders`} className='navbar_container-item' hidden={!document.cookie.includes("123")} id='nav-orders'>
+						<a href={`/orders`} className='navbar_container-item' hidden={document.cookie.includes("123")} id='nav-orders'>
 							ORDERS
 						</a>
-						<a href={`/signout`} className='navbar_container-item' hidden={!document.cookie.includes("123")} id='nav-signout'>
+						<a href={`/signout`} className='navbar_container-item' hidden={document.cookie.includes("123")} id='nav-signout'>
 							SIGNOUT
 						</a>
 					</div>

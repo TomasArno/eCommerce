@@ -1,10 +1,15 @@
 import axios from 'axios';
 import buildReqData from "../../utils/buildRequestData.js";
 
+import { useNavigate } from 'react-router-dom'
+
 import "./index.css"
 
-function Form() {
+function Login() {
+	const navigate = useNavigate()
+
 	const handleSubmit = (e) => {
+
 		e.preventDefault()
 
 		let data = buildReqData()
@@ -15,8 +20,9 @@ function Form() {
 			data,
 			method: "post"
 		}, { withCredentials: true })
-			.then(() => {
-				// if (res.data.statusCode == 201) 
+			.then((res) => {
+				if (res.data.statusCode == 200) navigate('/')
+				else alert(res.data.message)
 			})
 			.catch((err) => console.log(err));
 
@@ -44,4 +50,4 @@ function Form() {
 	);
 }
 
-export default Form;
+export default Login;
