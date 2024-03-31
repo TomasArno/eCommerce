@@ -1,66 +1,67 @@
-import passport from "passport";
-import { Strategy as LocalStrategy } from "passport-local";
-import { ExtractJwt, Strategy as JwtStrategy } from "passport-jwt";
-import { Strategy as GoogleStrategy } from "passport-google-oauth2";
+import passport from 'passport';
+import { Strategy as LocalStrategy } from 'passport-local';
+import { ExtractJwt, Strategy as JwtStrategy } from 'passport-jwt';
+import { Strategy as GoogleStrategy } from 'passport-google-oauth2';
 
-import users from "../repositories/users.rep.js";
+import users from '../repositories/users.rep.js';
 
-import { createHash, verifyHash } from "../utils/hash.utils.js";
-import { createToken } from "../utils/jtw.utils.js";
-import sendEmailCode from "../utils/sendEmail.utils.js";
+import { createHash, verifyHash } from '../utils/hash.utils.js';
+import { createToken } from '../utils/jtw.utils.js';
+import sendEmailCode from '../utils/sendEmail.utils.js';
 
 const { GOOGLE_ID, GOOGLE_SECRET, SECRET_JWT } = process.env;
 
 passport.use(
-  "register",
-  new LocalStrategy(
-    { passReqToCallback: true, usernameField: "email" },
-    async (req, email, done) => {
-      try {
-        const searchedUser = await users.readByEmail(email);
+	'register',
+	new LocalStrategy(
+		{ passReqToCallback: true, usernameField: 'email' },
+		async (req, email, password, done) => {
+			try {
+				// const searchedUser = await users.readByEmail(email);
 
-        if (searchedUser)
-          return done(null, false, {
-            message: "User already registered",
-            statusCode: 400,
-          });
+				// if (searchedUser?._id)
+				// 	return done(null, false, {
+				// 		message: 'User already registered',
+				// 		statusCode: 400,
+				// 	});
 
-        const user = await users.create(req.body);
-        console.log("user de register", user);
+				// const user = await users.create(req.body);
 
-        sendEmailCode(user.email, user.verifyCode);
+				// sendEmailCode(user.email, user.verifyCode);
 
-        done(null, user);
-      } catch (error) {
-        done(error);
-      }
-    }
-  )
+				let user = {};
+
+				done(null, user);
+			} catch (error) {
+				done(error);
+			}
+		}
+	)
 );
 
 passport.use(
-  "login",
-  new LocalStrategy(
-    { passReqToCallback: true, usernameField: "email" },
-    async (req, email, password, done) => {
-      try {
-        const searchedUser = await users.readByEmail(email);
+	'login',
+	new LocalStrategy(
+		{ passReqToCallback: true, usernameField: 'email' },
+		async (req, email, password, done) => {
+			try {
+				const searchedUser = await users.readByEmail(email);
 
-        if (
-          !searchedUser._id ||
-          !searchedUser.isVerified ||
-          !verifyHash(createHash(password), searchedUser.password)
-        )
-          return done(null, false, { message: "bad auth" });
+				if (
+					!searchedUser?._id ||
+					!searchedUser.isVerified ||
+					!verifyHash(createHash(password), searchedUser.password)
+				)
+					return done(null, false, { message: 'bad auth' });
 
-        req.token = createToken({ email, role: searchedUser.role });
+				req.token = createToken({ email, role: searchedUser.role });
 
-        done(null, searchedUser);
-      } catch (error) {
-        done(error);
-      }
-    }
-  )
+				done(null, searchedUser);
+			} catch (error) {
+				done(error);
+			}
+		}
+	)
 );
 
 // passport.use(

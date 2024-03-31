@@ -1,51 +1,79 @@
-import { useEffect } from 'react';
-import { Outlet } from "react-router-dom";
+import { useEffect, useState } from 'react';
+import { useNavigate, Outlet } from 'react-router-dom';
 
 import axios from 'axios';
 
 import './App.css';
 
-function CheckLogin() {
+function CheckAuth() {
+	axios.defaults.withCredentials = true;
+
+	const [isRegistered, setIsRegistered] = useState(false);
+	const navigate = useNavigate();
+
 	useEffect(() => {
-		axios({
-			method: 'post',
-			url: 'http://localhost:8080/api/sessions/login',
-			data: {
-				email: "tomasio",
-				password: "tomasio",
-				name: "tomasio"
-			}
-		}, { withCredentials: true })
-			.then(() => {
-				document.cookie = "token=123";
-			}
-			)
-			.catch((err) => console.log(err));
+		axios('http://localhost:8080/api/sessions')
+			.then((res) => {
+				if (res.data.statusCode == 200) {
+					setIsRegistered(true);
+					navigate('/');
+				}
+			})
+			.catch((err) => alert(err));
 	}, []);
+
+	return isRegistered;
 }
 
 function App() {
-	CheckLogin()
+	const isRegistered = CheckAuth();
 
 	return (
 		<>
 			<header className='header'>
 				<nav className='navbar'>
 					<div className='navbar_container'>
-						<a href={`/`} className='navbar_container-item'>HOME</a>
-						<a href={`/register`} className='navbar_container-item' hidden={!document.cookie.includes("123")} id='nav-register'>
+						<a href={`/`} className='navbar_container-item'>
+							HOME
+						</a>
+						<a
+							href={`/register`}
+							className='navbar_container-item'
+							hidden={isRegistered}
+							id='nav-register'
+						>
 							REGISTER
 						</a>
-						<a href={`/login`} className='navbar_container-item' hidden={!document.cookie.includes("123")} id='nav-login'>
+						<a
+							href={`/login`}
+							className='navbar_container-item'
+							hidden={isRegistered}
+							id='nav-login'
+						>
 							LOGIN
 						</a>
-						<a href={`/form`} className='navbar_container-item' hidden={document.cookie.includes("123")} id='nav-form'>
+						<a
+							href={`/form`}
+							className='navbar_container-item'
+							hidden={!isRegistered}
+							id='nav-form'
+						>
 							FORM
 						</a>
-						<a href={`/orders`} className='navbar_container-item' hidden={document.cookie.includes("123")} id='nav-orders'>
+						<a
+							href={`/orders`}
+							className='navbar_container-item'
+							hidden={!isRegistered}
+							id='nav-orders'
+						>
 							ORDERS
 						</a>
-						<a href={`/signout`} className='navbar_container-item' hidden={document.cookie.includes("123")} id='nav-signout'>
+						<a
+							href={`/signout`}
+							className='navbar_container-item'
+							hidden={!isRegistered}
+							id='nav-signout'
+						>
 							SIGNOUT
 						</a>
 					</div>

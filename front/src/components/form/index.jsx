@@ -1,27 +1,27 @@
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import buildReqData from "../../utils/buildRequestData.js";
 
-import "./index.css"
+import buildReqData from '../../utils/buildRequestData.js';
+
+import './index.css';
 
 function Form() {
+	const navigate = useNavigate();
+
 	const handleSubmit = (e) => {
-		e.preventDefault()
+		e.preventDefault();
 
-		let data = buildReqData()
+		let data = buildReqData();
 
-		axios({
-			url: 'http://localhost:8080/api/products',
-			data,
-			method: "post"
-		}, { withCredentials: true })
-			.then(() => {
-				// if (res.data.statusCode == 201) 
+		axios
+			.post('http://localhost:8080/api/products', data)
+			.then((res) => {
+				if (res.data.statusCode == 201) navigate('/');
 			})
 			.catch((err) => console.log(err));
 
-
-		e.target.reset()
-	}
+		e.target.reset();
+	};
 
 	return (
 		<>
