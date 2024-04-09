@@ -17,19 +17,17 @@ passport.use(
 		{ passReqToCallback: true, usernameField: 'email' },
 		async (req, email, password, done) => {
 			try {
-				// const searchedUser = await users.readByEmail(email);
+				const searchedUser = await users.readByEmail(email);
 
-				// if (searchedUser?._id)
-				// 	return done(null, false, {
-				// 		message: 'User already registered',
-				// 		statusCode: 400,
-				// 	});
+				if (searchedUser?._id)
+					return done(null, false, {
+						message: 'User already registered',
+						statusCode: 400,
+					});
 
-				// const user = await users.create(req.body);
+				const user = await users.create(req.body);
 
-				// sendEmailCode(user.email, user.verifyCode);
-
-				let user = {};
+				sendEmailCode(user.email, user.verifyCode);
 
 				done(null, user);
 			} catch (error) {
