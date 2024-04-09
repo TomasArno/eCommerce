@@ -1,8 +1,32 @@
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+
+import buildReqData from '../../utils/buildRequestData.js';
+
+import './index.css';
+
 function Form() {
+	const navigate = useNavigate();
+
+	const handleSubmit = (e) => {
+		e.preventDefault();
+
+		let data = buildReqData();
+
+		axios
+			.post('http://localhost:8080/api/products', data)
+			.then((res) => {
+				if (res.data.statusCode == 201) navigate('/');
+			})
+			.catch((err) => console.log(err));
+
+		e.target.reset();
+	};
+
 	return (
 		<>
 			<h2 className='main_title'>CREATE A PRODUCT!</h2>
-			<form id='productsForm' className='form'>
+			<form id='productsForm' className='form' onSubmit={handleSubmit}>
 				<div className='field_container'>
 					<label htmlFor='title' className='label'>
 						Title
@@ -27,7 +51,7 @@ function Form() {
 					</label>
 					<input type='number' className='input' id='stock' />
 				</div>
-				<button id='newProduct' type='button' className='btn'>
+				<button id='newProduct' type='submit' className='btn'>
 					CREATE!
 				</button>
 			</form>

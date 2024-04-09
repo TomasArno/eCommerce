@@ -8,25 +8,24 @@ import {
   destroy,
 } from "../../controllers/users.controller.js";
 
-import passportCb from "../../middlewares/passportCb.mid.js";
 import isAdmin from "../../middlewares/isAdmin.mid.js";
 import { checkUserId } from "../../middlewares/checkUserId.mid.js";
 
 class Router extends CustomRouter {
   init() {
-    this.create("/", ["PUBLIC"], passportCb("jwt"), isAdmin, create);
+    this.create("/", ["PUBLIC"], isAdmin, create);
 
     this.read(
       "/",
       ["PUBLIC"],
-      //  passportCb("jwt"), isAdmin,
+      //   isAdmin,
       read
     );
 
     this.read(
       "/:userId",
       ["PUBLIC"],
-      passportCb("jwt"),
+
       isAdmin,
       checkUserId,
       readOne
@@ -35,7 +34,7 @@ class Router extends CustomRouter {
     this.update(
       "/:userId",
       ["PUBLIC"],
-      passportCb("jwt"),
+
       isAdmin,
       checkUserId,
       update
@@ -44,7 +43,7 @@ class Router extends CustomRouter {
     this.destroy(
       "/:userId",
       ["PUBLIC"],
-      passportCb("jwt"),
+
       isAdmin,
       checkUserId,
       destroy
