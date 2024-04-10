@@ -13,39 +13,31 @@ import { checkUserId } from "../../middlewares/checkUserId.mid.js";
 
 class Router extends CustomRouter {
   init() {
-    this.create("/", ["PUBLIC"], isAdmin, create);
+    this.create("/", ["PUBLIC"], create);
 
     this.read(
       "/",
       ["PUBLIC"],
-      //   isAdmin,
       read
     );
 
     this.read(
       "/:userId",
       ["PUBLIC"],
-
-      isAdmin,
-      checkUserId,
       readOne
     );
 
     this.update(
       "/:userId",
       ["PUBLIC"],
-
       isAdmin,
-      checkUserId,
       update
     );
 
     this.destroy(
       "/:userId",
       ["PUBLIC"],
-
       isAdmin,
-      checkUserId,
       destroy
     );
   }

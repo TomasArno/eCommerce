@@ -1,8 +1,38 @@
 import ordersService from "../services/orders.service.js";
+import CustomError from "../utils/errors/customError.utils.js"
+import errors from "../utils/errors/errorsLibrary.utils.js"
 
 class OrdersController {
   constructor() {
     this.service = ordersService;
+  }
+
+  async create(req, res, next) {
+    try {
+      const data = await ordersService.create(req.body);
+
+      res.json({
+        statusCode: 201,
+        response: data,
+      });
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  async report(req, res, next) {
+    try {
+      const { userId } = req.params;
+
+      const user = await orders.report(userId);
+
+      res.json({
+        statusCode: 200,
+        response: user,
+      });
+    } catch (e) {
+      next(e);
+    }
   }
 
   async read(req, res, next) {
@@ -19,7 +49,8 @@ class OrdersController {
       if (!page) sortAndPaginate.page = 1;
       if (!limit) sortAndPaginate.limit = 20;
 
-      const orders = await orders.read({ filter, sortAndPaginate });
+      const orders = await ordersService.read({ filter, sortAndPaginate });
+      if (!orders.docs.length) CustomError.new(errors.notFound)
 
       res.json({
         statusCode: 200,
@@ -30,41 +61,30 @@ class OrdersController {
     }
   }
 
-  async create(req, res, next) {
+  async readOne(req, res, next) {
     try {
-      const data = await orders.create(req.body);
+      const { userId } = req.params;
+
+      const userOrders = await ordersService.read({ filter: { userId } });
+      if (!userOrders.docs.length) CustomError.new(errors.notFound)
+
 
       res.json({
-        statusCode: 201,
-        response: data,
+        statusCode: 200,
+        response: userOrders,
       });
     } catch (e) {
       next(e);
     }
   }
 
-  async readOne(req, res, next) {
-    async (req, res, next) => {
-      try {
-        const { userId } = req.params;
-
-        const userOrders = await orders.read({ filter: { userId } });
-
-        res.json({
-          statusCode: 200,
-          response: userOrders,
-        });
-      } catch (e) {
-        next(e);
-      }
-    };
-  }
-
   async update(req, res, next) {
     try {
       const { orderId } = req.params;
 
-      const modifiedOrder = await Products.update(orderId, req.body);
+      const modifiedOrder = await ordersService.update(orderId, req.body);
+      if (!modifiedOrder) CustomError.new(errors.notFound)
+
 
       res.json({
         statusCode: 200,
@@ -79,7 +99,9 @@ class OrdersController {
     try {
       const { orderId } = req.params;
 
-      const deletedOrder = await orders.destroy(orderId);
+      const deletedOrder = await ordersService.destroy(orderId);
+      if (!deletedOrder) CustomError.new(errors.notFound)
+
 
       res.json({
         statusCode: 200,
@@ -93,6 +115,6 @@ class OrdersController {
 
 const ordersController = new OrdersController();
 
-const { create, read, readOne, update, destroy } = ordersController;
+const { create, read, report, readOne, update, destroy } = ordersController;
 
-export { create, read, readOne, update, destroy };
+export { create, read, report, readOne, update, destroy };

@@ -20,17 +20,15 @@ class Router extends CustomRouter {
 			create
 		);
 
-		this.read('/', ['USER'], read);
+		this.read('/', ['PUBLIC'], read);
 
 		this.read('/:productId', ['PUBLIC'], readOne);
 
-		this.update('/:productId', ['PUBLIC'], isAdmin, checkProductId, update);
+		this.update('/:productId', ['PUBLIC'], update);
 
 		this.destroy(
 			'/:productId',
 			['PUBLIC'],
-			isAdmin,
-			checkProductId,
 			destroy
 		);
 	}

@@ -1,7 +1,9 @@
 function errorHandler(error, req, res, next) {
-	return res.json({
+	res.json({
 		statusCode: error.statusCode || 500,
-		message: `${req.method} ${req.url} ${error.message}`,
+		url: req.url,
+		message: error.message,
+		method: req.method,
 	});
 }
 

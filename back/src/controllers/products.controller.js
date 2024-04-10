@@ -1,8 +1,23 @@
 import productsService from "../services/products.service.js";
+import CustomError from "../utils/errors/customError.utils.js"
+import errors from "../utils/errors/errorsLibrary.utils.js"
 
 class ProductsController {
   constructor() {
     this.service = productsService;
+  }
+
+  async create(req, res, next) {
+    try {
+      const data = await productsService.create(req.body);
+
+      res.json({
+        statusCode: 201,
+        response: data,
+      });
+    } catch (e) {
+      next(e);
+    }
   }
 
   async read(req, res, next) {
@@ -21,6 +36,7 @@ class ProductsController {
       if (!limit) sortAndPaginate.limit = 20;
 
       const products = await productsService.read({ filter, sortAndPaginate });
+      if (!products.docs.length) CustomError.new(errors.notFound)
 
       res.json({
         statusCode: 200,
@@ -31,30 +47,20 @@ class ProductsController {
     }
   }
 
-  async create(req, res, next) {
+  async readOne(req, res, next) {
     try {
-      const data = await productsService.create(req.body);
+      const { productId } = req.params;
+
+      const product = await productsService.readOne(productId);
+      if (!product) CustomError.new(errors.notFound)
 
       res.json({
-        statusCode: 201,
-        response: data,
+        statusCode: 200,
+        response: product,
       });
     } catch (e) {
       next(e);
     }
-  }
-
-  async readOne(req, res, next) {
-    async (req, res, next) => {
-      try {
-        res.json({
-          statusCode: 200,
-          response: req._product,
-        });
-      } catch (e) {
-        next(e);
-      }
-    };
   }
 
   async update(req, res, next) {
@@ -62,6 +68,7 @@ class ProductsController {
       const { productId } = req.params;
 
       const modifiedProduct = await productsService.update(productId, req.body);
+      if (!modifiedProduct) CustomError.new(errors.notFound)
 
       res.json({
         statusCode: 200,
@@ -77,6 +84,8 @@ class ProductsController {
       const { productId } = req.params;
 
       const deletedProduct = await productsService.destroy(productId);
+      if (!deletedProduct) CustomError.new(errors.notFound)
+
 
       res.json({
         statusCode: 200,

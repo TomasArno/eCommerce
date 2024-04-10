@@ -1,8 +1,23 @@
 import usersService from "../services/users.service.js";
+import CustomError from "../utils/errors/customError.utils.js"
+import errors from "../utils/errors/errorsLibrary.utils.js"
 
 class UsersController {
   constructor() {
     this.service = usersService;
+  }
+
+  async create(req, res, next) {
+    try {
+      const newUser = await usersService.create(req.body);
+
+      res.json({
+        statusCode: 201,
+        response: newUser,
+      });
+    } catch (e) {
+      next(e);
+    }
   }
 
   async read(req, res, next) {
@@ -20,6 +35,8 @@ class UsersController {
       if (!limit) sortAndPaginate.limit = 20;
 
       const users = await usersService.read({ filter, sortAndPaginate });
+      if (!users.docs.length) CustomError.new(errors.notFound)
+
 
       res.json({
         statusCode: 200,
@@ -30,30 +47,21 @@ class UsersController {
     }
   }
 
-  async create(req, res, next) {
+
+  async readOne(req, res, next) {
     try {
-      const newUser = await usersService.create(req.body);
+      const { userId } = req.params;
+
+      const user = await usersService.readOne(userId);
+      if (!user) CustomError.new(errors.notFound)
 
       res.json({
-        statusCode: 201,
-        response: newUser,
+        statusCode: 200,
+        response: user,
       });
     } catch (e) {
       next(e);
     }
-  }
-
-  async readOne(req, res, next) {
-    async (req, res, next) => {
-      try {
-        res.json({
-          statusCode: 200,
-          response: req.user,
-        });
-      } catch (e) {
-        next(e);
-      }
-    };
   }
 
   async update(req, res, next) {
@@ -61,6 +69,7 @@ class UsersController {
       const { userId } = req.params;
 
       const modifiedUser = await usersService.update(userId, req.body);
+      if (!modifiedUser) CustomError.new(errors.notFound)
 
       res.json({
         statusCode: 200,
@@ -76,6 +85,8 @@ class UsersController {
       const { userId } = req.params;
 
       const deletedUser = await usersService.destroy(userId);
+      if (!deletedUser) CustomError.new(errors.notFound)
+
 
       res.json({
         statusCode: 200,
