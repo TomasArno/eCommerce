@@ -29,12 +29,12 @@ class UsersController {
       if (name) filter.name = name;
       if (email) filter.email = email;
 
-      const sortAndPaginate = { page, limit };
+      const options = { page, limit };
 
-      if (!page) sortAndPaginate.page = 1;
-      if (!limit) sortAndPaginate.limit = 20;
+      if (!page) options.page = 1;
+      if (!limit) options.limit = 20;
 
-      const users = await usersService.read({ filter, sortAndPaginate });
+      const users = await usersService.read({ filter, options });
       if (!users.docs.length) CustomError.new(errors.notFound)
 
 

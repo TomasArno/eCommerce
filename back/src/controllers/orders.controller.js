@@ -44,12 +44,12 @@ class OrdersController {
       if (state) filter.state = state;
       if (quantity) filter.quantity = quantity;
 
-      const sortAndPaginate = { page, limit };
+      const options = { page, limit };
 
-      if (!page) sortAndPaginate.page = 1;
-      if (!limit) sortAndPaginate.limit = 20;
+      if (!page) options.page = 1;
+      if (!limit) options.limit = 20;
 
-      const orders = await ordersService.read({ filter, sortAndPaginate });
+      const orders = await ordersService.read({ filter, options });
       if (!orders.docs.length) CustomError.new(errors.notFound)
 
       res.json({

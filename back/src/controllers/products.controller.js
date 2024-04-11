@@ -30,12 +30,12 @@ class ProductsController {
       if (price) filter.price = price;
       if (stock) filter.stock = stock;
 
-      const sortAndPaginate = { page, limit };
+      const options = { page, limit };
 
-      if (!page) sortAndPaginate.page = 1;
-      if (!limit) sortAndPaginate.limit = 20;
+      if (!page) options.page = 1;
+      if (!limit) options.limit = 20;
 
-      const products = await productsService.read({ filter, sortAndPaginate });
+      const products = await productsService.read({ filter, options });
       if (!products.docs.length) CustomError.new(errors.notFound)
 
       res.json({

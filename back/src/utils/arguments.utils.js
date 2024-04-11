@@ -2,7 +2,7 @@ import { Command } from "commander";
 
 const args = new Command();
 
-args.option("--env <env>", "environment", "production");
+args.option("--env <env>", "environment", "development");
 
 args.parse();
 
