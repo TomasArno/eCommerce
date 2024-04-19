@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "nodemon ./src/index.js --env test",
-    "dev": "nodemon ./src/index.js --env dev",
+    "dev": "nodemon ./src/index.js --env development",
     "mocks": "node ./src/dao/mocks/products.mock.js",
     "start": "node"
   },
@@ -28,7 +28,8 @@
     "passport": "^0.7.0",
     "passport-google-oauth2": "^0.2.0",
     "passport-jwt": "^4.0.1",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "winston": "^3.13.0"
   },
   "devDependencies": {
     "@faker-js/faker": "^8.4.1",

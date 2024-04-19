@@ -1,5 +1,8 @@
 import users from '../services/users.service.js';
 
+import CustomError from "../utils/errors/customError.utils.js"
+import errors from "../utils/errors/errorsLibrary.utils.js"
+
 class SessionsController {
 	async read(req, res, next) {
 		try {
@@ -20,11 +23,7 @@ class SessionsController {
 
 			const user = await users.readByEmail(email);
 
-			if (user.verifyCode !== verifyCode)
-				return res.json({
-					statusCode: 400,
-					message: 'Invalid token',
-				});
+			if (user.verifyCode !== verifyCode) CustomError.new(errors.token)
 
 			await users.update(user._id, { verified: true });
 
@@ -64,19 +63,14 @@ class SessionsController {
 
 	async signout(req, res, next) {
 		try {
-			if (req.cookies.token) {
-				res.clearCookie('token');
+			if (!req.cookies.token) CustomError.new(errors.noToken)
 
-				return res.json({
-					statusCode: 200,
-					message: 'Signed out!',
-				});
-			}
+			res.clearCookie('token');
+			res.json({
+				statusCode: 200,
+				message: 'Signed out!',
+			});
 
-			const error = new Error('No Auth');
-			error.statusCode = 400;
-
-			throw error;
 		} catch (error) {
 			next(error);
 		}
