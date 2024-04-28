@@ -3,8 +3,8 @@ import dbConnection from "../utils/db.utils.js";
 import args from "../utils/arguments.utils.js";
 const { env } = args;
 
-
 let dao;
+console.log("ENVIRONMENT: " + env);
 
 switch (env) {
   case "test":

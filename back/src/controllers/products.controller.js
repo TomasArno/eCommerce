@@ -1,34 +1,10 @@
 import productsService from "../services/products.service.js";
+import CustomError from "../utils/errors/customError.utils.js"
+import errors from "../utils/errors/errorsLibrary.utils.js"
 
 class ProductsController {
   constructor() {
     this.service = productsService;
-  }
-
-  async read(req, res, next) {
-    try {
-      const { title, price, stock, page, limit } = req.query;
-
-      const filter = {};
-
-      if (title) filter.title = title;
-      if (price) filter.price = price;
-      if (stock) filter.stock = stock;
-
-      const sortAndPaginate = { page, limit };
-
-      if (!page) sortAndPaginate.page = 1;
-      if (!limit) sortAndPaginate.limit = 20;
-
-      const products = await productsService.read({ filter, sortAndPaginate });
-
-      res.json({
-        statusCode: 200,
-        response: products,
-      });
-    } catch (e) {
-      next(e);
-    }
   }
 
   async create(req, res, next) {
@@ -44,17 +20,47 @@ class ProductsController {
     }
   }
 
+  async read(req, res, next) {
+    try {
+      const { title, price, stock, page, limit } = req.query;
+
+      const filter = {};
+
+      if (title) filter.title = title;
+      if (price) filter.price = price;
+      if (stock) filter.stock = stock;
+
+      const options = { page, limit };
+
+      if (!page) options.page = 1;
+      if (!limit) options.limit = 20;
+
+      const products = await productsService.read({ filter, options });
+      if (!products.docs.length) CustomError.new(errors.notFound)
+
+      res.json({
+        statusCode: 200,
+        response: products,
+      });
+    } catch (e) {
+      next(e);
+    }
+  }
+
   async readOne(req, res, next) {
-    async (req, res, next) => {
-      try {
-        res.json({
-          statusCode: 200,
-          response: req._product,
-        });
-      } catch (e) {
-        next(e);
-      }
-    };
+    try {
+      const { productId } = req.params;
+
+      const product = await productsService.readOne(productId);
+      if (!product) CustomError.new(errors.notFound)
+
+      res.json({
+        statusCode: 200,
+        response: product,
+      });
+    } catch (e) {
+      next(e);
+    }
   }
 
   async update(req, res, next) {
@@ -62,6 +68,7 @@ class ProductsController {
       const { productId } = req.params;
 
       const modifiedProduct = await productsService.update(productId, req.body);
+      if (!modifiedProduct) CustomError.new(errors.notFound)
 
       res.json({
         statusCode: 200,
@@ -77,6 +84,8 @@ class ProductsController {
       const { productId } = req.params;
 
       const deletedProduct = await productsService.destroy(productId);
+      if (!deletedProduct) CustomError.new(errors.notFound)
+
 
       res.json({
         statusCode: 200,

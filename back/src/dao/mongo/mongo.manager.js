@@ -30,15 +30,7 @@ class MongoManager {
 
   async readOne(id) {
     try {
-      const one = await this.model.findById(id);
-
-      if (!one) {
-        const error = new Error("There aren't documents");
-        error.statusCode = 404;
-
-        throw error;
-      }
-
+      const one = await this.model.findById(id).lean();
       return one;
     } catch (error) {
       throw error;

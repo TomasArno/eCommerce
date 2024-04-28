@@ -16,7 +16,6 @@ class ProductsService {
 
   async read({ filter, options }) {
     try {
-      console.log(this.manager);
       const response = await this.manager.read({ filter, options });
       return response;
     } catch (error) {
