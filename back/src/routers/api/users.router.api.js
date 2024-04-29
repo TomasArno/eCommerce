@@ -5,41 +5,23 @@ import {
   read,
   readOne,
   update,
+  updateRole,
   destroy,
 } from "../../controllers/users.controller.js";
 
-import isAdmin from "../../middlewares/isAdmin.mid.js";
-import { checkUserId } from "../../middlewares/checkUserId.mid.js";
-
 class Router extends CustomRouter {
   init() {
-    this.create("/", ["PUBLIC"], create);
+    this.create("/", ["ADMIN"], create);
 
-    this.read(
-      "/",
-      ["PUBLIC"],
-      read
-    );
+    this.read("/", ["ADMIN"], read);
 
-    this.read(
-      "/:userId",
-      ["PUBLIC"],
-      readOne
-    );
+    this.update("/premium/:userId", ["ADMIN"], updateRole);
 
-    this.update(
-      "/:userId",
-      ["PUBLIC"],
-      isAdmin,
-      update
-    );
+    this.read("/:userId", ["ADMIN"], readOne);
 
-    this.destroy(
-      "/:userId",
-      ["PUBLIC"],
-      isAdmin,
-      destroy
-    );
+    this.update("/:userId", ["ADMIN"], update);
+
+    this.destroy("/:userId", ["ADMIN"], destroy);
   }
 }
 

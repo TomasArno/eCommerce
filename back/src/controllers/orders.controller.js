@@ -1,15 +1,50 @@
-import ordersService from "../services/orders.service.js";
+import orders from "../services/orders.service.js";
+import products from "../services/products.service.js";
 import CustomError from "../utils/errors/customError.utils.js"
 import errors from "../utils/errors/errorsLibrary.utils.js"
 
 class OrdersController {
   constructor() {
-    this.service = ordersService;
+    // this.service = orders;
+  }
+
+  static async validateProductsOwner(userId, productId) {
+    const product = await products.readOne(productId);
+    if (!product || product.ownerId.toString() == userId.toString()) CustomError.new(errors.notFound)
+
+    // const productsId = productsData.map(el => el.productId)
+
+    // const filter = {}
+
+    // filter._id = { $in: productsId }
+    // filter.ownerId = { $ne: userId }
+
+    // const productsFounded = (await products.read({ filter })).docs
+    // const idsInDatabase = productsFounded.map(el => el._id.toString())
+
+    // if (idsInDatabase.length != productsId.length) {
+    //   let missingIds = []
+
+    //   productsId.forEach(id => {
+    //     if (!idsInDatabase.includes(id)) {
+    //       missingIds.push(id)
+    //     }
+    //   });
+
+    //   CustomError.new({ message: missingIds, statusCode: 404 })
+    // }
+
+    // return productsFounded
   }
 
   async create(req, res, next) {
     try {
-      const data = await ordersService.create(req.body);
+      const { role, _id: userId } = req.user
+      const { productId } = req.body
+
+      if (role == 1) await OrdersController.validateProductsOwner(userId, productId)
+
+      const data = await orders.create(req.body);
 
       res.json({
         statusCode: 201,
@@ -49,12 +84,12 @@ class OrdersController {
       if (!page) options.page = 1;
       if (!limit) options.limit = 20;
 
-      const orders = await ordersService.read({ filter, options });
-      if (!orders.docs.length) CustomError.new(errors.notFound)
+      const all = await orders.read({ filter, options });
+      if (!all.docs.length) CustomError.new(errors.notFound)
 
       res.json({
         statusCode: 200,
-        response: orders,
+        response: all,
       });
     } catch (e) {
       next(e);
@@ -65,9 +100,8 @@ class OrdersController {
     try {
       const { userId } = req.params;
 
-      const userOrders = await ordersService.read({ filter: { userId } });
+      const userOrders = await orders.read({ filter: { userId } });
       if (!userOrders.docs.length) CustomError.new(errors.notFound)
-
 
       res.json({
         statusCode: 200,
@@ -82,9 +116,8 @@ class OrdersController {
     try {
       const { orderId } = req.params;
 
-      const modifiedOrder = await ordersService.update(orderId, req.body);
+      const modifiedOrder = await orders.update(orderId, req.body);
       if (!modifiedOrder) CustomError.new(errors.notFound)
-
 
       res.json({
         statusCode: 200,
@@ -99,9 +132,8 @@ class OrdersController {
     try {
       const { orderId } = req.params;
 
-      const deletedOrder = await ordersService.destroy(orderId);
+      const deletedOrder = await orders.destroy(orderId);
       if (!deletedOrder) CustomError.new(errors.notFound)
-
 
       res.json({
         statusCode: 200,

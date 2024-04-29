@@ -15,6 +15,7 @@ class ProductsDTO {
     this.photo = data.photo;
     this.price = data.price;
     this.stock = data.stock || 0;
+    this.ownerId = data.ownerId;
   }
 }
 

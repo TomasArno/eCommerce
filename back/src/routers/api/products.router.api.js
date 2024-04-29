@@ -1,6 +1,6 @@
 import CustomRouter from '../customRouter.js';
 
-import isAdmin from '../../middlewares/isAdmin.mid.js';
+import addOwner from '../../middlewares/addOwner.mid.js';
 import { checkProductId } from '../../middlewares/checkProductId.mid.js';
 
 import {
@@ -13,24 +13,15 @@ import {
 
 class Router extends CustomRouter {
 	init() {
-		this.create(
-			'/',
-			['PUBLIC'],
-			// isAdmin,
-			create
-		);
+		this.create('/', ['ADMIN', "PREMIUM"], addOwner, create);
 
-		this.read('/', ['PUBLIC'], read);
+		this.read('/', ['PUBLIC', 'ADMIN', "PREMIUM", 'USER'], read);
 
-		this.read('/:productId', ['PUBLIC'], readOne);
+		this.read('/:productId', ['PUBLIC', 'ADMIN', "PREMIUM", 'USER'], readOne);
 
-		this.update('/:productId', ['PUBLIC'], update);
+		this.update('/:productId', ['ADMIN', "PREMIUM"], update);
 
-		this.destroy(
-			'/:productId',
-			['PUBLIC'],
-			destroy
-		);
+		this.destroy('/:productId', ['ADMIN', "PREMIUM"], destroy);
 	}
 }
 
