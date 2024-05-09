@@ -1,15 +1,15 @@
-import usersService from "../services/users.service.js";
+import users from "../services/users.service.js";
 import CustomError from "../utils/errors/customError.utils.js"
 import errors from "../utils/errors/errorsLibrary.utils.js"
 
 class UsersController {
   constructor() {
-    this.service = usersService;
+    this.service = users;
   }
 
   async create(req, res, next) {
     try {
-      const newUser = await usersService.create(req.body);
+      const newUser = await users.create(req.body);
 
       res.json({
         statusCode: 201,
@@ -34,13 +34,13 @@ class UsersController {
       if (!page) options.page = 1;
       if (!limit) options.limit = 20;
 
-      const users = await usersService.read({ filter, options });
-      if (!users.docs.length) CustomError.new(errors.notFound)
+      const all = await users.read({ filter, options });
+      if (!all.docs.length) CustomError.new(errors.notFound)
 
 
       res.json({
         statusCode: 200,
-        response: users,
+        response: all,
       });
     } catch (e) {
       next(e);
@@ -52,7 +52,7 @@ class UsersController {
     try {
       const { userId } = req.params;
 
-      const user = await usersService.readOne(userId);
+      const user = await users.readOne(userId);
       if (!user) CustomError.new(errors.notFound)
 
       res.json({
@@ -68,8 +68,38 @@ class UsersController {
     try {
       const { userId } = req.params;
 
-      const modifiedUser = await usersService.update(userId, req.body);
+      const modifiedUser = await users.update(userId, req.body);
       if (!modifiedUser) CustomError.new(errors.notFound)
+
+      res.json({
+        statusCode: 200,
+        response: modifiedUser,
+      });
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  async updateRole(req, res, next) {
+    try {
+      const { userId } = req.params;
+
+      const user = await users.readOne(userId)
+      if (!user) CustomError.new(errors.notFound)
+
+      const { role } = user
+      let newRole
+
+      if (role == 0) {
+        newRole = 1
+      } else if (role == 1) {
+        newRole = 0
+      } else {
+        CustomError.new(errors.error)
+      }
+
+      const modifiedUser = await users.update(userId, { role: newRole });
+      if (!modifiedUser) CustomError.new(errors.error)
 
       res.json({
         statusCode: 200,
@@ -84,9 +114,8 @@ class UsersController {
     try {
       const { userId } = req.params;
 
-      const deletedUser = await usersService.destroy(userId);
+      const deletedUser = await users.destroy(userId);
       if (!deletedUser) CustomError.new(errors.notFound)
-
 
       res.json({
         statusCode: 200,
@@ -100,6 +129,6 @@ class UsersController {
 
 const usersController = new UsersController();
 
-const { create, read, readOne, update, destroy } = usersController;
+const { create, read, readOne, update, updateRole, destroy } = usersController;
 
-export { create, read, readOne, update, destroy };
+export { create, read, readOne, update, updateRole, destroy };

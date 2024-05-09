@@ -27,7 +27,7 @@ passport.use(
 
 				const user = await users.create(req.body);
 
-				sendEmailCode(user.email, user.verifyCode);
+				// sendEmailCode(user.email, user.verifyCode);
 
 				done(null, user);
 			} catch (error) {

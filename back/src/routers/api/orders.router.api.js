@@ -9,15 +9,16 @@ import {
   update,
 } from "../../controllers/orders.controller.js";
 
+import addUser from "../../middlewares/addUser.mid.js"
 
 class Router extends CustomRouter {
   init() {
-    this.create("/", ["PUBLIC"], create);
-    this.read("/", ["PUBLIC"], read);
-    this.read("/:userId", ["PUBLIC"], readOne);
-    this.read("/total/:userId", ["PUBLIC"], report);
-    this.update("/:orderId", ["PUBLIC"], update);
-    this.destroy("/:orderId", ["PUBLIC"], destroy);
+    this.create("/", ['ADMIN', "PREMIUM", 'USER'], addUser, create);
+    this.read("/", ['ADMIN', "PREMIUM", 'USER'], read);
+    this.read("/:userId", ['ADMIN', "PREMIUM", 'USER'], readOne);
+    this.read("/total/:userId", ['ADMIN', "PREMIUM", 'USER'], report);
+    this.update("/:orderId", ['ADMIN', "PREMIUM", 'USER'], update);
+    this.destroy("/:orderId", ['ADMIN', "PREMIUM", 'USER'], destroy);
   }
 }
 

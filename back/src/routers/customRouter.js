@@ -14,7 +14,7 @@ export default class CustomRouter {
 		return this.router;
 	}
 
-	init() {}
+	init() { }
 
 	applyCbs(cbs) {
 		return cbs.map((el) => async (...params) => {
@@ -49,7 +49,7 @@ export default class CustomRouter {
 	policies(arrayOfPolicies) {
 		return async (req, res, next) => {
 			try {
-				if (arrayOfPolicies.includes('PUBLIC')) return next();
+				if (arrayOfPolicies.includes('PUBLIC') && !req.cookies['token']) return next();
 
 				const token = req.cookies['token'];
 				if (!token) return res.error401();
@@ -66,15 +66,14 @@ export default class CustomRouter {
 
 				if (
 					(role === 0 && arrayOfPolicies.includes('USER')) ||
-					(role === 1 && arrayOfPolicies.includes('ADMIN')) ||
-					(role === 2 && arrayOfPolicies.includes('PREM'))
+					(role === 1 && arrayOfPolicies.includes('PREMIUM')) ||
+					(role === 2 && arrayOfPolicies.includes('ADMIN'))
 				) {
 					const user = await users.readByEmail(email);
-
 					req.user = user;
 
 					return next();
-				}
+				} else if (arrayOfPolicies.includes('PUBLIC')) return next()
 
 				res.error403();
 			} catch (error) {

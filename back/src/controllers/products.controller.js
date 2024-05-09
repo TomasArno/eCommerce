@@ -1,15 +1,15 @@
-import productsService from "../services/products.service.js";
+import products from "../services/products.service.js";
 import CustomError from "../utils/errors/customError.utils.js"
 import errors from "../utils/errors/errorsLibrary.utils.js"
 
 class ProductsController {
   constructor() {
-    this.service = productsService;
+    this.service = products;
   }
 
   async create(req, res, next) {
     try {
-      const data = await productsService.create(req.body);
+      const data = await products.create(req.body);
 
       res.json({
         statusCode: 201,
@@ -29,18 +29,19 @@ class ProductsController {
       if (title) filter.title = title;
       if (price) filter.price = price;
       if (stock) filter.stock = stock;
+      if (req.user?.role == 1) filter.ownerId = { $ne: req.user._id }
 
       const options = { page, limit };
 
       if (!page) options.page = 1;
       if (!limit) options.limit = 20;
 
-      const products = await productsService.read({ filter, options });
-      if (!products.docs.length) CustomError.new(errors.notFound)
+      const all = await products.read({ filter, options });
+      if (!all.docs.length) CustomError.new(errors.notFound)
 
       res.json({
         statusCode: 200,
-        response: products,
+        response: all,
       });
     } catch (e) {
       next(e);
@@ -51,8 +52,8 @@ class ProductsController {
     try {
       const { productId } = req.params;
 
-      const product = await productsService.readOne(productId);
-      if (!product) CustomError.new(errors.notFound)
+      const product = await products.readOne(productId);
+      if (!product || product.ownerId.toString() == req.user?._id.toString()) CustomError.new(errors.notFound)
 
       res.json({
         statusCode: 200,
@@ -65,10 +66,16 @@ class ProductsController {
 
   async update(req, res, next) {
     try {
+      const { user } = req;
       const { productId } = req.params;
 
-      const modifiedProduct = await productsService.update(productId, req.body);
-      if (!modifiedProduct) CustomError.new(errors.notFound)
+      const product = await products.readOne(productId)
+      if (!product) CustomError.new(errors.notFound)
+
+      if (user.role == 1 && product.ownerId.toString() != user._id.toString()) CustomError.new(errors.unauthorized) // chequear
+
+      const modifiedProduct = await products.update(productId, req.body);
+      if (!modifiedProduct) CustomError.new(errors.error)
 
       res.json({
         statusCode: 200,
@@ -81,11 +88,16 @@ class ProductsController {
 
   async destroy(req, res, next) {
     try {
+      const { user } = req;
       const { productId } = req.params;
 
-      const deletedProduct = await productsService.destroy(productId);
-      if (!deletedProduct) CustomError.new(errors.notFound)
+      const product = await products.readOne(productId)
+      if (!product) CustomError.new(errors.notFound)
 
+      if (user.role == 1 && product.ownerId.toString() != user._id.toString()) CustomError.new(errors.unauthorized) // chequear
+
+      const deletedProduct = await products.destroy(productId);
+      if (!deletedProduct) CustomError.new(errors.error)
 
       res.json({
         statusCode: 200,
