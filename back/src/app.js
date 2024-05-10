@@ -7,11 +7,16 @@ import errorHandler from './middlewares/errorHandler.mid.js';
 import pathHandler from './middlewares/pathHandler.mid.js';
 import compression from "express-compression"
 import winston from "./middlewares/winston.mid.js";
+import swaggerJSDoc from "swagger-jsdoc";
+import { serve, setup } from "swagger-ui-express";
+import options from "./utils/swagger.utils.js";
 
 import './utils/env.utils.js';
 import __dirname from './utils/dirname.utils.js';
 
 import indexRouter from './routers/index.router.js';
+
+const specs = swaggerJSDoc(options);
 
 const app = express();
 
@@ -25,6 +30,7 @@ app.use(urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/public'));
 // app.use(morgan('dev'));
 app.use(compression({ brotli: { enabled: true, zlib: {} }, }));
+app.use("/api/docs", serve, setup(specs));
 
 app.use('/', indexRouter);
 app.use(errorHandler);
