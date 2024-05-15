@@ -7,9 +7,9 @@ const collection = 'products';
 const productsSchema = new Schema(
 	{
 		title: { type: String, required: true, unique: true, index: true },
-		photo: { type: String, required: true },
+		photo: { type: String },
 		price: { type: Number, required: true, index: true },
-		stock: { type: Number, default: 0 },
+		stock: { type: Number, required: true, default: 0 },
 		ownerId: { type: Types.ObjectId, required: true, ref: "users" }
 	},
 	{ timestamps: true }
