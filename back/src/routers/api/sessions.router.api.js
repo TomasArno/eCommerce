@@ -40,7 +40,7 @@ class Router extends CustomRouter {
 		//   googleCb
 		// );
 
-		this.create('/signout', ['USER'], signout);
+		this.create('/signout', ['USER', 'ADMIN'], signout);
 
 		this.read('/badauth', ['PUBLIC'], badauth);
 	}
