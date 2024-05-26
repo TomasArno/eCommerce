@@ -39,11 +39,8 @@
 	row-gap: 20px;
 }
 
-.navbar, .search-box_container {
-	height: 50px;
-}
-
 .search-box_container {
+	height: 50px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -60,27 +57,8 @@
 	column-gap: 10px;
 }
 
-.search-box{
-	width: 87%;
-	border-radius: 5px;
-	border: none;	
-	outline: none;
-	padding-left: 10px;	
-}
-
 .search-btn {
 	width: 13%;
 	text-align: center;
 	vertical-align: middle;
-}
-
-.navbar {
-	display: flex;
-	align-items: center;
-}
-
-.navbar-item {
-	margin-left: 20px;
-	color: rgb(255, 255, 255);
-	text-decoration: none;
 }
