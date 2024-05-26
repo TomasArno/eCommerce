@@ -3,7 +3,7 @@ import axios from 'axios';
 
 import './index.css';
 
-function Index() {
+function ProducView() {
 	const [products, setProducts] = useState([]);
 
 	useEffect(() => {
@@ -39,4 +39,4 @@ function Index() {
 	);
 }
 
-export default Index;
+export default ProducView;
