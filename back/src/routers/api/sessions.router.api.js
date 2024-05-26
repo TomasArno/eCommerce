@@ -19,7 +19,7 @@ class Router extends CustomRouter {
 			failureRedirect: '/api/sessions/badauth',
 		};
 
-		this.read('/', ['USER'], read);
+		this.read('/', ['USER', 'PREMIUM', 'ADMIN'], read);
 
 		this.create('/', ['PUBLIC'], verifyCode);
 

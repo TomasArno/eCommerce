@@ -26,7 +26,10 @@ class ProductsController {
 
       const filter = {};
 
-      if (title) filter.title = title;
+      if (title) {
+        const regex = new RegExp(title)
+        filter.title = { $regex: regex, $options: 'i' };
+      }
       if (price) filter.price = price;
       if (stock) filter.stock = stock;
       if (req.user?.role == 1) filter.ownerId = { $ne: req.user._id }
