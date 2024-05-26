@@ -11,6 +11,7 @@ import ProducView from "../pages/product-view/."
 import SearchPanel from "../pages/search/."
 import Form from "../pages/form/."
 import Orders from "../pages/orders/."
+import Profile from "../pages/profile"
 import NotFound from "../components/not-found/."
 
 const router = createBrowserRouter([
@@ -37,6 +38,10 @@ const router = createBrowserRouter([
             {
                 path: "/orders",
                 element: <Orders />,
+            },
+            {
+                path: "/profile",
+                element: <Profile />,
             },
             {
                 path: "*",

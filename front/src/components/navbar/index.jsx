@@ -6,7 +6,27 @@ import ListItemButton from '@mui/joy/ListItemButton';
 import Home from '@mui/icons-material/Home';
 import Person from '@mui/icons-material/Person';
 
+import { GlobalContext } from "../../main"
+import { useContext } from 'react';
+// import { useNavigate } from 'react-router-dom';
+
 function Navbar() {
+    const { getState } = useContext(GlobalContext)
+    // const navigate = useNavigate()
+
+    const { isLoggedIn } = getState()
+
+    const handleProfile = () => {
+
+        console.log(isLoggedIn);
+        //     navigate("/profile") 
+        //     // if (isLoggedIn) {
+        //     //     navigate("/profile")
+        //     // } else {
+        //     //     navigate("/login")
+        //     // }
+    }
+
     return (
         <Box component="nav" aria-label="My site" sx={{ flexGrow: 1 }}>
             <List sx={{ height: 50 }} role="menubar" orientation="horizontal">
@@ -21,7 +41,7 @@ function Navbar() {
                     </ListItemButton>
                 </ListItem>
                 <ListDivider />
-                <ListItem role="none">
+                <ListItem sx={{ hidden: !isLoggedIn }} role="none">
                     <ListItemButton role="menuitem" component="a" href="orders">
                         Ordenes
                     </ListItemButton>
@@ -32,6 +52,7 @@ function Navbar() {
                         component="a"
                         href="login"
                         aria-label="Profile"
+                        onClick={handleProfile}
                     >
                         <Person />
                     </ListItemButton>

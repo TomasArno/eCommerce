@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { CssVarsProvider, useColorScheme } from '@mui/joy/styles';
 import GlobalStyles from '@mui/joy/GlobalStyles';
 import CssBaseline from '@mui/joy/CssBaseline';
@@ -16,10 +16,12 @@ import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
 import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
 import BadgeRoundedIcon from '@mui/icons-material/BadgeRounded';
 import GoogleIcon from './googleIcon';
+import FormHelperText from '@mui/joy/FormHelperText';
+import InfoOutlined from '@mui/icons-material/InfoOutlined';
 
 import { GlobalContext } from '../../main';
 import axios from 'axios';
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function ColorSchemeToggle(props) {
     const { onClick, ...other } = props;
@@ -46,8 +48,9 @@ function ColorSchemeToggle(props) {
 }
 
 function SignIn() {
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
     const { handleLogin } = useContext(GlobalContext)
+    const [triesEnterPassword, setTriesEnterPassword] = useState(0)
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -63,11 +66,16 @@ function SignIn() {
             .then((res) => {
                 if (res.data.statusCode == 200) {
                     handleLogin()
+                    navigate("/")
                 }
-                else { alert(res.data.message) }
+                else {
+                    setTriesEnterPassword(triesEnterPassword + 1)
+                    alert(res.data)
+                }
             })
             .catch((err) => console.log(err));
     }
+
 
     return (<CssVarsProvider defaultMode="dark" disableTransitionOnChange>
         <CssBaseline />
@@ -174,9 +182,16 @@ function SignIn() {
                     </Divider>
                     <Stack gap={4} sx={{ mt: 2 }}>
                         <form onSubmit={(event) => handleSubmit(event)}>
-                            <FormControl required>
+                            <FormControl error={triesEnterPassword > 0} required>
                                 <FormLabel>Email</FormLabel>
                                 <Input type="email" name="email" />
+                                {
+                                    triesEnterPassword > 0 ?
+                                        (<FormHelperText>
+                                            <InfoOutlined />
+                                            Opps! something is wrong.
+                                        </FormHelperText>) : ""
+                                }
                             </FormControl>
                             <FormControl required>
                                 <FormLabel>Contraseña</FormLabel>

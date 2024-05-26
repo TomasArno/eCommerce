@@ -22,8 +22,6 @@ import Input from "./components/input"
 // 	return elementsToHide
 // }
 
-
-
 function App() {
 	const navigate = useNavigate();
 
