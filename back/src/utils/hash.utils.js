@@ -1,6 +1,6 @@
 import { createHash as hash } from 'node:crypto';
 
-const createHash = (password) => hash('sha256', password).digest('hex');
-const verifyHash = (enteredPassword, db) => enteredPassword === db;
+const createHash = (password) => hash('sha256').update(password.toString()).digest('hex');
 
-export { createHash, verifyHash };
+export { createHash };
+
