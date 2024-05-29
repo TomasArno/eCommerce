@@ -5,7 +5,7 @@ import { Strategy as GoogleStrategy } from 'passport-google-oauth2';
 
 import users from '../repositories/users.rep.js';
 
-import { createHash, verifyHash } from '../utils/hash.utils.js';
+import { createHash } from '../utils/hash.utils.js';
 import { createToken } from '../utils/jtw.utils.js';
 import sendEmailCode from '../utils/sendEmail.utils.js';
 
@@ -48,7 +48,7 @@ passport.use(
 				if (
 					!searchedUser?._id ||
 					!searchedUser.isVerified ||
-					!verifyHash(createHash(password), searchedUser.password)
+					createHash(password) != searchedUser.password
 				)
 					return done(null, false, { message: 'bad auth' });
 
