@@ -30,7 +30,6 @@ const orders = [
 	},
 ];
 
-console.log(orders);
 
 function Orders() {
 	// const [orders, setOrders] = useState([]);
@@ -44,8 +43,6 @@ function Orders() {
 	// 		})
 	// 		.catch((err) => console.log(err));
 	// }, []);
-
-	console.log(orders);
 
 	return (
 		<div className="orders_container">

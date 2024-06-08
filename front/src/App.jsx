@@ -2,7 +2,8 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import './App.css';
 
 import Navbar from './components/navbar';
-import Input from "./components/input"
+import Input from '@mui/joy/Input';
+
 
 // function HideNavEls(role) {
 // 	let elementsToHide
@@ -25,9 +26,10 @@ import Input from "./components/input"
 function App() {
 	const navigate = useNavigate();
 
-	function HandleSearch() {
-		const searchBoxData = (document.querySelector(".search-box")).value
-		navigate(`/search/${searchBoxData}`);
+	function HandleSearch(e) {
+		e.preventDefault()
+		const searchBoxData = document.querySelector("#search-input")
+		navigate(`/search/${searchBoxData.value}`);
 	}
 
 	// const role = CheckAuth();
@@ -39,7 +41,11 @@ function App() {
 			<header className='header'>
 				<div className='search-box_container'>
 					<form className='search-form'>
-						<Input />
+						<Input slotProps={{
+							input: {
+								id: 'search-input',
+							}
+						}} className='search-input' sx={{ width: "100%" }} size="sm" placeholder="Type in here…" variant="plain" />
 						<button onClick={(HandleSearch)} className='search-btn'>search</button>
 					</form>
 				</div>
