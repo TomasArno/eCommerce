@@ -10,7 +10,7 @@ import Index from "../pages/main/."
 import ProducView from "../pages/product-view/."
 import SearchPanel from "../pages/search/."
 import Form from "../pages/form/."
-import Orders from "../pages/orders/."
+import Orders from "../pages/orders/index.jsx"
 import Profile from "../pages/profile"
 import NotFound from "../components/not-found/."
 
