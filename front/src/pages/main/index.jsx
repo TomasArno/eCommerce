@@ -17,7 +17,7 @@ function Index() {
 
 	return (
 		<div className='cards_container'>
-			{products.map((prod) => <Card key={prod._id} title={prod.title} stock={prod.stock} photo={prod.photo} price={prod.price} />)}
+			{products.map((prod) => <Card key={prod._id} id={prod._id} title={prod.title} stock={prod.stock} photo={prod.photo} price={prod.price} />)}
 			{/* HACER CARROUSEL */}
 		</div>
 	);

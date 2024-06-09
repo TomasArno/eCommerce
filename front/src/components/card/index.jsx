@@ -10,20 +10,24 @@ import { GlobalContext } from "../../main"
 import { useNavigate } from 'react-router-dom';
 
 function BasicCard({ id, photo, title, price, stock }) {
-	const { getState } = useContext(GlobalContext)
+	const { getState, setState } = useContext(GlobalContext)
 	const navigate = useNavigate()
 
 	function handleBtn() {
 		const { isLoggedIn } = getState()
+
 		if (isLoggedIn) {
-			navigate("/products")
+			navigate("/login") // alternar
 		} else {
-			navigate("/login")
+			const productSelected = { id, photo, title, price, stock }
+			setState({ productSelected })
+
+			navigate(`/products/${id}`)
 		}
 	}
 
 	return (
-		<Card sx={{ id, width: 250, height: 270 }}>
+		<Card id={id} sx={{ width: 250, height: 270 }}>
 			<div>
 				<Typography level="title-lg">{title}</Typography>
 				<Typography level="body-sm">Disponible: {stock}</Typography>
@@ -42,7 +46,7 @@ function BasicCard({ id, photo, title, price, stock }) {
 						${price}
 					</Typography>
 				</div>
-				<Button content="Ver" handler={handleBtn} height="10px" />
+				<Button content="Ver" handler={handleBtn} height="10px" width="40%" />
 			</CardContent>
 		</Card >
 	);

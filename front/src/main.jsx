@@ -11,6 +11,7 @@ const state = {
 		isRegistered: false,
 		user: {},
 		cartItems: [],
+		productSelected: {}
 	},
 
 	getState() {
