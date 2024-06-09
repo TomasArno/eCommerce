@@ -1,25 +1,14 @@
-.table-container {
-	width: 100%;
+.orders_container {
+	width: 60%;
+	padding: 30px;
 	display: flex;
-	background-color: white;
 	flex-direction: column;
+	gap: 30px;
+	overflow-y: scroll;
+	overflow: hidden;
 }
 
-table {
+.order-container {
 	width: 100%;
-	border-collapse: collapse;
-}
-th,
-td {
-	border: 1px solid #dddddd;
-	text-align: left;
-	padding: 8px;
-}
-th {
-	background-color: #f2f2f2;
-}
-
-td img {
-	max-width: 100px;
-	max-height: 100px;
+    height: fit-content;
 }
