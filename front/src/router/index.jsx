@@ -3,9 +3,8 @@ import { createBrowserRouter } from "react-router-dom";
 
 import App from '../App.jsx';
 
-import SignIn from "../pages/login/."
-// import SignUp from "../pages/register/." ver si lo puedo hacer en solo una pagina
-import Register from "../pages/register/."
+import SignIn from "../pages/signIn/."
+import SignUp from "../pages/signUp/."
 import Index from "../pages/main/."
 import ProducView from "../pages/product-view/."
 import SearchPanel from "../pages/search/."
@@ -55,7 +54,7 @@ const router = createBrowserRouter([
     },
     {
         path: "/register",
-        element: <Register />,
+        element: <SignUp />,
     },
 ]);
 

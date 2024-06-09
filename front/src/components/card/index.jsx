@@ -25,7 +25,7 @@ function BasicCard({ id, photo, title, price, stock }) {
 		<Card sx={{ id, width: 250, height: 300 }}>
 			<div>
 				<Typography level="title-lg">{title}</Typography>
-				<Typography level="body-sm">Stock: {stock}</Typography>
+				<Typography level="body-sm">Disponible: {stock}</Typography>
 			</div>
 			<AspectRatio minHeight="120px" maxHeight="200px">
 				<img
@@ -36,7 +36,7 @@ function BasicCard({ id, photo, title, price, stock }) {
 			</AspectRatio>
 			<CardContent orientation="horizontal">
 				<div>
-					<Typography level="body-xs">Precio:</Typography>
+					<Typography level="body-sm">Precio</Typography>
 					<Typography fontSize="lg" fontWeight="lg">
 						${price}
 					</Typography>
