@@ -6,16 +6,33 @@ import router from "./router/."
 
 const state = {
 	data: {
+		email: "",
 		isLoggedIn: false,
+		isRegistered: false,
 		user: {},
-		cartItems: []
+		cartItems: [],
 	},
-	getState: () => state.data,
-	setState: (newState) =>
+
+	getState() {
+		return state.data
+	},
+
+	setState(newState) {
 		state.data = { ...state.getState(), ...newState }
-	,
-	handleLogin: () => state.setState({ isLoggedIn: true }),
-};
+	},
+
+	setLoggedIn() {
+		state.setState({ isLoggedIn: true })
+	},
+
+	setIsRegistered() {
+		state.setState({ isRegistered: true })
+	},
+
+	setEmail(email) {
+		state.setState({ email })
+	}
+}
 
 export const GlobalContext = createContext(state);
 
