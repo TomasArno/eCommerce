@@ -1,8 +1,9 @@
 import AspectRatio from '@mui/joy/AspectRatio';
-import Button from '@mui/joy/Button';
 import Card from '@mui/joy/Card';
 import CardContent from '@mui/joy/CardContent';
 import Typography from '@mui/joy/Typography';
+
+import Button from '../button';
 
 import { useContext } from 'react';
 import { GlobalContext } from "../../main"
@@ -15,14 +16,14 @@ function BasicCard({ id, photo, title, price, stock }) {
 	function handleBtn() {
 		const { isLoggedIn } = getState()
 		if (isLoggedIn) {
-			""
+			navigate("/products")
 		} else {
 			navigate("/login")
 		}
 	}
 
 	return (
-		<Card sx={{ id, width: 250, height: 300 }}>
+		<Card sx={{ id, width: 250, height: 270 }}>
 			<div>
 				<Typography level="title-lg">{title}</Typography>
 				<Typography level="body-sm">Disponible: {stock}</Typography>
@@ -41,16 +42,7 @@ function BasicCard({ id, photo, title, price, stock }) {
 						${price}
 					</Typography>
 				</div>
-				<Button
-					variant="solid"
-					size="md"
-					onClick={handleBtn}
-					color="primary"
-					aria-label="Explore Bahamas Islands"
-					sx={{ ml: 'auto', alignSelf: 'center', fontWeight: 600 }}
-				>
-					Agregar
-				</Button>
+				<Button content="Ver" handler={handleBtn} height="10px" />
 			</CardContent>
 		</Card >
 	);

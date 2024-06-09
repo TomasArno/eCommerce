@@ -2,8 +2,6 @@
 // import axios from 'axios';
 import Order from "../../components/order"
 
-import "./index.css"
-
 const orders = [
 	{
 		date: "2023-05-12",

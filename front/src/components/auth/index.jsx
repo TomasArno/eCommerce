@@ -36,8 +36,6 @@ function Auth({ path = "login", }) {
             password: formElements.password.value
         };
 
-        console.log(data.email);
-
         axios
             .post('http://localhost:8080/api/sessions/login', data)
             .then((res) => {

@@ -1,0 +1,13 @@
+.search-box_container {
+	display: flex;
+    justify-content: center;
+    align-items: center;
+	column-gap: 20px;
+}
+
+.search-form {
+	display: flex;
+	width: 50%;
+	padding: 10px 0 ;
+	column-gap: 10px;
+}

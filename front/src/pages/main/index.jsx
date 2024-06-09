@@ -3,8 +3,6 @@ import axios from 'axios';
 
 import Card from '../../components/card';
 
-import './index.css';
-
 function Index() {
 	const [products, setProducts] = useState([]);
 
@@ -18,11 +16,10 @@ function Index() {
 	}, []);
 
 	return (
-		<>
-			<div className='cards_container'>
-				{products.map((prod) => <Card key={prod._id} title={prod.title} stock={prod.stock} photo={prod.photo} price={prod.price} />)}
-			</div>
-		</>
+		<div className='cards_container'>
+			{products.map((prod) => <Card key={prod._id} title={prod.title} stock={prod.stock} photo={prod.photo} price={prod.price} />)}
+			{/* HACER CARROUSEL */}
+		</div>
 	);
 }
 

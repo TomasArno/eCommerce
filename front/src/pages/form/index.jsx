@@ -3,7 +3,7 @@ import axios from 'axios';
 
 import buildReqData from '../../utils/buildRequestData.js';
 
-import './index.css';
+// import './index.css';
 
 function Form() {
 	const navigate = useNavigate();

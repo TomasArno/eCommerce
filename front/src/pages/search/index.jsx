@@ -3,8 +3,6 @@ import axios from 'axios';
 
 import Card from '../../components/card';
 
-import './index.css';
-
 function SearchPanel() {
 	const [products, setProducts] = useState([]);
 
@@ -25,7 +23,7 @@ function SearchPanel() {
 	return (
 		<>
 			<h1 className='main_title'>RESULTADOS DE BÚSQUEDA</h1>
-			<div className='cards_container'>
+			<div className='search_container'>
 				{products.map((prod) => <Card key={prod._id} title={prod.title} stock={prod.stock} photo={prod.photo} price={prod.price} />)}
 			</div>
 		</>
