@@ -1,5 +1,9 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 
+import { GlobalContext } from "../../main"
+
+import { typographyClasses } from '@mui/joy/Typography';
 import Box from '@mui/joy/Box';
 import CssBaseline from '@mui/joy/CssBaseline';
 import Button from '@mui/joy/Button';
@@ -7,14 +11,25 @@ import Typography from '@mui/joy/Typography';
 import ArrowForward from '@mui/icons-material/ArrowForward';
 import AspectRatio from '@mui/joy/AspectRatio';
 import Container from '@mui/joy/Container';
-import { typographyClasses } from '@mui/joy/Typography';
-
 import IconButton from '@mui/joy/IconButton';
 import Add from '@mui/icons-material/Add';
 import Remove from '@mui/icons-material/Remove';
 
 function FullCard({ photo, title, price, stock }) {
+    const navigate = useNavigate()
     const [count, setCount] = useState(0);
+
+    const { addProductInCart, getState } = useContext(GlobalContext)
+
+    const handleBuy = () => {
+        addProductInCart({ ...getState().productSelected, quantity: count })
+        navigate("/cart")
+    }
+
+    const handleCart = () => {
+        addProductInCart({ ...getState().productSelected, quantity: count })
+        navigate("/")
+    }
 
     return <Container
         sx={(theme) => ({
@@ -108,14 +123,13 @@ function FullCard({ photo, title, price, stock }) {
                 </Box>
 
                 <Box sx={{ display: "flex", flexDirection: "column", rowGap: "5px" }}>
-                    <Button size="lg" endDecorator={<ArrowForward fontSize="xl" />}>
+                    <Button onClick={handleBuy} size="lg" endDecorator={<ArrowForward fontSize="xl" />}>
                         Comprar ahora
                     </Button>
-                    <Button size="lg" variant="soft" endDecorator={<ArrowForward fontSize="xl" />}>
+                    <Button onClick={handleCart} size="lg" variant="soft" endDecorator={<ArrowForward fontSize="xl" />}>
                         Agregar al carrito
                     </Button>
                 </Box>
-
             </Box>
         </Box>
         <AspectRatio

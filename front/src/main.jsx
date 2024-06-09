@@ -32,7 +32,15 @@ const state = {
 
 	setEmail(email) {
 		state.setState({ email })
+	},
+
+	addProductInCart(product) {
+		state.data.cartItems.push(product)
 	}
+
+	// removeProductFromCart(productId) {
+	// 	state.data.cartItems.push(product)
+	// }
 }
 
 export const GlobalContext = createContext(state);

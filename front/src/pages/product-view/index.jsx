@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 
 import { GlobalContext } from "../../main"
 import FullCard from '../../components/full-card';
-// import Card from '../../components/card';
 
 function ProducView() {
 	const navigate = useNavigate()

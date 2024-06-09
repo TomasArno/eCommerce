@@ -48,8 +48,8 @@ function DropList() {
 
     return (
         <Box sx={{ display: 'flex' }}>
-            <Button variant="plain" onClick={toggleDrawer(true)}>
-                <Person color='black' />
+            <Button color='black' variant="plain" onClick={toggleDrawer(true)}>
+                <Person />
             </Button>
             <Drawer anchor='right' open={open} onClose={toggleDrawer(false)}>
                 <Box

@@ -10,6 +10,7 @@ import ProducView from "../pages/product-view/."
 import SearchPanel from "../pages/search/."
 import Form from "../pages/form/."
 import Orders from "../pages/orders/."
+import Cart from "../pages/cart/."
 import Profile from "../pages/profile"
 import NotFound from "../components/not-found/."
 
@@ -37,6 +38,10 @@ const router = createBrowserRouter([
             {
                 path: "/orders",
                 element: <Orders />,
+            },
+            {
+                path: "/cart",
+                element: <Cart />,
             },
             {
                 path: "/profile",
