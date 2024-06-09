@@ -8,6 +8,8 @@ import users from '../repositories/users.rep.js';
 import { createHash } from '../utils/hash.utils.js';
 import { createToken } from '../utils/jtw.utils.js';
 import sendEmailCode from '../utils/sendEmail.utils.js';
+import errors from "../utils/errors/errorsLibrary.utils.js"
+
 
 const { GOOGLE_ID, GOOGLE_SECRET, SECRET_JWT } = process.env;
 
@@ -45,12 +47,12 @@ passport.use(
 			try {
 				const searchedUser = await users.readByEmail(email);
 
-				if (
-					!searchedUser?._id ||
-					!searchedUser.isVerified ||
-					createHash(password) != searchedUser.password
-				)
-					return done(null, false, { message: 'bad auth' });
+				if (!searchedUser?._id)
+					return done(null, false, errors.notFound);
+				if (createHash(password) != searchedUser.password)
+					return done(null, false, errors.auth);
+				if (!searchedUser.isVerified)
+					return done(null, false, errors.notVerified);
 
 				req.token = createToken({ email, role: searchedUser.role });
 
