@@ -8,6 +8,7 @@ import { Box } from "@mui/joy";
 import { useContext } from "react";
 import { GlobalContext } from "../../main";
 import { useNavigate } from "react-router-dom";
+import ButtonCounter from "../button-counter";
 
 function OrderCard({
   photo,
@@ -18,6 +19,7 @@ function OrderCard({
   padding,
   height = 170,
   borderBottom = 2,
+  button,
 }) {
   const { getState } = useContext(GlobalContext);
   const navigate = useNavigate();
@@ -64,27 +66,32 @@ function OrderCard({
             sx={{
               display: "flex",
               flexDirection: "column",
-              justifyContent: "space-between",
+              justifyContent: "space-around",
             }}
             orientation="horizontal"
           >
             <Typography level="title-lg">{state}</Typography>
-            <div>
+            <Box>
               <Typography level="body-sm">{title}</Typography>
               <Typography level="body-sm">Unidades: {units}</Typography>
-            </div>
+            </Box>
           </CardContent>
         </Box>
-        <Button
-          variant="solid"
-          size="md"
-          onClick={handleBtn}
-          color="primary"
-          aria-label="Explore Bahamas Islands"
-          sx={{ ml: "auto", alignSelf: "center", fontWeight: 600 }}
-        >
-          Agregar
-        </Button>
+        {button == "modifiers" ? (
+          // corregir estilos
+          <ButtonCounter />
+        ) : (
+          <Button
+            variant="solid"
+            size="md"
+            onClick={handleBtn}
+            color="primary"
+            aria-label="Explore Bahamas Islands"
+            sx={{ ml: "auto", alignSelf: "center", fontWeight: 600 }}
+          >
+            Agregar
+          </Button>
+        )}
       </Box>
     </Card>
   );

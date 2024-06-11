@@ -11,9 +11,8 @@ import Typography from "@mui/joy/Typography";
 import ArrowForward from "@mui/icons-material/ArrowForward";
 import AspectRatio from "@mui/joy/AspectRatio";
 import Container from "@mui/joy/Container";
-import IconButton from "@mui/joy/IconButton";
-import Add from "@mui/icons-material/Add";
-import Remove from "@mui/icons-material/Remove";
+
+import ButtonCounter from "../button-counter";
 
 function FullCard({ photo, title, price, stock }) {
   const navigate = useNavigate();
@@ -29,6 +28,13 @@ function FullCard({ photo, title, price, stock }) {
   const handleCart = () => {
     addProductInCart({ ...getState().productSelected, quantity: count });
     navigate("/");
+  };
+
+  const handleAdd = () => {
+    setCount((c) => (c < stock ? c + 1 : c));
+  };
+  const handleRemove = () => {
+    setCount((c) => (c > 0 ? c - 1 : 0));
   };
 
   return (
@@ -95,36 +101,11 @@ function FullCard({ photo, title, price, stock }) {
           </Typography>
           <Box>
             <Typography>Disponible: {stock}</Typography>
-
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                gap: 2,
-                background: "#ddd",
-                padding: "10px",
-                borderRadius: "6px",
-              }}
-            >
-              Cantidad:
-              <IconButton
-                size="sm"
-                variant="outlined"
-                onClick={() => setCount((c) => (c > 0 ? c - 1 : 0))}
-              >
-                <Remove />
-              </IconButton>
-              <Typography fontWeight="md" textColor="text.secondary">
-                {count}
-              </Typography>
-              <IconButton
-                size="sm"
-                variant="outlined"
-                onClick={() => setCount((c) => (c < stock ? c + 1 : c))}
-              >
-                <Add />
-              </IconButton>
-            </Box>
+            <ButtonCounter
+              onClickAdd={handleAdd}
+              onClickRemove={handleRemove}
+              count={count}
+            />
           </Box>
 
           <Box sx={{ display: "flex", flexDirection: "column", rowGap: "5px" }}>

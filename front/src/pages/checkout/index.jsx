@@ -3,19 +3,25 @@
 import { useContext } from "react";
 import { GlobalContext } from "../../main";
 
-import Order from "../../components/order";
 import CardContent from "@mui/joy/CardContent";
 import { Box } from "@mui/joy";
 import Typography from "@mui/joy/Typography";
+import { Button } from "@mui/joy";
+import ArrowForward from "@mui/icons-material/ArrowForward";
+
+import Order from "../../components/order";
 
 function Cart() {
+  let units = 0;
+  let total = 0;
+
   const { getState } = useContext(GlobalContext);
   const { cartItems } = getState();
 
   const cart = [
     {
       title: "un tituñp",
-      quantity: 5,
+      quantity: 15,
       state: "pending",
       photo: "https://picsum.photos/200/300",
     },
@@ -46,22 +52,29 @@ function Cart() {
       sx={{ width: "100%", height: "100%", background: "#ddd" }}
     >
       <Box sx={{ width: "60%" }}>
-        {cart.map((order, i) => (
-          <Order
-            height={120}
-            borderBottom={0}
-            key={i}
-            state={order.title}
-            units={order.quantity}
-            date={""}
-            photo={order.photo}
-            padding={0}
-          />
-        ))}
+        {cart.map((order, i) => {
+          units += order.quantity;
+          total += 15 * order.quantity;
+
+          return (
+            <Order
+              button="modifiers"
+              height={120}
+              borderBottom={0}
+              key={i}
+              state={order.title}
+              units={order.quantity}
+              date={""}
+              photo={order.photo}
+              padding={0}
+            />
+          );
+        })}
       </Box>
-      <Box sx={{ width: "30%", maxHeight: "300px" }}>
+      <Box sx={{ width: "30%", height: "240px" }}>
         <CardContent
           sx={{
+            height: "100%",
             borderRadius: "8px",
             display: "flex",
             flexDirection: "column",
@@ -80,21 +93,40 @@ function Cart() {
           >
             Resumen de compra
           </Typography>
-
-          <Box padding={"1rem"}>
-            <Typography paddingBottom={"10px"} level="body-sm">
-              Unidades: {}
-            </Typography>
-            <Typography
-              color="black"
-              level="body-sm"
-              fontSize="xl"
-              fontWeight="xl"
-              display={"flex"}
-              justifyContent={"space-between"}
+          <Box
+            height={"100%"}
+            display={"flex"}
+            flexDirection={"column"}
+            justifyContent={"space-between"}
+            padding={"1rem"}
+          >
+            <Box marginTop={"10px"}>
+              <Typography fontSize="sm" level="body-sm">
+                Unidades: {units}
+              </Typography>
+              <Typography
+                color="black"
+                level="body-sm"
+                fontSize="xl"
+                fontWeight="xl"
+                display={"flex"}
+                justifyContent={"space-between"}
+              >
+                Total: <span>${total}</span>
+              </Typography>
+            </Box>
+            <Box
+              sx={{ display: "flex", flexDirection: "column", rowGap: "5px" }}
             >
-              Total: <span>${100000}</span>
-            </Typography>
+              <Button
+                sx={{ background: "green" }}
+                onClick={() => {}}
+                size="lg"
+                endDecorator={<ArrowForward fontSize="xl" />}
+              >
+                Comprar ahora
+              </Button>
+            </Box>
           </Box>
         </CardContent>
       </Box>
