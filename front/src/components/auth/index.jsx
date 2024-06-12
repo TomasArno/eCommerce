@@ -54,7 +54,6 @@ function Auth({ path = "login", }) {
             .catch((err) => console.log(err));
     }
 
-
     const handleRegister = (e) => {
         e.preventDefault();
 
@@ -97,7 +96,7 @@ function Auth({ path = "login", }) {
     };
 
 
-    return (<CssVarsProvider defaultMode="dark" disableTransitionOnChange>
+    return (<CssVarsProvider defaultMode="light" disableTransitionOnChange>
         <CssBaseline />
         <GlobalStyles
             styles={{
@@ -118,7 +117,7 @@ function Auth({ path = "login", }) {
                 justifyContent: 'flex-end',
                 backdropFilter: 'blur(12px)',
                 backgroundColor: 'rgba(255 255 255 / 0.2)',
-                [theme.getColorSchemeSelector('dark')]: {
+                [theme.getColorSchemeSelector('light')]: {
                     backgroundColor: 'rgba(19 19 24 / 0.4)',
                 },
             })}
@@ -288,7 +287,7 @@ function Auth({ path = "login", }) {
                 backgroundRepeat: 'no-repeat',
                 backgroundImage:
                     'url(https://images.unsplash.com/photo-1527181152855-fc03fc7949c8?auto=format&w=1000&dpr=2)',
-                [theme.getColorSchemeSelector('dark')]: {
+                [theme.getColorSchemeSelector('light')]: {
                     backgroundImage:
                         'url(https://images.unsplash.com/photo-1572072393749-3ca9c8ea0831?auto=format&w=1000&dpr=2)',
                 },

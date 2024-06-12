@@ -17,7 +17,7 @@ function DropList() {
   const navigate = useNavigate();
 
   const { getState } = useContext(GlobalContext);
-  const { isLoggedIn } = getState();
+  const { isLoggedIn, user } = getState();
 
   const [open, setOpen] = React.useState(false);
 
@@ -61,16 +61,27 @@ function DropList() {
         >
           <ModalClose />
           <List>
-            <ListItem>
-              <ListItemButton component="a" href="register">
-                Creá tu cuenta
-              </ListItemButton>
-            </ListItem>
-            <ListItem>
-              <ListItemButton component="a" href="login">
-                Ingresá
-              </ListItemButton>
-            </ListItem>
+            {
+              !isLoggedIn ?
+                <>
+                  <ListItem>
+                    <ListItemButton component="a" href="register">
+                      Creá tu cuenta
+                    </ListItemButton>
+                  </ListItem>
+                  <ListItem>
+                    <ListItemButton component="a" href="login">
+                      Ingresá
+                    </ListItemButton>
+                  </ListItem>
+                </>
+                :
+                <ListItem>
+                  <ListItemButton component="a" href="profile">
+                    {user.name?.toUpperCase()}
+                  </ListItemButton>
+                </ListItem>
+            }
           </List>
           <Divider />
           <List>

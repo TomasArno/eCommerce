@@ -47,11 +47,12 @@ function Cart() {
   return (
     <Box
       display={"flex"}
+      justifyContent={"center"}
       columnGap={"30px"}
       padding={"30px 60px"}
       sx={{ width: "100%", height: "100%", background: "#ddd" }}
     >
-      <Box sx={{ width: "60%" }}>
+      <Box sx={{ width: "60%", maxWidth: "800px" }}>
         {cart.map((order, i) => {
           units += order.quantity;
           total += 15 * order.quantity;
@@ -71,7 +72,7 @@ function Cart() {
           );
         })}
       </Box>
-      <Box sx={{ width: "30%", height: "240px" }}>
+      <Box sx={{ width: "30%", maxWidth: "360px", height: "240px" }}>
         <CardContent
           sx={{
             height: "100%",
@@ -100,7 +101,7 @@ function Cart() {
             justifyContent={"space-between"}
             padding={"1rem"}
           >
-            <Box marginTop={"10px"}>
+            <Box marginTop={"10px"} >
               <Typography fontSize="sm" level="body-sm">
                 Unidades: {units}
               </Typography>
@@ -120,7 +121,7 @@ function Cart() {
             >
               <Button
                 sx={{ background: "green" }}
-                onClick={() => {}}
+                onClick={() => { }}
                 size="lg"
                 endDecorator={<ArrowForward fontSize="xl" />}
               >

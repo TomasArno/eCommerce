@@ -1,3 +1,7 @@
+import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { GlobalContext } from "../../main";
+
 import AspectRatio from "@mui/joy/AspectRatio";
 import Button from "@mui/joy/Button";
 import Card from "@mui/joy/Card";
@@ -5,9 +9,6 @@ import CardContent from "@mui/joy/CardContent";
 import Typography from "@mui/joy/Typography";
 import { Box } from "@mui/joy";
 
-import { useContext } from "react";
-import { GlobalContext } from "../../main";
-import { useNavigate } from "react-router-dom";
 import ButtonCounter from "../button-counter";
 
 function OrderCard({
@@ -21,6 +22,7 @@ function OrderCard({
   borderBottom = 2,
   button,
 }) {
+  const [count, setCount] = useState(units);
   const { getState } = useContext(GlobalContext);
   const navigate = useNavigate();
 
@@ -32,6 +34,13 @@ function OrderCard({
       navigate("/login");
     }
   }
+
+  const handleAdd = () => {
+    setCount((c) => (c < units ? c + 1 : c));
+  };
+  const handleRemove = () => {
+    setCount((c) => (c > 0 ? c - 1 : 0));
+  };
 
   return (
     <Card
@@ -54,7 +63,7 @@ function OrderCard({
         </Typography>
       </Box>
 
-      <Box sx={{ display: "flex", margin: "20px" }}>
+      <Box sx={{ display: "flex", margin: "20px", justifyContent: "space-between" }}>
         <Box sx={{ display: "flex", columnGap: "15px" }}>
           <Box sx={{ width: "100px" }} alignContent={"center"}>
             <AspectRatio ratio="4/3" sx={{ width: 100 }}>
@@ -79,7 +88,7 @@ function OrderCard({
         </Box>
         {button == "modifiers" ? (
           // corregir estilos
-          <ButtonCounter />
+          <ButtonCounter onClickAdd={handleAdd} onClickRemove={handleRemove} count={count} />
         ) : (
           <Button
             variant="solid"
