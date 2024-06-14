@@ -61,27 +61,33 @@ function DropList() {
         >
           <ModalClose />
           <List>
-            {
-              !isLoggedIn ?
-                <>
-                  <ListItem>
-                    <ListItemButton component="a" href="register">
-                      Creá tu cuenta
-                    </ListItemButton>
-                  </ListItem>
-                  <ListItem>
-                    <ListItemButton component="a" href="login">
-                      Ingresá
-                    </ListItemButton>
-                  </ListItem>
-                </>
-                :
+            {!isLoggedIn ? (
+              <>
+                <ListItem>
+                  <ListItemButton component="a" href="register">
+                    Creá tu cuenta
+                  </ListItemButton>
+                </ListItem>
+                <ListItem>
+                  <ListItemButton component="a" href="login">
+                    Ingresá
+                  </ListItemButton>
+                </ListItem>
+              </>
+            ) : (
+              <>
                 <ListItem>
                   <ListItemButton component="a" href="profile">
                     {user.name?.toUpperCase()}
                   </ListItemButton>
                 </ListItem>
-            }
+                <ListItem>
+                  <ListItemButton component="a" href="">
+                    Salir
+                  </ListItemButton>
+                </ListItem>
+              </>
+            )}
           </List>
           <Divider />
           <List>

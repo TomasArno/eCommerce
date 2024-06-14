@@ -17,13 +17,15 @@ import "./index.css";
 function SearchForm() {
   const { getState } = useContext(GlobalContext);
 
+  console.log(getState());
+
   const navigate = useNavigate();
   // validar que sea mayor a cero
   const handleSearch = (e) => {
     e.preventDefault();
 
     const searchBoxData = document.querySelector("#search-input");
-    navigate(`/search/${searchBoxData.value}`);
+    navigate(`/search/${searchBoxData.value}`); // manejar que si le da a enter rediriga
   };
 
   const handleCart = (e) => {

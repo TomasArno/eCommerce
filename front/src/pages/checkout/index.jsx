@@ -10,13 +10,15 @@ import { Button } from "@mui/joy";
 import ArrowForward from "@mui/icons-material/ArrowForward";
 
 import Order from "../../components/order";
-
 function Cart() {
+  const { getState } = useContext(GlobalContext);
+
+  console.log(getState());
+
   let units = 0;
   let total = 0;
 
-  const { getState } = useContext(GlobalContext);
-  const { cartItems } = getState();
+  // const { cartItems } = getState();
 
   const cart = [
     {
@@ -36,7 +38,7 @@ function Cart() {
   // const [orders, setOrders] = useState([]);
 
   // useEffect(() => {
-  // 	axios('http://localhost:8080/api/orders')
+  // 	axios(`${apiUrl}/orders`)
   // 		.then((res) => {
   // 			if (res.data.response)
   // 				setOrders(res.data.response.docs);
@@ -101,7 +103,7 @@ function Cart() {
             justifyContent={"space-between"}
             padding={"1rem"}
           >
-            <Box marginTop={"10px"} >
+            <Box marginTop={"10px"}>
               <Typography fontSize="sm" level="body-sm">
                 Unidades: {units}
               </Typography>
@@ -121,7 +123,7 @@ function Cart() {
             >
               <Button
                 sx={{ background: "green" }}
-                onClick={() => { }}
+                onClick={() => {}}
                 size="lg"
                 endDecorator={<ArrowForward fontSize="xl" />}
               >

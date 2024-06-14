@@ -16,9 +16,9 @@ class MongoManager {
     }
   }
 
-  async read({ filter, sortAndPaginate }) {
+  async read({ filter, sortAndPaginate }, exclude = {}) {
     try {
-      const opt = { ...sortAndPaginate, lean: true };
+      const opt = { ...sortAndPaginate, lean: true, ...exclude };
 
       const all = await this.model.paginate(filter, opt);
 
