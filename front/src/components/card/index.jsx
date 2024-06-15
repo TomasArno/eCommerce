@@ -16,7 +16,7 @@ function BasicCard({ id, photo, title, price, stock }) {
 	function handleBtn() {
 		const { isLoggedIn } = getState()
 
-		if (isLoggedIn) {
+		if (!isLoggedIn) {
 			navigate("/login") // alternar
 		} else {
 			const productSelected = { id, photo, title, price, stock }

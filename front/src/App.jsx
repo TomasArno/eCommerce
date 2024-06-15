@@ -1,4 +1,7 @@
-import { Outlet } from "react-router-dom";
+import { useContext, useEffect } from "react";
+import { useNavigate, Outlet } from "react-router-dom";
+
+import { GlobalContext } from "./main";
 
 import Box from "@mui/joy/Box";
 import Typography from "@mui/joy/Typography";
@@ -7,6 +10,24 @@ import SearchForm from "./components/search-form";
 import "./App.css";
 
 function App() {
+  const navigate = useNavigate();
+
+  const { fetchData, setState } = useContext(GlobalContext);
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      const data = await fetchData({ url: "sessions" })
+
+      if (data.statusCode != 200) {
+        navigate("/login")
+      } else {
+        setState({ user: data.message, isLoggedIn: true })
+      }
+    }
+
+    checkAuth()
+  })
+
   return (
     <>
       <header className="header">

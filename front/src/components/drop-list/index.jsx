@@ -16,7 +16,7 @@ import ModalClose from "@mui/joy/ModalClose";
 function DropList() {
   const navigate = useNavigate();
 
-  const { getState } = useContext(GlobalContext);
+  const { getState, fetchData } = useContext(GlobalContext);
   const { isLoggedIn, user } = getState();
 
   const [open, setOpen] = React.useState(false);
@@ -36,9 +36,13 @@ function DropList() {
     if (!isLoggedIn) {
       navigate("/login");
     } else {
-      switch (e.target.value) {
+      switch (e.target.id) {
         case "orders":
           navigate("orders");
+          break;
+
+        case "profile":
+          navigate("profile");
           break;
 
         default:
@@ -47,6 +51,10 @@ function DropList() {
       }
     }
   };
+
+  const handleSignOut = () => {
+    fetchData({ method: "POST", url: "sessions/signout" })
+  }
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -77,12 +85,12 @@ function DropList() {
             ) : (
               <>
                 <ListItem>
-                  <ListItemButton component="a" href="profile">
+                  <ListItemButton id="profile" component="a" onClick={checkIsLoggedIn}>
                     {user.name?.toUpperCase()}
                   </ListItemButton>
                 </ListItem>
                 <ListItem>
-                  <ListItemButton component="a" href="">
+                  <ListItemButton component="a" href="login" onClick={handleSignOut}>
                     Salir
                   </ListItemButton>
                 </ListItem>

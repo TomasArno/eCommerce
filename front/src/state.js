@@ -1,3 +1,5 @@
+import qs from "qs"
+
 import axios from "axios";
 axios.defaults.withCredentials = true;
 
@@ -5,7 +7,6 @@ import { apiUrl } from "./utils/constants";
 
 const state = {
   data: {
-    email: "",
     isLoggedIn: false,
     isRegistered: false,
     user: {},
@@ -13,11 +14,11 @@ const state = {
     productSelected: {},
   },
 
-  async fetchData({ method = "get", data, params = "", url = "" }) {
+  async fetchData({ method = "get", data, params = {}, url = "" }) {
     const response = await axios(`${apiUrl}/${url}`, {
       method,
       data,
-      params,
+      params: qs.stringify(params),
     });
 
     return response.data;

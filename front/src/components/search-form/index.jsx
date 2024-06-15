@@ -17,8 +17,6 @@ import "./index.css";
 function SearchForm() {
   const { getState } = useContext(GlobalContext);
 
-  console.log(getState());
-
   const navigate = useNavigate();
   // validar que sea mayor a cero
   const handleSearch = (e) => {
