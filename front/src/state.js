@@ -48,9 +48,18 @@ const state = {
     state.data.cartItems.push(product);
   },
 
-  // removeProductFromCart(productId) {
-  // 	state.data.cartItems.push(product)
-  // }
+  modifyQuantity(productid, newQuantity) {
+    const searchedProduct = state.data.cartItems.find((product) => product.id == productid)
+
+    if (searchedProduct) {
+      searchedProduct.quantity = newQuantity
+    }
+  },
+
+  removeProductFromCart(productId) {
+    const removedProduct = state.data.cartItems.filter((el) => el.id != productId)
+    state.data.cartItems = removedProduct
+  }
 };
 
 export default state;

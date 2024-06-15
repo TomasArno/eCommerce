@@ -34,7 +34,7 @@ function SearchForm() {
 
   return (
     <div className="search-box_container">
-      <Link underline="none" href="/">
+      <Link component="a" underline="none" onClick={() => navigate("/")} >
         <Typography fontSize="xl">logo</Typography>
       </Link>
       <form className="search-form">
@@ -63,6 +63,7 @@ function SearchForm() {
         <DropList />
         <Badge
           component={"a"}
+          size="sm"
           onClick={handleCart}
           sx={{ color: "black", cursor: "pointer" }}
           badgeContent={getState().cartItems.length}

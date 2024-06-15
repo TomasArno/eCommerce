@@ -12,7 +12,7 @@ import "./App.css";
 function App() {
   const navigate = useNavigate();
 
-  const { fetchData, setState } = useContext(GlobalContext);
+  const { fetchData, setState, getState } = useContext(GlobalContext);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -22,6 +22,7 @@ function App() {
         navigate("/login")
       } else {
         setState({ user: data.message, isLoggedIn: true })
+        console.log(getState());
       }
     }
 

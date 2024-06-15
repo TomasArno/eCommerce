@@ -12,6 +12,7 @@ import { Box } from "@mui/joy";
 import ButtonCounter from "../button-counter";
 
 function OrderCard({
+  id,
   photo,
   state,
   title,
@@ -21,25 +22,40 @@ function OrderCard({
   height = 170,
   borderBottom = 2,
   button,
+  handleDelete
 }) {
   const [count, setCount] = useState(units);
-  const { getState } = useContext(GlobalContext);
+  const { getState, removeProductFromCart, modifyQuantity } = useContext(GlobalContext);
   const navigate = useNavigate();
 
   function handleBtn() {
     const { isLoggedIn } = getState();
-    if (isLoggedIn) {
-      ("");
-    } else {
+
+    if (!isLoggedIn) {
       navigate("/login");
     }
   }
 
   const handleAdd = () => {
-    setCount((c) => (c < units ? c + 1 : c));
+    const counterSmallerThanAvailable = count < units
+
+    if (counterSmallerThanAvailable) {
+      setCount((c) => (c + 1));
+      modifyQuantity(id, count + 1)
+    }
   };
+
   const handleRemove = () => {
-    setCount((c) => (c > 0 ? c - 1 : 0));
+    const oneUnitLeft = count == 1
+
+    setCount((c) => (c - 1));
+
+    if (oneUnitLeft) {
+      removeProductFromCart(id)
+      handleDelete()
+    } else {
+      modifyQuantity(id, count - 1)
+    }
   };
 
   return (

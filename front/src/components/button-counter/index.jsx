@@ -5,6 +5,7 @@ function ButtonCounter({ onClickAdd, onClickRemove, count, sx }) {
   return (
     <Box
       sx={{
+        borderColor: "orange",
         alignSelf: "center",
         borderRadius: "6px",
         ...sx
