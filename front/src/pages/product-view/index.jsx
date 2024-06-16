@@ -1,7 +1,8 @@
 import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { GlobalContext } from "../../main"
+import { GlobalContext } from "../../state";
+
 import FullCard from '../../components/full-card';
 
 function ProducView() {

@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { GlobalContext } from "../../main";
+import { GlobalContext } from "../../state";
+
 
 import AspectRatio from "@mui/joy/AspectRatio";
 import Button from "@mui/joy/Button";
@@ -48,7 +49,7 @@ function OrderCard({
   const handleRemove = () => {
     const oneUnitLeft = count == 1
 
-    setCount((c) => (c - 1));
+    // setCount((c) => (c - 1));
 
     if (oneUnitLeft) {
       removeProductFromCart(id)

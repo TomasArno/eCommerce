@@ -6,7 +6,8 @@ import ListItemButton from '@mui/joy/ListItemButton';
 import Home from '@mui/icons-material/Home';
 import Person from '@mui/icons-material/Person';
 
-import { GlobalContext } from "../../main"
+import { GlobalContext } from "../../state";
+
 import { useContext } from 'react';
 // import { useNavigate } from 'react-router-dom';
 

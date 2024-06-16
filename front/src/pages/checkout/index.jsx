@@ -1,7 +1,5 @@
-// import { useState, useEffect } from 'react';
-// import axios from 'axios';
-import { useContext, useState } from "react";
-import { GlobalContext } from "../../main";
+import { useContext, useState, useEffect } from "react";
+import { GlobalContext } from "../../state";
 
 import CardContent from "@mui/joy/CardContent";
 import { Box } from "@mui/joy";
@@ -12,15 +10,28 @@ import ArrowForward from "@mui/icons-material/ArrowForward";
 import Product from "../../components/order";
 
 function Cart() {
-  const { getState } = useContext(GlobalContext);
-  const [cart, setCart] = useState(getState().cartItems)
+  const { fetchData } = useContext(GlobalContext);
+  const [cart, setCart] = useState([])
 
-  const handleDelete = () => {
-    setCart(getState().cartItems)
-  }
+  useEffect(() => {
+    const handleFetch = async () => {
+      const data = await fetchData({ url: "orders" })
+
+      if (data?.statusCode == 200) {
+        const { docs } = data.response;
+
+        setCart(docs);
+      }
+    }
+
+    handleFetch()
+  }, [])
+
+  // const handleDelete = () => {
+  //   setCart(getState().cartItems)
+  // }
 
   let units = 0;
-  let total = 0;
 
   return (
     <Box
@@ -34,23 +45,25 @@ function Cart() {
         cart.length ?
           <>
             <Box sx={{ width: "60%", maxWidth: "800px" }}>
-              {cart.map((product, i) => {
-                units += product.quantity;
-                total += 15 * product.quantity;
+              {cart.map((order) => {
+                units += order.quantity;
+
+                const { quantity } = order
+                const { _id, title, photo } = order.productId
 
                 return (
                   <Product
-                    id={product.id}
+                    key={_id}
+                    id={_id}
                     button="modifiers"
                     height={120}
                     borderBottom={0}
-                    key={i}
-                    state={product.title}
-                    units={product.quantity}
+                    state={title}
+                    units={quantity}
                     date={""}
-                    photo={product.photo}
+                    photo={photo}
                     padding={0}
-                    handleDelete={handleDelete}
+                    handleDelete={() => { }}
                   />
                 );
               })}
@@ -96,7 +109,7 @@ function Cart() {
                       display={"flex"}
                       justifyContent={"space-between"}
                     >
-                      Total: <span>${total}</span>
+                      Total: <span>${2}</span>
                     </Typography>
                   </Box>
                   <Box

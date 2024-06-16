@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { GlobalContext } from "../../main";
+import { GlobalContext } from "../../state";
 
 import Person from "@mui/icons-material/Person";
 import Box from "@mui/joy/Box";

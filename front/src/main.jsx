@@ -1,16 +1,14 @@
-import React, { createContext } from "react";
+import React from "react";
 import ReactDOM from "react-dom/client";
 import { RouterProvider } from "react-router-dom";
 
-import state from "./state";
+import { GlobalProvider } from "./state";
 import router from "./router/.";
-
-export const GlobalContext = createContext(state);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <GlobalContext.Provider value={{ ...state }}>
+    <GlobalProvider>
       <RouterProvider router={router} />
-    </GlobalContext.Provider>
-  </React.StrictMode>
+    </GlobalProvider>
+  </React.StrictMode >
 );

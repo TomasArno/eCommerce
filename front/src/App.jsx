@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react";
 import { useNavigate, Outlet } from "react-router-dom";
 
-import { GlobalContext } from "./main";
+import { GlobalContext } from "./state";
 
 import Box from "@mui/joy/Box";
 import Typography from "@mui/joy/Typography";
@@ -12,7 +12,7 @@ import "./App.css";
 function App() {
   const navigate = useNavigate();
 
-  const { fetchData, setState, getState } = useContext(GlobalContext);
+  const { fetchData, setState } = useContext(GlobalContext);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -21,8 +21,7 @@ function App() {
       if (data.statusCode != 200) {
         navigate("/login")
       } else {
-        setState({ user: data.message, isLoggedIn: true })
-        console.log(getState());
+        setState({ user: data.response, isLoggedIn: true })
       }
     }
 

@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { GlobalContext } from "../../main";
+import { GlobalContext } from "../../state";
+
 
 import AspectRatio from "@mui/joy/AspectRatio";
 import Box from "@mui/joy/Box";

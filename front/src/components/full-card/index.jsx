@@ -1,7 +1,7 @@
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { GlobalContext } from "../../main";
+import { GlobalContext } from "../../state";
 
 import { typographyClasses } from "@mui/joy/Typography";
 import Box from "@mui/joy/Box";
@@ -20,19 +20,18 @@ function FullCard({ photo, title, price, stock }) {
 
   const { addProductInCart, getState } = useContext(GlobalContext);
 
-  const handleBuy = () => {
-    addProductInCart({ ...getState().productSelected, quantity: count });
-    navigate("/cart");
-  };
+  const handleCart = (e) => {
+    const { id } = getState().productSelected
 
-  const handleCart = () => {
-    addProductInCart({ ...getState().productSelected, quantity: count });
-    navigate("/");
+    addProductInCart(id, count);
+    if (e.target.id == "buy") navigate("/cart");
+    else navigate("/")
   };
 
   const handleAdd = () => {
     setCount((c) => (c < stock ? c + 1 : c));
   };
+
   const handleRemove = () => {
     setCount((c) => (c > 0 ? c - 1 : 0));
   };
@@ -110,13 +109,15 @@ function FullCard({ photo, title, price, stock }) {
 
           <Box sx={{ display: "flex", flexDirection: "column", rowGap: "5px" }}>
             <Button
-              onClick={handleBuy}
+              id="buy"
+              onClick={handleCart}
               size="lg"
               endDecorator={<ArrowForward fontSize="xl" />}
             >
               Comprar ahora
             </Button>
             <Button
+              id="add"
               onClick={handleCart}
               size="lg"
               variant="soft"

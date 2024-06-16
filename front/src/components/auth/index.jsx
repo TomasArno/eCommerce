@@ -16,7 +16,7 @@ import FormHelperText from "@mui/joy/FormHelperText";
 import InfoOutlined from "@mui/icons-material/InfoOutlined";
 
 import { useNavigate } from "react-router-dom";
-import { GlobalContext } from "../../main";
+import { GlobalContext } from "../../state";
 import axios from "axios";
 import { apiUrl } from "../../utils/constants";
 
@@ -43,9 +43,9 @@ function Auth({ path = "login" }) {
       .post(`${apiUrl}/sessions/login`, data)
       .then((res) => {
         if (res.data.statusCode == 200) {
-          setState({ isLoggedIn: true, user: res.data.message });
+          setState({ isLoggedIn: true, user: res.data.response });
           navigate("/");
-        } else if (res.data.message.includes("Not verified")) {
+        } else if (res.data.response.includes("Not verified")) {
           setEmail(data.email);
           setIsRegistered(true);
           navigate("/register");
@@ -72,7 +72,7 @@ function Auth({ path = "login" }) {
         if (res.data.statusCode == 201) {
           setIsRegistered(true);
           setEmail(data.email);
-        } else alert(res.data.message);
+        } else alert(res.data.response);
       })
       .catch((err) => console.log(err));
 
@@ -93,7 +93,7 @@ function Auth({ path = "login" }) {
       })
       .then((res) => {
         if (res.data.statusCode == 200) navigate("/login");
-        else alert(res.data.message);
+        else alert(res.data.response);
       })
       .catch((err) => console.log(err));
 
@@ -198,8 +198,8 @@ function Auth({ path = "login" }) {
                   path == "login"
                     ? handleLogin(event)
                     : !isRegistered
-                    ? handleRegister(event)
-                    : handleVerification(event)
+                      ? handleRegister(event)
+                      : handleVerification(event)
                 }
               >
                 {!isRegistered ? (
@@ -280,8 +280,8 @@ function Auth({ path = "login" }) {
                     {path == "login"
                       ? "Iniciar sesión"
                       : !isRegistered
-                      ? "Registrarse"
-                      : "Verificar código"}
+                        ? "Registrarse"
+                        : "Verificar código"}
                   </Button>
                 </Stack>
               </form>

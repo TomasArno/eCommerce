@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { GlobalContext } from "../../main";
+import { GlobalContext } from "../../state";
 import { useNavigate } from "react-router-dom";
 
 import Link from "@mui/joy/Link";

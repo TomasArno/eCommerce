@@ -6,7 +6,7 @@ import Typography from '@mui/joy/Typography';
 import Button from '../button';
 
 import { useContext } from 'react';
-import { GlobalContext } from "../../main"
+import { GlobalContext } from "../../state";
 import { useNavigate } from 'react-router-dom';
 
 function BasicCard({ id, photo, title, price, stock }) {
