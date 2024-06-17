@@ -1,149 +1,122 @@
 components:
   schemas:
-    Product:
+    Order:
       type: object
       properties:
-        id:
+        userId:
           type: string
-          description: product id
-          example: 662eee476305b27c94de0d38
-        title:
+          description: The ID of the user who generated the order
+          example: 632eee477305b27c94de0d38
+        productId:
           type: string
-          description: product title
-          example: my product
-        photo:
-          type: string
-          description: url product image
-          example: https://picsum.photos/200/300
-        price:
+          description: the ID of the product to buy
+          example: 662eee476305b27c94ee0d32
+        quantity:
           type: number
-          description: product price
-          example: 22000
-        stock:
-          type: number
-          description: product stock
-          example: 100
-        ownerId:
+          description: number of units to buy
+          example: 20
+        state:
           type: string
-          description: owner id
-          example: 662eee476305b27c94de0d44
+          description: The actual status of the order
+          example: "pending"
       required:  
-        - title
-        - price
-        - stock
-        - ownerId
+        - userId
+        - productId
+        - quantity
 paths:
-  /api/products:
+  /api/orders:
     get:
-      summary: Returns a list of product.
+      summary: Returns a list of orders.
       tags:
-        - Products
+        - Orders
       responses:
         '200':
           description: OK
           content:
-            description: An array of products
+            description: An array of orders
+        '401':
+          description: Lack of permissions to access
         '404':
-          description: Not found
+          description: Not found any order
     post:
-      summary: create a product.
+      summary: Create a new order.
       tags:
-        - Products
+        - Orders
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Product'
+              $ref: '#/components/schemas/Order'
       responses:
         '201':
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Product'
-  /api/products/{productId}:
+                $ref: '#/components/schemas/Order'
+        '401':
+          description: Lack of permissions to access
+  /api/orders/{orderId}:
     get:
-      summary: Returns a product.
+      summary: Returns a order by ID.
       tags:
-        - Products
+        - Orders
       parameters:
         - in: path
-          name: productId
+          name: orderId
           schema:
             type: string
           required: true
-          description: ID of the product to get
+          description: ID of the order to get
       responses:
         '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Product'
+                $ref: '#/components/schemas/Order'
+        '401':
+          description: Lack of permissions to access
         '404':
           description: Not found
-    patch:
-      summary: Modify a product.
+    put:
+      summary: Modify a order.
       tags:
-        - Products
+        - Orders
       parameters:
         - in: path
-          name: productId
+          name: orderId
           schema:
             type: string
           required: true
-          description: ID of the product to modify
+          description: ID of the order to modify
       requestBody:
         required: true
         content:
-          description: Some properties of product
+          description: Some properties of order
       responses:
         '200':
           description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Product'
-        '400':
-          description: ERROR
-          content:
-            application/json:
-              schema:
-                description: descrip
+        '401':
+          description: Lack of permissions to access
         '404':
           description: Not found
-          content:
-            application/json:
-              schema:
-                description: descrip
     delete:
-      summary: Remove a product.
+      summary: Removes a order by ID.
       tags:
-        - Products
+        - Orders
       parameters:
         - in: path
-          name: productId
+          name: orderId
           schema:
             type: string
           required: true
-          description: ID of the product to delete
+          description: ID of the order to delete
       responses:
         '200':
           description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Product'
-        '400':
-          description: ERROR
-          content:
-            application/json:
-              schema:
-                description: descrip
+        '401':
+          description: Lack of permissions to access
         '404':
           description: Not found
-          content:
-            application/json:
-              schema:
-                description: descrip

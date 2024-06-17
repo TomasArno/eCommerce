@@ -3,10 +3,6 @@ components:
     Product:
       type: object
       properties:
-        id:
-          type: string
-          description: product id
-          example: 662eee476305b27c94de0d38
         title:
           type: string
           description: product title
@@ -62,6 +58,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Product'
+        '401':
+          description: Lack of permissions to access
   /api/products/{productId}:
     get:
       summary: Returns a product.
@@ -83,7 +81,7 @@ paths:
                 $ref: '#/components/schemas/Product'
         '404':
           description: Not found
-    patch:
+    put:
       summary: Modify a product.
       tags:
         - Products
@@ -105,18 +103,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Product'
-        '400':
-          description: ERROR
-          content:
-            application/json:
-              schema:
-                description: descrip
+        '401':
+          description: Lack of permissions to access
         '404':
           description: Not found
-          content:
-            application/json:
-              schema:
-                description: descrip
     delete:
       summary: Remove a product.
       tags:
@@ -135,15 +125,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Product'
-        '400':
-          description: ERROR
-          content:
-            application/json:
-              schema:
-                description: descrip
         '404':
           description: Not found
-          content:
-            application/json:
-              schema:
-                description: descrip
+        '401':
+          description: Lack of permissions to access
