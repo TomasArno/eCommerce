@@ -10,6 +10,9 @@ import { createToken } from "../utils/jtw.utils.js";
 import sendEmailCode from "../utils/sendEmail.utils.js";
 import errors from "../utils/errors/errorsLibrary.utils.js";
 
+import addLog from "../utils/logs/addLog.utils.js"
+import logsLibrary from "../utils/logs/logsLibrary.utils.js"
+
 const { GOOGLE_ID, GOOGLE_SECRET, SECRET_JWT } = process.env;
 
 passport.use(
@@ -27,6 +30,7 @@ passport.use(
           });
 
         const user = await users.create(req.body);
+        addLog(user._id, logsLibrary.signUp)
 
         sendEmailCode(user.email, user.verifyCode);
 
@@ -58,6 +62,7 @@ passport.use(
 
         req.token = createToken({ email, role: searchedUser.role });
         req.user = user;
+        addLog(user._id, logsLibrary.logIn)
 
         done(null, user);
       } catch (error) {

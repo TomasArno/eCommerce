@@ -3,6 +3,8 @@ import users from "../services/users.service.js";
 import CustomError from "../utils/errors/customError.utils.js";
 import errors from "../utils/errors/errorsLibrary.utils.js";
 
+import addLog from "../utils/logs/addLog.utils.js"
+
 class SessionsController {
   async read(req, res, next) {
     try {
@@ -24,6 +26,8 @@ class SessionsController {
       if (user.verifyCode !== verifyCode) CustomError.new(errors.token);
 
       await users.update(user._id, { verified: true });
+
+      addLog(req.user._id, "Verificacion satisfactoria")
 
       res.json({
         statusCode: 200,

@@ -2,6 +2,8 @@ import orders from "../services/orders.service.js";
 import CustomError from "../utils/errors/customError.utils.js"
 import errors from "../utils/errors/errorsLibrary.utils.js"
 
+import addLog from "../utils/logs/addLog.utils.js"
+
 class OrdersController {
   constructor() {
     // this.service = orders;
@@ -10,6 +12,8 @@ class OrdersController {
   async create(req, res, next) {
     try {
       const data = await orders.create(req.body);
+
+      addLog(req.user._id, "Orden creada")
 
       res.json({
         statusCode: 201,
@@ -71,7 +75,6 @@ class OrdersController {
       // if (userId = !id) CustomError.new(errors.forbidden)
 
       const userOrder = await orders.readOne(orderId);
-      console.log(userOrder);
       // if (!userOrders?.docs.length) CustomError.new(errors.notFound)
 
       res.json({
@@ -90,6 +93,8 @@ class OrdersController {
       const modifiedOrder = await orders.update(orderId, req.body);
       if (!modifiedOrder) CustomError.new(errors.notFound)
 
+      addLog(req.user._id, `Orden ${orderId} modificada`)
+
       res.json({
         statusCode: 200,
         response: "Updated Order",
@@ -105,6 +110,8 @@ class OrdersController {
 
       const deletedOrder = await orders.destroy(orderId);
       if (!deletedOrder) CustomError.new(errors.notFound)
+
+      addLog(req.user._id, `Orden ${orderId} eliminada`)
 
       res.json({
         statusCode: 200,

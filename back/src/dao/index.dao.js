@@ -1,10 +1,13 @@
 import dbConnection from "../utils/db.utils.js";
 
+import Logger from "../utils/winston.utils.js";
+
 import args from "../utils/arguments.utils.js";
 const { env } = args;
 
+Logger.info("ENVIRONMENT: " + env);
+
 let dao;
-console.log("ENVIRONMENT: " + env);
 
 switch (env) {
   case "test":
