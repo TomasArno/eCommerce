@@ -1,6 +1,10 @@
 import app from "./app.js";
-const PORT = process.env.PORT || 8080;
+import createCluster from "./utils/createCluster.utils.js";
+import Logger from "./utils/winston.utils.js";
 
-app.listen(PORT, () => {
-    console.log('Server running on port ' + PORT)
-});
+const PORT = process.env.PORT || 8080;
+const cbReady = () => Logger.info('Server running on port ' + PORT)
+
+createCluster(() => app.listen(PORT, cbReady))
+
+

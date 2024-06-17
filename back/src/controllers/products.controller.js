@@ -2,6 +2,8 @@ import products from "../services/products.service.js";
 import CustomError from "../utils/errors/customError.utils.js"
 import errors from "../utils/errors/errorsLibrary.utils.js"
 
+import addLog from "../utils/logs/addLog.utils.js"
+
 class ProductsController {
   constructor() {
     this.service = products;
@@ -11,11 +13,15 @@ class ProductsController {
     try {
       const data = await products.create(req.body);
 
+      addLog(req.user._id, "Producto creado")
+
       res.json({
         statusCode: 201,
         response: data,
       });
     } catch (e) {
+      console.log(e.message);
+
       next(e);
     }
   }

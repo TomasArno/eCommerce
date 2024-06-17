@@ -3,7 +3,7 @@ import crypto from "crypto";
 import args from "../utils/arguments.utils.js";
 const { env } = args;
 
-class ProductsDTO {
+class PaymentsDTO {
   constructor(data) {
     if (env == "test") {
       this._id = crypto.randomBytes(12).toString("hex")
@@ -11,12 +11,15 @@ class ProductsDTO {
       this.updatedAt = new Date();
     };
 
-    this.title = data.title;
-    this.photo = data.photo || "https://picsum.photos/200/300";
-    this.price = data.price || 0;
-    this.stock = data.stock || 0;
-    this.ownerId = data.ownerId;
+    this.price_data = {
+      product_data: {
+        name: data.productId.title,
+      },
+      unit_amount: (data.productId.price * 100),
+      currency: "ars",
+    }
+    this.quantity = data.quantity;
   }
 }
 
-export default ProductsDTO;
+export default PaymentsDTO;

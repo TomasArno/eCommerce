@@ -2,9 +2,9 @@ import { model, Schema, Types } from "mongoose";
 
 import moongosePaginate from "mongoose-paginate-v2";
 
-const collection = "orders";
+const collection = "payments";
 
-const ordersSchema = new Schema(
+const paymentsSchema = new Schema(
   {
     productId: { type: Types.ObjectId, required: true, ref: "products" },
     userId: { type: Types.ObjectId, required: true, ref: "users", index: true },
@@ -14,16 +14,16 @@ const ordersSchema = new Schema(
   { timestamps: true }
 );
 
-ordersSchema.plugin(moongosePaginate);
+paymentsSchema.plugin(moongosePaginate);
 
-ordersSchema.pre("find", function () {
+paymentsSchema.pre("find", function () {
   this.populate("userId", "-password -verifyCode -createdAt -updatedAt -__v");
 });
 
-ordersSchema.pre("find", function () {
+paymentsSchema.pre("find", function () {
   this.populate("productId", "-createdAt -updatedAt -__v");
 });
 
-const Orders = model(collection, ordersSchema);
+const Payments = model(collection, paymentsSchema);
 
-export default Orders;
+export default Payments;

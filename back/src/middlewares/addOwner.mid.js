@@ -1,8 +1,7 @@
 function addOwner(req, res, next) {
     try {
-        const { _id } = req.user;
+        req.body.ownerId = req.user?._id;
 
-        req.body.ownerId = _id
         next()
     } catch (e) {
         next(e);

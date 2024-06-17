@@ -3,14 +3,14 @@ import users from "../services/users.service.js";
 import CustomError from "../utils/errors/customError.utils.js";
 import errors from "../utils/errors/errorsLibrary.utils.js";
 
+import addLog from "../utils/logs/addLog.utils.js"
+
 class SessionsController {
   async read(req, res, next) {
     try {
-      const { name, email, role } = req.user;
-
       res.json({
         statusCode: 200,
-        message: { name, email, role },
+        response: req.user,
       });
     } catch (error) {
       next(error);
@@ -27,9 +27,11 @@ class SessionsController {
 
       await users.update(user._id, { verified: true });
 
+      addLog(req.user._id, "Verificacion satisfactoria")
+
       res.json({
         statusCode: 200,
-        message: "Verified user",
+        response: "Verified user",
       });
     } catch (error) {
       next(error);
@@ -40,7 +42,7 @@ class SessionsController {
     try {
       res.json({
         statusCode: 201,
-        message: "Registered!",
+        response: "Registered!",
       });
     } catch (error) {
       next(error);
@@ -56,7 +58,7 @@ class SessionsController {
         })
         .json({
           statusCode: 200,
-          message: req.user,
+          response: req.user,
         });
     } catch (error) {
       next(error);
@@ -65,12 +67,12 @@ class SessionsController {
 
   async signout(req, res, next) {
     try {
-      if (!req.cookies.token) CustomError.new(errors.noToken);
+      if (!req.cookies.token) CustomError.new(errors.token);
 
       res.clearCookie("token");
       res.json({
         statusCode: 200,
-        message: "Signed out!",
+        response: "Signed out!",
       });
     } catch (error) {
       next(error);
@@ -86,7 +88,7 @@ class SessionsController {
         })
         .json({
           statusCode: 200,
-          message: "Logged in with google",
+          response: "Logged in with google",
         });
     } catch (error) {
       next(error);
@@ -97,7 +99,7 @@ class SessionsController {
     try {
       res.json({
         statusCode: 401,
-        message: "Bad auth",
+        response: "Bad auth",
       });
     } catch (error) {
       next(error);

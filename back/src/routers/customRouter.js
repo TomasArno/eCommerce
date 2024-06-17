@@ -69,7 +69,9 @@ export default class CustomRouter {
 					(role === 2 && arrayOfPolicies.includes('PREMIUM')) ||
 					(role === 3 && arrayOfPolicies.includes('ADMIN'))
 				) {
-					const user = await users.readByEmail(email);
+					const searchedUser = await users.readByEmail(email);
+					const { password, verifyCode, __v, isVerified, ...user } = searchedUser // Le desestructuro lo que NO tiene que ver el usuario
+
 					req.user = user;
 
 					return next();

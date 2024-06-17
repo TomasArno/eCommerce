@@ -1,5 +1,4 @@
-import { transports, format, createLogger, addColors } from 'winston';
-const { combine, colorize, printf, timestamp, uncolorize } = format;
+import { transports, format, createLogger } from 'winston';
 
 import args from "./arguments.utils.js";
 
@@ -8,6 +7,15 @@ const levels = {
     error: 1,
     info: 2,
     http: 3,
+    debug: 4,
+};
+
+const level = () => {
+    const { env } = args;
+
+    const isDevelopment = env == 'development';
+
+    return isDevelopment ? 'debug' : 'info';
 };
 
 const winTransports = () => {
@@ -20,33 +28,31 @@ const winTransports = () => {
         return devTransports
     } else {
         const prodTransports = [
-            new transports.Console({ level: "http" }),
-            new transports.File({ filename: 'src/logs/errors.log', level: 'error' })
+            new transports.File({ filename: 'logs/all.log' }),
+            new transports.File({
+                filename: 'logs/excepcions.log',
+                level: 'fatal',
+                handleExceptions: true,
+            }),
+            new transports.File({
+                filename: 'logs/warnings.log',
+                level: 'error',
+            }),
         ];
 
         return prodTransports
     }
 };
 
-
-const winFormat = () => {
-    const { env } = args;
-
-    const isDevelopment = env == 'development';
-
-    const colors = { fatal: "red", error: "yellow", info: "blue", http: "green" };
-    addColors(colors);
-
-    return combine(
-        isDevelopment ? colorize(colors) : uncolorize(),
-        timestamp({ format: 'YYYY-MM-DD HH:mm:ss:ms' }),
-        printf((info) => `${info.level}: ${info.message} - ${info.timestamp}ms`)
-    );
-}
+const winFormat = format.combine(
+    format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss:ms' }),
+    format.printf((info) => `${info.timestamp} ${info.level}: ${info.message}`)
+);
 
 const Logger = createLogger({
     levels,
-    format: winFormat(),
+    level: level(),
+    format: winFormat,
     transports: winTransports(),
     exitOnError: false,
 });

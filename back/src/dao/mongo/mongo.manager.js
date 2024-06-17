@@ -16,9 +16,9 @@ class MongoManager {
     }
   }
 
-  async read({ filter, sortAndPaginate }, exclude = {}) {
+  async read({ filter, sortAndPaginate = {} }, exclude = "") {
     try {
-      const opt = { ...sortAndPaginate, lean: true, ...exclude };
+      const opt = { ...sortAndPaginate, lean: true, select: exclude };
 
       const all = await this.model.paginate(filter, opt);
 
@@ -86,8 +86,7 @@ class MongoManager {
 
   async readByEmail(email) {
     try {
-      const users = await this.read({ filter: { email } });
-      const searchedUser = users.docs[0];
+      const searchedUser = await this.model.findOne({ email }).lean();
 
       return searchedUser;
     } catch (error) {

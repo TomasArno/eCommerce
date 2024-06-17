@@ -1,11 +1,12 @@
 import { connect } from "mongoose";
+import Logger from "./winston.utils.js";
 
 const dbConnection = async () => {
   try {
     connect(process.env.DB_URL);
-    console.log("Mongo connection successfully");
+    Logger.info("Mongo connection successfully");
   } catch (e) {
-    console.log(e);
+    Logger.fatal("Problems with db connection: " + e.message);
   }
 };
 

@@ -1,5 +1,6 @@
 const errors = {
-    unauthorized: { message: "Unauthorized to modify this resource", statusCode: 400 },
+    unauthorized: { message: "Unauthorized to modify this resource", statusCode: 403 },
+    wrongEmail: { message: "Invalid Email", statusCode: 400 },
     error: { message: "Error", statusCode: 400 },
     notVerified: { message: "Not verified", statusCode: 400 },
     token: { message: "Invalid token", statusCode: 400 },

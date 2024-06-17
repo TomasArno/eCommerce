@@ -1,16 +1,15 @@
-import logger from "../utils/winston.utils.js";
+import morgan from 'morgan';
+import Logger from "../utils/winston.utils.js";
 
-function wintson(req, res, next) {
-    try {
-        req.logger = logger;
+const stream = {
+    write: (message) => Logger.http(message),
+};
 
-        const message = `${req.method} ${req.url}`
-        logger.http(message);
+morgan.token('body', (req, res) => JSON.stringify(req['body']));
 
-        return next();
-    } catch (error) {
-        return next(error);
-    }
-}
+const morganAndWiston = morgan(
+    ':method :url :body :status -- :res[content-length] :response-time ms',
+    { stream }
+);
 
-export default wintson;
+export default morganAndWiston;

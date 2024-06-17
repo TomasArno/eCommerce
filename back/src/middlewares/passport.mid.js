@@ -10,6 +10,9 @@ import { createToken } from "../utils/jtw.utils.js";
 import sendEmailCode from "../utils/sendEmail.utils.js";
 import errors from "../utils/errors/errorsLibrary.utils.js";
 
+import addLog from "../utils/logs/addLog.utils.js"
+import logsLibrary from "../utils/logs/logsLibrary.utils.js"
+
 const { GOOGLE_ID, GOOGLE_SECRET, SECRET_JWT } = process.env;
 
 passport.use(
@@ -28,6 +31,8 @@ passport.use(
 
         const user = await users.create(req.body);
 
+        addLog(user._id, logsLibrary.signUp)
+
         sendEmailCode(user.email, user.verifyCode);
 
         done(null, user);
@@ -45,18 +50,22 @@ passport.use(
     async (req, email, password, done) => {
       try {
         const searchedUser = await users.readByEmail(email);
-        console.log(searchedUser);
 
         if (!searchedUser?._id) return done(null, false, errors.notFound);
+
         if (createHash(password) != searchedUser.password)
           return done(null, false, errors.auth);
+
         if (!searchedUser.isVerified)
           return done(null, false, errors.notVerified);
 
-        req.token = createToken({ email, role: searchedUser.role });
-        req.user = searchedUser;
+        const { password: pass, verifyCode, __v, isVerified, ...user } = searchedUser // Le desestructuro lo que NO tiene que ver el usuario
 
-        done(null, searchedUser);
+        req.token = createToken({ email, role: searchedUser.role });
+        req.user = user;
+        addLog(user._id, logsLibrary.logIn)
+
+        done(null, user);
       } catch (error) {
         done(error);
       }
