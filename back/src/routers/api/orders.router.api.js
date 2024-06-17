@@ -4,21 +4,21 @@ import {
   create,
   report,
   read,
-  readOne,
   destroy,
   update,
+  readOne,
 } from "../../controllers/orders.controller.js";
 
 import addUser from "../../middlewares/addUser.mid.js"
 
 class Router extends CustomRouter {
   init() {
-    this.create("/", ['ADMIN', "PREMIUM", 'USER'], addUser, create);
-    this.read("/", ['ADMIN', "PREMIUM", 'USER'], read);
-    this.read("/:userId", ['ADMIN', "PREMIUM", 'USER'], readOne);
-    this.read("/total/:userId", ['ADMIN', "PREMIUM", 'USER'], report);
-    this.update("/:orderId", ['ADMIN', "PREMIUM", 'USER'], update);
-    this.destroy("/:orderId", ['ADMIN', "PREMIUM", 'USER'], destroy);
+    this.create("/", ["PREMIUM", 'USER'], addUser, create);
+    this.read("/", ["PREMIUM", 'USER'], read);
+    this.read("/:orderId", ["PREMIUM", 'USER'], readOne);
+    this.read("/total/:userId", ["PREMIUM", 'USER'], report);
+    this.update("/:orderId", ["PREMIUM", 'USER'], update);
+    this.destroy("/:orderId", ["PREMIUM", 'USER'], destroy);
   }
 }
 

@@ -19,7 +19,7 @@ class Router extends CustomRouter {
 
     this.read("/:userId", ["ADMIN"], readOne);
 
-    this.update("/:userId", ["ADMIN"], update);
+    this.update("/:userId", ["USER", "PREMIUM", "ADMIN"], update);
 
     this.destroy("/:userId", ["ADMIN"], destroy);
   }

@@ -1,5 +1,4 @@
 import orders from "../services/orders.service.js";
-import products from "../services/products.service.js";
 import CustomError from "../utils/errors/customError.utils.js"
 import errors from "../utils/errors/errorsLibrary.utils.js"
 
@@ -8,42 +7,8 @@ class OrdersController {
     // this.service = orders;
   }
 
-  static async validateProductsOwner(userId, productId) {
-    const product = await products.readOne(productId);
-    if (!product || product.ownerId.toString() == userId.toString()) CustomError.new(errors.notFound)
-
-    // const productsId = productsData.map(el => el.productId)
-
-    // const filter = {}
-
-    // filter._id = { $in: productsId }
-    // filter.ownerId = { $ne: userId }
-
-    // const productsFounded = (await products.read({ filter })).docs
-    // const idsInDatabase = productsFounded.map(el => el._id.toString())
-
-    // if (idsInDatabase.length != productsId.length) {
-    //   let missingIds = []
-
-    //   productsId.forEach(id => {
-    //     if (!idsInDatabase.includes(id)) {
-    //       missingIds.push(id)
-    //     }
-    //   });
-
-    //   CustomError.new({ message: missingIds, statusCode: 404 })
-    // }
-
-    // return productsFounded
-  }
-
   async create(req, res, next) {
     try {
-      const { role, _id: userId } = req.user
-      const { productId } = req.body
-
-      if (role == 1) await OrdersController.validateProductsOwner(userId, productId)
-
       const data = await orders.create(req.body);
 
       res.json({
@@ -72,10 +37,12 @@ class OrdersController {
 
   async read(req, res, next) {
     try {
+      const { _id } = req.user;
       const { state, quantity, page, limit } = req.query;
 
       const filter = {};
 
+      filter.userId = _id;
       if (state) filter.state = state;
       if (quantity) filter.quantity = quantity;
 
@@ -84,12 +51,12 @@ class OrdersController {
       if (!page) options.page = 1;
       if (!limit) options.limit = 20;
 
-      const all = await orders.read({ filter, options });
-      if (!all.docs.length) CustomError.new(errors.notFound)
+      const userOrders = await orders.read({ filter, options });
+      if (!userOrders?.docs.length) CustomError.new(errors.notFound)
 
       res.json({
         statusCode: 200,
-        response: all,
+        response: userOrders,
       });
     } catch (e) {
       next(e);
@@ -98,14 +65,18 @@ class OrdersController {
 
   async readOne(req, res, next) {
     try {
-      const { userId } = req.params;
+      const { id } = req.user;
+      const { orderId } = req.params;
 
-      const userOrders = await orders.read({ filter: { userId } });
-      if (!userOrders.docs.length) CustomError.new(errors.notFound)
+      // if (userId = !id) CustomError.new(errors.forbidden)
+
+      const userOrder = await orders.readOne(orderId);
+      console.log(userOrder);
+      // if (!userOrders?.docs.length) CustomError.new(errors.notFound)
 
       res.json({
         statusCode: 200,
-        response: userOrders,
+        response: "userOrders",
       });
     } catch (e) {
       next(e);
@@ -121,7 +92,7 @@ class OrdersController {
 
       res.json({
         statusCode: 200,
-        response: modifiedOrder,
+        response: "Updated Order",
       });
     } catch (e) {
       next(e);
@@ -137,7 +108,7 @@ class OrdersController {
 
       res.json({
         statusCode: 200,
-        response: deletedOrder,
+        response: "Deleted Order",
       });
     } catch (e) {
       next(e);

@@ -45,18 +45,21 @@ passport.use(
     async (req, email, password, done) => {
       try {
         const searchedUser = await users.readByEmail(email);
-        console.log(searchedUser);
 
         if (!searchedUser?._id) return done(null, false, errors.notFound);
+
         if (createHash(password) != searchedUser.password)
           return done(null, false, errors.auth);
+
         if (!searchedUser.isVerified)
           return done(null, false, errors.notVerified);
 
-        req.token = createToken({ email, role: searchedUser.role });
-        req.user = searchedUser;
+        const { password: pass, verifyCode, __v, isVerified, ...user } = searchedUser // Le desestructuro lo que NO tiene que ver el usuario
 
-        done(null, searchedUser);
+        req.token = createToken({ email, role: searchedUser.role });
+        req.user = user;
+
+        done(null, user);
       } catch (error) {
         done(error);
       }

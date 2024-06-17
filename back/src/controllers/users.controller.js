@@ -68,6 +68,8 @@ class UsersController {
     try {
       const { userId } = req.params;
 
+      if (userId != req.user.id) CustomError.new(errors.forbidden)
+
       const modifiedUser = await users.update(userId, req.body);
       if (!modifiedUser) CustomError.new(errors.notFound)
 
