@@ -40,7 +40,7 @@
   },
   "devDependencies": {
     "@faker-js/faker": "8.4.1",
-    "artillery": "^2.0.15",
+    "artillery": "2.0.15",
     "chai": "5.1.1",
     "dotenv": "16.4.1",
     "mocha": "10.4.0",

@@ -1,149 +1,129 @@
 components:
   schemas:
-    Product:
+    User:
       type: object
       properties:
-        id:
+        email:
           type: string
-          description: product id
-          example: 662eee476305b27c94de0d38
-        title:
+          description: Email of the user to register 
+        name:
           type: string
-          description: product title
-          example: my product
+          description: Name of the user
         photo:
           type: string
-          description: url product image
-          example: https://picsum.photos/200/300
-        price:
-          type: number
-          description: product price
-          example: 22000
-        stock:
-          type: number
-          description: product stock
-          example: 100
-        ownerId:
+          description: Photo of the user
+        password:
           type: string
-          description: owner id
-          example: 662eee476305b27c94de0d44
+          description: password of the user
+        role:
+          type: string
+          description: role of the user
+        isVerified:
+          type: boolean
+          description: Indicates whether the user is verified
+        verifyCode:
+          type: string
+          description: Code that is sent to the user's email to verify
       required:  
-        - title
-        - price
-        - stock
-        - ownerId
+        - email
+        - name
+        - password
+        - isVerified
 paths:
-  /api/products:
+  /api/users:
     get:
-      summary: Returns a list of product.
+      summary: Returns the information of all users
       tags:
-        - Products
+        - Users
       responses:
         '200':
-          description: OK
-          content:
-            description: An array of products
+          description: An array of users
         '404':
-          description: Not found
+          description: Not found any user
     post:
-      summary: create a product.
+      summary: Creates a new user
       tags:
-        - Products
+        - Users
       requestBody:
-        required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Product'
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: Email of the user 
+                name:
+                  type: string
+                  description: Name of the user
+                photo:
+                  type: string
+                  description: Photo of the user
+                password:
+                  type: string
+                  description: password of the user
       responses:
         '201':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Product'
-  /api/products/{productId}:
+          description: User created
+  /api/users/{userId}:
     get:
-      summary: Returns a product.
+      summary: Returns the information of the requested user
       tags:
-        - Products
-      parameters:
-        - in: path
-          name: productId
-          schema:
-            type: string
-          required: true
-          description: ID of the product to get
+        - Users
       responses:
         '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Product'
+          description: Data of the searched user
         '404':
-          description: Not found
-    patch:
-      summary: Modify a product.
+          description: USER NOT FOUND
+    put:
+      summary: Modify the User information using the indicated ID.
       tags:
-        - Products
-      parameters:
-        - in: path
-          name: productId
-          schema:
-            type: string
-          required: true
-          description: ID of the product to modify
+        - Users
       requestBody:
-        required: true
         content:
-          description: Some properties of product
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: Email of the user to register 
+                name:
+                  type: string
+                  description: Name of the user
+                photo:
+                  type: string
+                  description: Photo of the user
+                password:
+                  type: string
+                  description: password of the user
       responses:
         '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Product'
-        '400':
-          description: ERROR
-          content:
-            application/json:
-              schema:
-                description: descrip
+          description: User modified
+        '401':
+          description: Lack of permissions to access
         '404':
-          description: Not found
-          content:
-            application/json:
-              schema:
-                description: descrip
+          description: USER NOT FOUND
     delete:
-      summary: Remove a product.
+      summary: Delete the user using the indicated ID.
       tags:
-        - Products
-      parameters:
-        - in: path
-          name: productId
-          schema:
-            type: string
-          required: true
-          description: ID of the product to delete
+        - Users
       responses:
         '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Product'
-        '400':
-          description: ERROR
-          content:
-            application/json:
-              schema:
-                description: descrip
+          description: User Deleted
+        '401':
+          description: Lack of permissions to access
         '404':
-          description: Not found
-          content:
-            application/json:
-              schema:
-                description: descrip
+          description: USER NOT FOUND.
+  /api/users/premium/{userId}:
+    post:
+      summary: Perform a role switch; if it is a normal user, it converts it to premium, if it is premium, it converts it to normal.
+      tags:
+        - Users
+      responses:
+        '200':
+          description: User Modified
+        '401':
+          description: Lack of permissions to access
+        '404':
+          description: USER NOT FOUND.

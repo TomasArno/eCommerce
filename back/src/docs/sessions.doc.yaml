@@ -1,149 +1,94 @@
-components:
-  schemas:
-    Product:
-      type: object
-      properties:
-        id:
-          type: string
-          description: product id
-          example: 662eee476305b27c94de0d38
-        title:
-          type: string
-          description: product title
-          example: my product
-        photo:
-          type: string
-          description: url product image
-          example: https://picsum.photos/200/300
-        price:
-          type: number
-          description: product price
-          example: 22000
-        stock:
-          type: number
-          description: product stock
-          example: 100
-        ownerId:
-          type: string
-          description: owner id
-          example: 662eee476305b27c94de0d44
-      required:  
-        - title
-        - price
-        - stock
-        - ownerId
 paths:
-  /api/products:
+  /api/sessions:
     get:
-      summary: Returns a list of product.
+      summary: Returns the user's information through their ID (cookie).
       tags:
-        - Products
+        - Sessions
       responses:
         '200':
           description: OK
-          content:
-            description: An array of products
         '404':
-          description: Not found
+          description: Not found any order
     post:
-      summary: create a product.
+      summary: Verify the code sent by email.
       tags:
-        - Products
+        - Sessions
       requestBody:
-        required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Product'
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: Email of the user to register 
+                verifyCode:
+                  type: string
+                  description: Code sent to the indicated email
+      responses:
+        '200':
+          description: VERIFIED
+        '400':
+          description: NOT VERIFIED
+  /api/sessions/register:
+    post:
+      summary: Register the user.
+      tags:
+        - Sessions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: Email of the user to register 
+                name:
+                  type: string
+                  description: Name of the user
+                photo:
+                  type: string
+                  description: Photo of the user
+                password:
+                  type: string
+                  description: password of the user
       responses:
         '201':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Product'
-  /api/products/{productId}:
-    get:
-      summary: Returns a product.
+          description: User created
+        '400':
+          description: USER ALREADY REGISTERED
+  /api/sessions/login:
+    post:
+      summary: Log In.
       tags:
-        - Products
-      parameters:
-        - in: path
-          name: productId
-          schema:
-            type: string
-          required: true
-          description: ID of the product to get
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Product'
-        '404':
-          description: Not found
-    patch:
-      summary: Modify a product.
-      tags:
-        - Products
-      parameters:
-        - in: path
-          name: productId
-          schema:
-            type: string
-          required: true
-          description: ID of the product to modify
+        - Sessions
       requestBody:
-        required: true
         content:
-          description: Some properties of product
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: Email
+                password:
+                  type: string
+                  description: password
       responses:
         '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Product'
+          description: User created
         '400':
-          description: ERROR
-          content:
-            application/json:
-              schema:
-                description: descrip
-        '404':
-          description: Not found
-          content:
-            application/json:
-              schema:
-                description: descrip
-    delete:
-      summary: Remove a product.
+          description: Incorrect user data
+        '401':
+          description: NOT VERIFIED
+  /api/sessions/signout:
+    post:
+      summary: Sign out.
       tags:
-        - Products
-      parameters:
-        - in: path
-          name: productId
-          schema:
-            type: string
-          required: true
-          description: ID of the product to delete
+        - Sessions
       responses:
         '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Product'
+          description: User left the session
         '400':
-          description: ERROR
-          content:
-            application/json:
-              schema:
-                description: descrip
-        '404':
-          description: Not found
-          content:
-            application/json:
-              schema:
-                description: descrip
+          description: User not logged in
