@@ -30,6 +30,7 @@ passport.use(
           });
 
         const user = await users.create(req.body);
+        
         addLog(user._id, logsLibrary.signUp)
 
         sendEmailCode(user.email, user.verifyCode);
