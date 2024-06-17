@@ -1,61 +1,52 @@
-import { Outlet, useNavigate } from 'react-router-dom';
-import './App.css';
+import { useContext, useEffect } from "react";
+import { useNavigate, Outlet } from "react-router-dom";
 
-import Navbar from './components/navbar';
-import Input from "./components/input"
+import { GlobalContext } from "./state";
 
-// function HideNavEls(role) {
-// 	let elementsToHide
-// 	switch (role) {
-// 		case 1:
-// 			elementsToHide = [true, true, true, false, false]
-// 			break;
-// 		case 2 || 3:
-// 			elementsToHide = [true, true, false, false, false]
-// 			break;
+import Box from "@mui/joy/Box";
+import Typography from "@mui/joy/Typography";
 
-// 		default:
-// 			elementsToHide = [false, false, true, true, true]
-// 			break;
-// 	}
-
-// 	return elementsToHide
-// }
+import SearchForm from "./components/search-form";
+import "./App.css";
 
 function App() {
-	const navigate = useNavigate();
+  const navigate = useNavigate();
 
-	function HandleSearch() {
-		const searchBoxData = (document.querySelector(".search-box")).value
-		navigate(`/search/${searchBoxData}`);
-	}
+  const { fetchData, setState, state } = useContext(GlobalContext);
 
-	// const role = CheckAuth();
+  useEffect(() => {
+    const checkAuth = async () => {
+      const data = await fetchData({ url: "sessions" })
 
-	// const [register, login, form, orders, signout] = HideNavEls(role)
+      if (data.statusCode != 200) {
+        navigate("/login")
+      } else {
+        setState({ user: data.response, isLoggedIn: true })
+      }
+    }
 
-	return (
-		<>
-			<header className='header'>
-				<div className='search-box_container'>
-					<form className='search-form'>
-						<Input />
-						<button onClick={(HandleSearch)} className='search-btn'>search</button>
-					</form>
-				</div>
-				<Navbar />
-			</header>
+    checkAuth()
+  }, [])
 
-			<main className='main'>
-				<Outlet />
-			</main>
+  console.log(state);
 
-			<footer className='footer'>
-				<p className='logo'>PROTEO</p>
-			</footer>
-		</>
-	);
+  return (
+    <>
+      <header className="header">
+        <SearchForm />
+      </header>
 
+      <main className="main">
+        <Outlet />
+      </main>
+
+      <Box borderTop="2px solid #ddd" component="footer">
+        <Typography level="body-xs" fontWeight="bold" textAlign="center">
+          © Proteo Software
+        </Typography>
+      </Box>
+    </>
+  );
 }
 
 export default App;

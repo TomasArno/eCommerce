@@ -1,42 +1,20 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import './index.css';
+import { GlobalContext } from "../../state";
+
+import FullCard from '../../components/product-view';
 
 function ProducView() {
-	const [products, setProducts] = useState([]);
+	const navigate = useNavigate()
+	const { state } = useContext(GlobalContext)
+	const { photo, title, price, stock } = state.productSelected
 
-	useEffect(() => {
-		axios('http://localhost:8080/api/products')
-			.then((res) => {
-				if (res.data.response)
-					setProducts(res.data.response.docs);
-			})
-			.catch((err) => console.log(err));
-	}, []);
+	window.addEventListener("load", () => { // solucion momentanea. Ver como pedir informacion y que re-renderize correctamente el componente
+		navigate("/") // pedir por el producto en la url
+	})
 
-	return (
-		<>
-			<div className='cards_container'>
-				{products.map((card) => (
-					<div key={card._id} className='card'>
-						<img
-							src={card.photo}
-							className='card_img'
-							alt='product image'
-						/>
-						<div className='card_data'>
-							<h5 className='card_data-title'>{card.title}</h5>
-							<p className='card_data-price'>${card.price}</p>
-						</div>
-						<button type='button' className='btn'>
-							ADD TO CART!
-						</button>
-					</div>
-				))}
-			</div>
-		</>
-	);
+	return <FullCard photo={photo} title={title} price={price} stock={stock} />
 }
 
 export default ProducView;
