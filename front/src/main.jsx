@@ -6,9 +6,9 @@ import { GlobalProvider } from "./state";
 import router from "./router/.";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    <GlobalProvider>
-      <RouterProvider router={router} />
-    </GlobalProvider>
-  </React.StrictMode >
+	<React.StrictMode>
+		<GlobalProvider>
+			<RouterProvider router={router} />
+		</GlobalProvider>
+	</React.StrictMode >
 );
