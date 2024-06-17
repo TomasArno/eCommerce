@@ -69,12 +69,13 @@ class OrdersController {
 
   async readOne(req, res, next) {
     try {
-      const { id } = req.user;
+      const { _id } = req.user;
       const { orderId } = req.params;
 
-      // if (userId = !id) CustomError.new(errors.forbidden)
 
       const userOrder = await orders.readOne(orderId);
+      console.log("userOrder", userOrder);
+      // if (userId = !id) CustomError.new(errors.forbidden)
       // if (!userOrders?.docs.length) CustomError.new(errors.notFound)
 
       res.json({

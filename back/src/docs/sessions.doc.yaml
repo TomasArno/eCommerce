@@ -1,0 +1,149 @@
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+          description: product id
+          example: 662eee476305b27c94de0d38
+        title:
+          type: string
+          description: product title
+          example: my product
+        photo:
+          type: string
+          description: url product image
+          example: https://picsum.photos/200/300
+        price:
+          type: number
+          description: product price
+          example: 22000
+        stock:
+          type: number
+          description: product stock
+          example: 100
+        ownerId:
+          type: string
+          description: owner id
+          example: 662eee476305b27c94de0d44
+      required:  
+        - title
+        - price
+        - stock
+        - ownerId
+paths:
+  /api/products:
+    get:
+      summary: Returns a list of product.
+      tags:
+        - Products
+      responses:
+        '200':
+          description: OK
+          content:
+            description: An array of products
+        '404':
+          description: Not found
+    post:
+      summary: create a product.
+      tags:
+        - Products
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        '201':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+  /api/products/{productId}:
+    get:
+      summary: Returns a product.
+      tags:
+        - Products
+      parameters:
+        - in: path
+          name: productId
+          schema:
+            type: string
+          required: true
+          description: ID of the product to get
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '404':
+          description: Not found
+    patch:
+      summary: Modify a product.
+      tags:
+        - Products
+      parameters:
+        - in: path
+          name: productId
+          schema:
+            type: string
+          required: true
+          description: ID of the product to modify
+      requestBody:
+        required: true
+        content:
+          description: Some properties of product
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '400':
+          description: ERROR
+          content:
+            application/json:
+              schema:
+                description: descrip
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                description: descrip
+    delete:
+      summary: Remove a product.
+      tags:
+        - Products
+      parameters:
+        - in: path
+          name: productId
+          schema:
+            type: string
+          required: true
+          description: ID of the product to delete
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '400':
+          description: ERROR
+          content:
+            application/json:
+              schema:
+                description: descrip
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                description: descrip

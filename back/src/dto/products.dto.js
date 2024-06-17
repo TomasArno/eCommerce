@@ -13,7 +13,7 @@ class ProductsDTO {
 
     this.title = data.title;
     this.photo = data.photo || "https://picsum.photos/200/300";
-    this.price = data.price;
+    this.price = data.price || 0;
     this.stock = data.stock || 0;
     this.ownerId = data.ownerId;
   }
