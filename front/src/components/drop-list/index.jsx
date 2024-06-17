@@ -16,8 +16,8 @@ import ModalClose from "@mui/joy/ModalClose";
 function DropList() {
   const navigate = useNavigate();
 
-  const { getState, fetchData } = useContext(GlobalContext);
-  const { isLoggedIn, user } = getState();
+  const { state, fetchData } = useContext(GlobalContext);
+  const { isLoggedIn, user } = state;
 
   const [open, setOpen] = React.useState(false);
 
@@ -39,6 +39,10 @@ function DropList() {
       switch (e.target.id) {
         case "orders":
           navigate("orders");
+          break;
+
+        case "cart":
+          navigate("cart");
           break;
 
         case "profile":
@@ -103,18 +107,27 @@ function DropList() {
               <ListItemButton
                 onClick={checkIsLoggedIn}
                 component="a"
-                id="orders"
+                id="cart"
               >
-                Mis compras
+                Carrito
               </ListItemButton>
             </ListItem>
+            {/* <ListItem>
+              <ListItemButton
+                onClick={checkIsLoggedIn}
+                component="a"
+                id="orders"
+              >
+                Compras
+              </ListItemButton>
+            </ListItem> */}
             <ListItem>
               <ListItemButton
                 onClick={checkIsLoggedIn}
                 component="a"
                 id="products"
               >
-                Productos
+                Mis productos
               </ListItemButton>
             </ListItem>
           </List>

@@ -18,10 +18,10 @@ function FullCard({ photo, title, price, stock }) {
   const navigate = useNavigate();
   const [count, setCount] = useState(0);
 
-  const { addProductInCart, getState } = useContext(GlobalContext);
+  const { addProductInCart, state } = useContext(GlobalContext);
 
   const handleCart = (e) => {
-    const { id } = getState().productSelected
+    const { id } = state.productSelected
 
     addProductInCart(id, count);
     if (e.target.id == "buy") navigate("/cart");

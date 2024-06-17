@@ -12,7 +12,7 @@ import "./App.css";
 function App() {
   const navigate = useNavigate();
 
-  const { fetchData, setState } = useContext(GlobalContext);
+  const { fetchData, setState, state } = useContext(GlobalContext);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -26,7 +26,9 @@ function App() {
     }
 
     checkAuth()
-  })
+  }, [])
+
+  console.log(state);
 
   return (
     <>

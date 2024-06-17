@@ -10,14 +10,14 @@ import { GlobalContext } from "../../state";
 import { useNavigate } from 'react-router-dom';
 
 function BasicCard({ id, photo, title, price, stock }) {
-	const { getState, setState } = useContext(GlobalContext)
+	const { state, setState } = useContext(GlobalContext)
 	const navigate = useNavigate()
 
 	function handleBtn() {
-		const { isLoggedIn } = getState()
+		const { isLoggedIn } = state
 
 		if (!isLoggedIn) {
-			navigate("/login") // alternar
+			navigate("/login")
 		} else {
 			const productSelected = { id, photo, title, price, stock }
 			setState({ productSelected })

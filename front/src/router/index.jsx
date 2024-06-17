@@ -47,6 +47,10 @@ const router = createBrowserRouter([
         element: <Profile />,
       },
       {
+        path: "/thanks",
+        element: <Profile />,
+      },
+      {
         path: "*",
         element: <NotFound />,
       },

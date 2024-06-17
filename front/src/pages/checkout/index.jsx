@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { GlobalContext } from "../../state";
 
 import CardContent from "@mui/joy/CardContent";
@@ -10,8 +10,8 @@ import ArrowForward from "@mui/icons-material/ArrowForward";
 import Product from "../../components/order";
 
 function Cart() {
-  const { fetchData } = useContext(GlobalContext);
-  const [cart, setCart] = useState([])
+  const { fetchData, state, setState } = useContext(GlobalContext);
+  const { cartItems } = state;
 
   useEffect(() => {
     const handleFetch = async () => {
@@ -20,16 +20,24 @@ function Cart() {
       if (data?.statusCode == 200) {
         const { docs } = data.response;
 
-        setCart(docs);
+        setState({ cartItems: docs })
       }
     }
 
     handleFetch()
   }, [])
 
-  // const handleDelete = () => {
-  //   setCart(getState().cartItems)
-  // }
+  const handleBuy = async () => {
+    const data = await fetchData({ method: "POST", url: "payments/checkout" })
+
+    if (data.statusCode == 201) {
+      const { url } = data.response
+
+      location.href = url
+    } else {
+      alert("errorrrr")
+    }
+  }
 
   let units = 0;
 
@@ -42,30 +50,29 @@ function Cart() {
       sx={{ width: "100%", height: "100%", background: "#ddd" }}
     >
       {
-        cart.length ?
+        cartItems.length ?
           <>
             <Box sx={{ width: "60%", maxWidth: "800px" }}>
-              {cart.map((order) => {
+              {cartItems.map((order) => {
                 units += order.quantity;
 
-                const { quantity } = order
-                const { _id, title, photo } = order.productId
+                const { quantity, _id } = order
+                const { title, photo, stock } = order.productId
 
-                return (
-                  <Product
-                    key={_id}
-                    id={_id}
-                    button="modifiers"
-                    height={120}
-                    borderBottom={0}
-                    state={title}
-                    units={quantity}
-                    date={""}
-                    photo={photo}
-                    padding={0}
-                    handleDelete={() => { }}
-                  />
-                );
+                return <Product
+                  key={_id}
+                  id={_id}
+                  button="modifiers"
+                  height={120}
+                  borderBottom={0}
+                  title={title}
+                  units={quantity}
+                  available={stock}
+                  date={""}
+                  photo={photo}
+                  padding={0}
+                  handleDelete={() => { }}
+                />
               })}
             </Box>
             <Box sx={{ width: "30%", maxWidth: "360px", height: "240px" }}>
@@ -117,7 +124,7 @@ function Cart() {
                   >
                     <Button
                       sx={{ background: "green" }}
-                      onClick={() => { }}
+                      onClick={handleBuy}
                       size="lg"
                       endDecorator={<ArrowForward fontSize="xl" />}
                     >

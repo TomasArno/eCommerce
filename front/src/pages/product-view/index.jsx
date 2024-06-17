@@ -3,25 +3,18 @@ import { useNavigate } from 'react-router-dom';
 
 import { GlobalContext } from "../../state";
 
-import FullCard from '../../components/full-card';
+import FullCard from '../../components/product-view';
 
 function ProducView() {
 	const navigate = useNavigate()
+	const { state } = useContext(GlobalContext)
+	const { photo, title, price, stock } = state.productSelected
 
 	window.addEventListener("load", () => { // solucion momentanea. Ver como pedir informacion y que re-renderize correctamente el componente
-		navigate("/")
+		navigate("/") // pedir por el producto en la url
 	})
-
-	const { getState } = useContext(GlobalContext)
-
-	const { photo, title, price, stock } = getState().productSelected
 
 	return <FullCard photo={photo} title={title} price={price} stock={stock} />
 }
-// <>
-// 	<Card title={title} stock={stock} photo={photo} price={price} />
-// 	{/* <div className='card_container'>
-// 	</div> */}
-// </>
 
 export default ProducView;

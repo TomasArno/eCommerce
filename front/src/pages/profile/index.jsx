@@ -25,9 +25,9 @@ function Profile() {
   const [modal, setModal] = useState({ open: false, message: "" });
 
   const navigate = useNavigate();
-  const { getState, fetchData } = useContext(GlobalContext);
+  const { state, fetchData } = useContext(GlobalContext);
 
-  const { photo, name, email, id } = getState().user
+  const { photo, name, email, id } = state.user
   const handleSave = async (e) => {
     e.preventDefault();
 

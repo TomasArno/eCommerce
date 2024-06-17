@@ -15,7 +15,7 @@ import Button from "../button";
 import "./index.css";
 
 function SearchForm() {
-  const { getState } = useContext(GlobalContext);
+  const { state } = useContext(GlobalContext);
 
   const navigate = useNavigate();
   // validar que sea mayor a cero
@@ -35,7 +35,7 @@ function SearchForm() {
   return (
     <div className="search-box_container">
       <Link component="a" underline="none" onClick={() => navigate("/")} >
-        <Typography fontSize="xl">logo</Typography>
+        <Typography fontSize="xl"><img style={{ height: "30px" }} src="/images/Proteo.png" alt="" /></Typography>
       </Link>
       <form className="search-form">
         <Input
@@ -66,7 +66,7 @@ function SearchForm() {
           size="sm"
           onClick={handleCart}
           sx={{ color: "black", cursor: "pointer" }}
-          badgeContent={getState().cartItems.length}
+          badgeContent={state.cartItems.length}
         >
           <ShoppingCartCheckout />
         </Badge>

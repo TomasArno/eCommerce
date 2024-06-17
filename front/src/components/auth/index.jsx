@@ -22,13 +22,9 @@ import { apiUrl } from "../../utils/constants";
 
 function Auth({ path = "login" }) {
   const navigate = useNavigate();
-
-  const { setEmail, setState, setIsRegistered, getState } =
-    useContext(GlobalContext);
-
-  const { email, isRegistered } = getState();
-
   const [triesEnterPassword, setTriesEnterPassword] = useState(0);
+  const { setState, state } = useContext(GlobalContext);
+  const { email, isRegistered } = state;
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -46,8 +42,7 @@ function Auth({ path = "login" }) {
           setState({ isLoggedIn: true, user: res.data.response });
           navigate("/");
         } else if (res.data.response.includes("Not verified")) {
-          setEmail(data.email);
-          setIsRegistered(true);
+          setState({ isRegistered: true, user: { email: data.email } });
           navigate("/register");
         } else {
           setTriesEnterPassword(triesEnterPassword + 1);
@@ -70,8 +65,7 @@ function Auth({ path = "login" }) {
       .post(`${apiUrl}/sessions/register`, data)
       .then((res) => {
         if (res.data.statusCode == 201) {
-          setIsRegistered(true);
-          setEmail(data.email);
+          setState({ isRegistered: true, user: { email: data.email } });
         } else alert(res.data.response);
       })
       .catch((err) => console.log(err));

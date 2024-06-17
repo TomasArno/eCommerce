@@ -12,10 +12,10 @@ import { useContext } from 'react';
 // import { useNavigate } from 'react-router-dom';
 
 function Navbar() {
-    const { getState } = useContext(GlobalContext)
+    const { state } = useContext(GlobalContext)
     // const navigate = useNavigate()
 
-    const { isLoggedIn } = getState()
+    const { isLoggedIn } = state
 
     const handleProfile = () => {
 

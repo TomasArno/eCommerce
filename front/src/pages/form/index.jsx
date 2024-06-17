@@ -1,8 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-import buildReqData from '../../utils/buildRequestData.js';
-
 // import './index.css';
 
 function Form() {
@@ -11,7 +9,7 @@ function Form() {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 
-		let data = buildReqData();
+		let data = {}
 
 		axios
 			.post('http://localhost:8080/api/products', data)

@@ -9,7 +9,7 @@ import { apiUrl } from "./utils/constants";
 const GlobalContext = createContext();
 
 const GlobalProvider = ({ children }) => {
-  const [state, setState] = useState({
+  const [state, _setState] = useState({
     isLoggedIn: false,
     isRegistered: false,
     user: {},
@@ -27,47 +27,51 @@ const GlobalProvider = ({ children }) => {
     return response.data;
   }
 
-  // const setState = (newState) => {
-  //   state.data = { ...state.getState(), ...newState };
-  // }
-
-  const getState = () => {
-    return state
+  const setState = (newState) => {
+    _setState((prevState) => ({ ...prevState, ...newState }));
   }
 
-  const setLoggedIn = () => {
-    state.setState({ isLoggedIn: true });
+  const getCart = async () => {
+    const data = await fetchData({ url: "orders" })
+    if (data?.statusCode == 200) return data.response.docs
+    else false
   }
 
-  const setIsRegistered = () => {
-    state.setState({ isRegistered: true });
-  }
+  const getUserData = () => state.user
 
-  const addProductInCart = (productId, quantity) => {
-    const { id } = state.getState().user
+  const addProductInCart = async (productId, quantity) => {
+    const product = { productId, quantity }
 
-    const product = { userId: id, productId, quantity }
+    const res = await fetchData({ method: "POST", url: "orders", data: product })
 
-    state.data.cartItems.push(product);
-    state.fetchData({ method: "POST", url: "/orders", data: product })
-  }
-
-  const modifyQuantity = (productId, newQuantity) => {
-    const searchedProduct = state.data.cartItems.find((product) => product.id == productId)
-
-    if (searchedProduct) {
-      searchedProduct.quantity = newQuantity
+    if (res.statusCode == 201) {
+      const cart = await getCart()
+      setState({ cartItems: cart })
     }
   }
 
-  const removeProductFromCart = (productId) => {
-    const removedProduct = state.data.cartItems.filter((el) => el.id != productId)
-    state.data.cartItems = removedProduct
+  const modifyQuantity = async (orderId, newQuantity) => {
+    const res = await fetchData({ method: "PUT", url: `orders/${orderId}`, data: { quantity: newQuantity } })
+
+    if (res.statusCode == 200) {
+      const cart = await getCart()
+      setState({ cartItems: cart })
+    }
   }
 
+  const removeProductFromCart = async (orderId) => {
+    const res = await fetchData({ method: "DELETE", url: `orders/${orderId}` })
+
+    if (res.statusCode == 200) {
+      const cart = await getCart()
+      const data = cart ? cart : []
+
+      setState({ cartItems: data })
+    }
+  }
 
   return (
-    <GlobalContext.Provider value={{ getState, fetchData, setLoggedIn, setIsRegistered, addProductInCart, removeProductFromCart, modifyQuantity }}>
+    <GlobalContext.Provider value={{ state, setState, fetchData, getCart, getUserData, addProductInCart, removeProductFromCart, modifyQuantity }}>
       {children}
     </GlobalContext.Provider>
   );
