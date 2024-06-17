@@ -11,7 +11,7 @@
     "super": "mocha ./test/supertest",
     "attack": "artillery run ./test/flow/flow.yaml --output ./test/flow/flow.json",
     "report": "artillery report ./test/flow/flow.html",
-    "start": "node"
+    "start": "node ."
   },
   "dependencies": {
     "bcrypt": "5.1.1",
