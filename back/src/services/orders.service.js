@@ -23,6 +23,15 @@ class OrdersService {
     }
   }
 
+  async report(userId) {
+    try {
+      const response = await this.manager.report(userId);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async readOne(id) {
     try {
       const response = await this.manager.readOne(id);

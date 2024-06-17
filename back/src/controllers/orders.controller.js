@@ -26,9 +26,9 @@ class OrdersController {
 
   async report(req, res, next) {
     try {
-      const { userId } = req.params;
+      const { _id } = req.user;
 
-      const user = await orders.report(userId);
+      const user = await orders.report(_id);
 
       res.json({
         statusCode: 200,

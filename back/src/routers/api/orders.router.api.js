@@ -2,7 +2,6 @@ import CustomRouter from "../customRouter.js";
 
 import {
   create,
-  report,
   read,
   destroy,
   update,
@@ -16,7 +15,6 @@ class Router extends CustomRouter {
     this.create("/", ["PREMIUM", 'USER'], addUser, create);
     this.read("/", ["PREMIUM", 'USER'], read);
     this.read("/:orderId", ["PREMIUM", 'USER'], readOne);
-    this.read("/total/:userId", ["PREMIUM", 'USER'], report);
     this.update("/:orderId", ["PREMIUM", 'USER'], update);
     this.destroy("/:orderId", ["PREMIUM", 'USER'], destroy);
   }

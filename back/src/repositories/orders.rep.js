@@ -11,6 +11,7 @@ class OrdersRepositorie {
 
   create = async (data) => await this.model.create(new OrdersDTO(data));
   read = async ({ filter, options }) => await this.model.read({ filter, sortAndPaginate: options });
+  report = async (userId) => await this.model.report(userId);
   readOne = async (id) => await this.model.readOne(id);
   update = async (id, data) => await this.model.update(id, data);
   destroy = async (id) => await this.model.destroy(id);
