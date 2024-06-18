@@ -8,7 +8,7 @@ function Thanks() {
   const navigate = useNavigate();
 
   setTimeout(() => navigate("/"), 3000)
-
+  
   return (
     <Box id={123} sx={{ flex: 1, width: "100%", background: "#ddd" }}>
       <Stack
