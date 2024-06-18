@@ -3,7 +3,7 @@ import users from "../services/users.service.js";
 import CustomError from "../utils/errors/customError.utils.js";
 import errors from "../utils/errors/errorsLibrary.utils.js";
 
-import addLog from "../utils/logs/addLog.utils.js"
+import addLog from "../utils/logs/addLog.utils.js";
 
 class SessionsController {
   async read(req, res, next) {
@@ -27,7 +27,7 @@ class SessionsController {
 
       await users.update(user._id, { isVerified: true });
 
-      addLog(user._id, "Verificacion satisfactoria")
+      addLog(user._id, "Verificacion satisfactoria");
 
       res.json({
         statusCode: 200,
@@ -55,6 +55,8 @@ class SessionsController {
         .cookie("token", req.token, {
           maxAge: 7 * 24 * 60 * 60 * 1000,
           httpOnly: true,
+          sameSite: "None",
+          secure: true,
         })
         .json({
           statusCode: 200,
