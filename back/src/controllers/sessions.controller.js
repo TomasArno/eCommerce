@@ -25,7 +25,7 @@ class SessionsController {
 
       if (user.verifyCode !== verifyCode) CustomError.new(errors.token);
 
-      await users.update(user._id, { verified: true });
+      await users.update(user._id, { isVerified: true });
 
       addLog(user._id, "Verificacion satisfactoria")
 
