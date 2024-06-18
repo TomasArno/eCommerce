@@ -10,7 +10,7 @@ class SessionsController {
     try {
       res.json({
         statusCode: 200,
-        response: req.user,
+        response: req._user,
       });
     } catch (error) {
       next(error);
@@ -27,7 +27,7 @@ class SessionsController {
 
       await users.update(user._id, { verified: true });
 
-      addLog(req.user._id, "Verificacion satisfactoria")
+      addLog(user._id, "Verificacion satisfactoria")
 
       res.json({
         statusCode: 200,
@@ -42,7 +42,7 @@ class SessionsController {
     try {
       res.json({
         statusCode: 201,
-        response: "Registered!",
+        response: "Registered user",
       });
     } catch (error) {
       next(error);
@@ -58,7 +58,7 @@ class SessionsController {
         })
         .json({
           statusCode: 200,
-          response: req.user,
+          response: req._user,
         });
     } catch (error) {
       next(error);

@@ -16,7 +16,7 @@ class PaymentsRepository {
             const intent = await stripe.checkout.sessions.create({
                 line_items,
                 mode: "payment",
-                success_url: "http://localhost:5173/thanks"
+                success_url: "https://proteo-39cde.web.app/thanks"
             })
 
             return intent

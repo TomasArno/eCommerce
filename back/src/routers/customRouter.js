@@ -40,8 +40,8 @@ export default class CustomRouter {
 		res.error401 = () => res.json({ statusCode: 401, message: 'Bad auth' });
 		res.error403 = () =>
 			res.json({ statusCode: 403, message: 'Forbidden' });
-		res.error404 = () =>
-			res.json({ statusCode: 404, message: 'Not found' });
+		res.error404 = (entity = "") =>
+			res.json({ statusCode: 404, message: entity + ' not found' });
 
 		next();
 	}
@@ -70,9 +70,12 @@ export default class CustomRouter {
 					(role === 3 && arrayOfPolicies.includes('ADMIN'))
 				) {
 					const searchedUser = await users.readByEmail(email);
+
+					if (!searchedUser) return res.error404('User');
+
 					const { password, verifyCode, __v, isVerified, ...user } = searchedUser // Le desestructuro lo que NO tiene que ver el usuario
 
-					req.user = user;
+					req._user = user;
 
 					return next();
 				} else if (arrayOfPolicies.includes('PUBLIC')) return next()

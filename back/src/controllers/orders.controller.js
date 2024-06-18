@@ -13,7 +13,7 @@ class OrdersController {
     try {
       const data = await orders.create(req.body);
 
-      addLog(req.user._id, "Orden creada")
+      addLog(req._user._id, "Orden creada")
 
       res.json({
         statusCode: 201,
@@ -26,7 +26,7 @@ class OrdersController {
 
   async report(req, res, next) {
     try {
-      const { _id } = req.user;
+      const { _id } = req._user;
 
       const user = await orders.report(_id);
 
@@ -41,7 +41,7 @@ class OrdersController {
 
   async read(req, res, next) {
     try {
-      const { _id } = req.user;
+      const { _id } = req._user;
       const { state, quantity, page, limit } = req.query;
 
       const filter = {};
@@ -69,18 +69,16 @@ class OrdersController {
 
   async readOne(req, res, next) {
     try {
-      const { _id } = req.user;
+      const { _id } = req._user;
       const { orderId } = req.params;
 
-
       const userOrder = await orders.readOne(orderId);
-      console.log("userOrder", userOrder);
       // if (userId = !id) CustomError.new(errors.forbidden)
       // if (!userOrders?.docs.length) CustomError.new(errors.notFound)
 
       res.json({
         statusCode: 200,
-        response: "userOrders",
+        response: userOrder,
       });
     } catch (e) {
       next(e);
@@ -94,7 +92,7 @@ class OrdersController {
       const modifiedOrder = await orders.update(orderId, req.body);
       if (!modifiedOrder) CustomError.new(errors.notFound)
 
-      addLog(req.user._id, `Orden ${orderId} modificada`)
+      addLog(req._user._id, `Orden ${orderId} modificada`)
 
       res.json({
         statusCode: 200,
@@ -112,7 +110,7 @@ class OrdersController {
       const deletedOrder = await orders.destroy(orderId);
       if (!deletedOrder) CustomError.new(errors.notFound)
 
-      addLog(req.user._id, `Orden ${orderId} eliminada`)
+      addLog(req._user._id, `Orden ${orderId} eliminada`)
 
       res.json({
         statusCode: 200,
