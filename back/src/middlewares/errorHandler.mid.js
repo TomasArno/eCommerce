@@ -2,7 +2,7 @@ function errorHandler(error, req, res, next) {
 	res.json({
 		statusCode: error.statusCode || 500,
 		url: req.url,
-		message: error.message,
+		response: error.message,
 		method: req.method,
 	});
 }

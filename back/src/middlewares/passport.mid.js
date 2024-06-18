@@ -59,13 +59,11 @@ passport.use(
         if (!searchedUser.isVerified)
           return done(null, false, errors.notVerified);
 
-        const { password: pass, verifyCode, __v, isVerified, ...user } = searchedUser // Le desestructuro lo que NO tiene que ver el usuario
-
         req.token = createToken({ email, role: searchedUser.role });
-        req.user = user;
-        addLog(user._id, logsLibrary.logIn)
 
-        done(null, user);
+        addLog(searchedUser._id, logsLibrary.logIn)
+
+        done(null, searchedUser);
       } catch (error) {
         done(error);
       }

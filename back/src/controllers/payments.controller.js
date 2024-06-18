@@ -11,10 +11,10 @@ class PaymentsController {
 
   async create(req, res, next) {
     try {
-      const { _id } = req.user
+      const { _id } = req._user
       const response = await payments.create(_id)
 
-      addLog(req.user._id, "Intento pago creado")
+      addLog(req._user._id, "Intento pago creado")
 
       res.json({
         statusCode: 201,

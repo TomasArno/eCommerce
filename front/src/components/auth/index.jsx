@@ -1,4 +1,7 @@
 import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { GlobalContext } from "../../state";
+
 import { CssVarsProvider } from "@mui/joy/styles";
 import GlobalStyles from "@mui/joy/GlobalStyles";
 import CssBaseline from "@mui/joy/CssBaseline";
@@ -15,18 +18,17 @@ import GoogleIcon from "./googleIcon";
 import FormHelperText from "@mui/joy/FormHelperText";
 import InfoOutlined from "@mui/icons-material/InfoOutlined";
 
-import { useNavigate } from "react-router-dom";
-import { GlobalContext } from "../../state";
-import axios from "axios";
-import { apiUrl } from "../../utils/constants";
+import CloseModal from "../modal";
 
 function Auth({ path = "login" }) {
   const navigate = useNavigate();
+  const [modal, setModal] = useState({ open: false, message: "" });
   const [triesEnterPassword, setTriesEnterPassword] = useState(0);
-  const { setState, state } = useContext(GlobalContext);
-  const { email, isRegistered } = state;
 
-  const handleLogin = (e) => {
+  const { setState, state, fetchData } = useContext(GlobalContext);
+  const { isRegistered } = state;
+
+  const handleLogin = async (e) => {
     e.preventDefault();
 
     const formElements = e.currentTarget.elements;
@@ -35,23 +37,20 @@ function Auth({ path = "login" }) {
       password: formElements.password.value,
     };
 
-    axios
-      .post(`${apiUrl}/sessions/login`, data)
-      .then((res) => {
-        if (res.data.statusCode == 200) {
-          setState({ isLoggedIn: true, user: res.data.response });
-          navigate("/");
-        } else if (res.data.response.includes("Not verified")) {
-          setState({ isRegistered: true, user: { email: data.email } });
-          navigate("/register");
-        } else {
-          setTriesEnterPassword(triesEnterPassword + 1);
-        }
-      })
-      .catch((err) => console.log(err));
+    const res = await fetchData({ url: "sessions/login", method: "POST", data })
+
+    if (res?.statusCode == 200) {
+      setState({ isLoggedIn: true, user: res.data.response });
+      navigate("/");
+    } else if (res.data.response.includes("Not verified")) {
+      setState({ isRegistered: true, user: { email: data.email } });
+      navigate("/register");
+    } else {
+      setTriesEnterPassword(triesEnterPassword + 1);
+    }
   };
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
 
     const formElements = e.currentTarget.elements;
@@ -61,35 +60,33 @@ function Auth({ path = "login" }) {
       password: formElements.password.value,
     };
 
-    axios
-      .post(`${apiUrl}/sessions/register`, data)
-      .then((res) => {
-        if (res.data.statusCode == 201) {
-          setState({ isRegistered: true, user: { email: data.email } });
-        } else alert(res.data.response);
-      })
-      .catch((err) => console.log(err));
+    const res = await fetchData({ url: "sessions/register", method: "POST", data })
+
+    if (res?.statusCode == 201) {
+      setState({ isRegistered: true });
+    } else {
+      setModal({ open: true, message: res?.response })
+    }
 
     e.target.reset();
   };
 
-  const handleVerification = (e) => {
+  const handleVerification = async (e) => {
     e.preventDefault();
+
     const formElements = e.currentTarget.elements;
     const data = {
-      email,
+      email: formElements.email.value,
       verifyCode: formElements.verify.value,
     };
 
-    axios
-      .post(`${apiUrl}/sessions/`, data, {
-        withCredentials: true,
-      })
-      .then((res) => {
-        if (res.data.statusCode == 200) navigate("/login");
-        else alert(res.data.response);
-      })
-      .catch((err) => console.log(err));
+    const res = await fetchData({ url: "sessions", method: "POST", data })
+
+    if (res?.statusCode == 200) {
+      navigate("/");
+    } else {
+      setModal({ open: true, message: res?.response })
+    }
 
     e.target.reset();
   };
@@ -101,7 +98,7 @@ function Auth({ path = "login" }) {
         styles={{
           ":root": {
             "--Form-maxWidth": "800px",
-            "--Transition-duration": "0.4s", // set to `none` to disable transition
+            "--Transition-duration": "0.4s",
           },
         }}
       />
@@ -239,20 +236,36 @@ function Auth({ path = "login" }) {
                       )}
                     </FormControl>
                   </>
-                ) : (
-                  <FormControl error={triesEnterPassword > 0} required>
-                    <FormLabel>Verificación por mail</FormLabel>
-                    <Input type="text" name="verify" />
-                    {triesEnterPassword > 0 ? (
-                      <FormHelperText>
-                        <InfoOutlined />
-                        Revisa tus datos.
-                      </FormHelperText>
-                    ) : (
-                      ""
-                    )}
-                  </FormControl>
-                )}
+                )
+                  :
+                  <>
+
+                    <FormControl error={triesEnterPassword > 0} required>
+                      <FormLabel>Email</FormLabel>
+                      <Input type="text" name="email" />
+                      {triesEnterPassword > 0 ? (
+                        <FormHelperText>
+                          <InfoOutlined />
+                          Revisa tus datos.
+                        </FormHelperText>
+                      ) : (
+                        ""
+                      )}
+                    </FormControl>
+                    <FormControl error={triesEnterPassword > 0} required>
+                      <FormLabel>Verificación por mail</FormLabel>
+                      <Input type="text" name="verify" />
+                      {triesEnterPassword > 0 ? (
+                        <FormHelperText>
+                          <InfoOutlined />
+                          Revisa tus datos.
+                        </FormHelperText>
+                      ) : (
+                        ""
+                      )}
+                    </FormControl>
+                  </>
+                }
                 <Stack gap={4} sx={{ mt: 2 }}>
                   <Box
                     sx={{
@@ -270,7 +283,6 @@ function Auth({ path = "login" }) {
                     )}
                   </Box>
                   <Button type="submit" fullWidth>
-                    {path == "register" ? console.log(isRegistered) : ""}
                     {path == "login"
                       ? "Iniciar sesión"
                       : !isRegistered
@@ -278,6 +290,7 @@ function Auth({ path = "login" }) {
                         : "Verificar código"}
                   </Button>
                 </Stack>
+                {modal.open ? <CloseModal title={modal.message} onClose={() => setModal({ open: false, message: "" })} /> : ""}
               </form>
             </Stack>
           </Box>

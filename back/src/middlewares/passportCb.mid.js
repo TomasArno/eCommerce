@@ -15,7 +15,9 @@ export default (strategy) => {
 					response: info.message || info.toString(),
 				});
 			}
+			const { password: pass, verifyCode, __v, isVerified, ...userData } = user // Le desestructuro lo que NO tiene que ver el usuario
 
+			req._user = userData;
 			next();
 		})(req, res, next);
 	};

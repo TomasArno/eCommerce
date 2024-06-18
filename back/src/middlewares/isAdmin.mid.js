@@ -1,6 +1,6 @@
 function isAdmin(req, res, next) {
   try {
-    const { role } = req.user;
+    const { role } = req._user;
 
     if (role == 1) return next();
 

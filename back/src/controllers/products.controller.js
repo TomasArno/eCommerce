@@ -13,15 +13,13 @@ class ProductsController {
     try {
       const data = await products.create(req.body);
 
-      addLog(req.user._id, "Producto creado")
+      addLog(req._user._id, "Producto creado")
 
       res.json({
         statusCode: 201,
         response: data,
       });
     } catch (e) {
-      console.log(e.message);
-
       next(e);
     }
   }
@@ -38,7 +36,7 @@ class ProductsController {
       }
       if (price) filter.price = price;
       if (stock) filter.stock = stock;
-      if (req.user?.role == 1) filter.ownerId = { $ne: req.user._id }
+      if (req._user?.role == 1) filter.ownerId = { $ne: req._user._id }
 
       const options = { page, limit };
 
@@ -62,7 +60,7 @@ class ProductsController {
       const { productId } = req.params;
 
       const product = await products.readOne(productId);
-      if (!product || product.ownerId.toString() == req.user?._id.toString()) CustomError.new(errors.notFound)
+      if (!product || product.ownerId.toString() == req._user?._id.toString()) CustomError.new(errors.notFound)
 
       res.json({
         statusCode: 200,

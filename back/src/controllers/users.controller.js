@@ -13,7 +13,7 @@ class UsersController {
     try {
       const newUser = await users.create(req.body);
 
-      addLog(req.user._id, "Usuario creado")
+      addLog(req._user._id, "Usuario creado")
 
       res.json({
         statusCode: 201,
@@ -72,12 +72,12 @@ class UsersController {
     try {
       const { userId } = req.params;
 
-      if (userId != req.user._id) CustomError.new(errors.forbidden)
+      if (userId != req._user._id) CustomError.new(errors.forbidden)
 
       const modifiedUser = await users.update(userId, req.body);
       if (!modifiedUser) CustomError.new(errors.notFound)
 
-      addLog(req.user._id, "Usuario modificado: " + req.body)
+      addLog(req._user._id, "Usuario modificado: " + req.body)
 
       res.json({
         statusCode: 200,
@@ -109,7 +109,7 @@ class UsersController {
       const modifiedUser = await users.update(userId, { role: newRole });
       if (!modifiedUser) CustomError.new(errors.error)
 
-      addLog(req.user._id, `Nuevo rol (${userId}): ${newRole}`)
+      addLog(req._user._id, `Nuevo rol (${userId}): ${newRole}`)
 
       res.json({
         statusCode: 200,
@@ -127,7 +127,7 @@ class UsersController {
       const deletedUser = await users.destroy(userId);
       if (!deletedUser) CustomError.new(errors.notFound)
 
-      addLog(req.user._id, "Usuario eliminado: " + userId)
+      addLog(req._user._id, "Usuario eliminado: " + userId)
 
       res.json({
         statusCode: 200,

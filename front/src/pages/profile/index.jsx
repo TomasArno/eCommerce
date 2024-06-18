@@ -2,7 +2,6 @@ import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { GlobalContext } from "../../state";
 
-
 import AspectRatio from "@mui/joy/AspectRatio";
 import Box from "@mui/joy/Box";
 import Button from "@mui/joy/Button";
@@ -27,7 +26,7 @@ function Profile() {
   const navigate = useNavigate();
   const { state, fetchData } = useContext(GlobalContext);
 
-  const { photo, name, email, id } = state.user
+  const { photo, name, email, _id } = state.user
   const handleSave = async (e) => {
     e.preventDefault();
 
@@ -38,8 +37,13 @@ function Profile() {
       email: formElements.email.value,
     };
 
-    await fetchData({ method: "PUT", url: `users/${id}`, data })
-    setModal({ open: true, message: "Usuario modificado con exito" })
+    const res = await fetchData({ method: "PUT", url: `users/${_id}`, data })
+
+    if (res?.statusCode == 200) {
+      setModal({ open: true, message: "Modificación realizada con exito!" })
+    } else {
+      setModal({ open: true, message: "Hubo un problema..." })
+    }
   }
 
   const handleCancel = () => {
