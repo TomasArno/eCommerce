@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { GlobalContext } from "../../state";
 
 import CardContent from "@mui/joy/CardContent";
@@ -11,15 +11,19 @@ import Product from "../../components/order";
 
 function Cart() {
   const { fetchData, state, setState } = useContext(GlobalContext);
+  const [amount, setAmount] = useState(0);
   const { cartItems } = state;
 
   useEffect(() => {
     const handleFetch = async () => {
       const data = await fetchData({ url: "orders" })
+      const dataAmount = await fetchData({ url: "tickets" })
 
-      if (data?.statusCode == 200) {
+      if (data?.statusCode == 200 && dataAmount?.statusCode == 200) {
         const { docs } = data.response;
+        const { total } = dataAmount.response;
 
+        setAmount(total)
         setState({ cartItems: docs })
       }
     }
@@ -34,8 +38,6 @@ function Cart() {
       const { url } = data.response
 
       location.href = url
-    } else {
-      alert("errorrrr")
     }
   }
 
@@ -116,7 +118,7 @@ function Cart() {
                       display={"flex"}
                       justifyContent={"space-between"}
                     >
-                      Total: <span>${2}</span>
+                      Total: <span>${amount}</span>
                     </Typography>
                   </Box>
                   <Box
@@ -134,7 +136,7 @@ function Cart() {
                 </Box>
               </CardContent>
             </Box>
-          </> : "" // agregar logo mas prolijo
+          </> : <Typography level="h1">Nada por aquí...</Typography>
       }
     </Box>
   );

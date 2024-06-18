@@ -40,9 +40,9 @@ function Auth({ path = "login" }) {
     const res = await fetchData({ url: "sessions/login", method: "POST", data })
 
     if (res?.statusCode == 200) {
-      setState({ isLoggedIn: true, user: res.data.response });
+      setState({ isLoggedIn: true, user: res?.response });
       navigate("/");
-    } else if (res.data.response.includes("Not verified")) {
+    } else if (res?.response.includes("Not verified")) {
       setState({ isRegistered: true, user: { email: data.email } });
       navigate("/register");
     } else {
