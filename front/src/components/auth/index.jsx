@@ -83,7 +83,7 @@ function Auth({ path = "login" }) {
     const res = await fetchData({ url: "sessions", method: "POST", data })
 
     if (res?.statusCode == 200) {
-      navigate("/");
+      navigate("/login");
     } else {
       setModal({ open: true, message: res?.response })
     }
