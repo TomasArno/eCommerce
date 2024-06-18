@@ -1,34 +1,42 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
+import { useEffect, useState } from "react";
+import { useContext } from "react";
+import { GlobalContext } from "../../state";
 
 import Card from "../../components/card";
 
 function Index() {
+  const { fetchData } = useContext(GlobalContext);
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    axios("http://localhost:8080/api/products")
-      .then((res) => {
-        if (res.data.response) setProducts(res.data.response.docs);
-      })
-      .catch((err) => console.log(err));
+    const handleFetch = async () => {
+
+      const data = await fetchData({ url: "products" })
+
+      if (data?.statusCode == 200) {
+        const { docs } = data.response;
+
+        setProducts(docs)
+      }
+    }
+
+    handleFetch()
   }, []);
 
-  return (
-    <div className="cards_container">
-      {products.map((prod) => (
-        <Card
-          key={prod._id}
-          id={prod._id}
-          title={prod.title}
-          stock={prod.stock}
-          photo={prod.photo}
-          price={prod.price}
-        />
-      ))}
-      {/* HACER CARROUSEL */}
-    </div>
-  );
+
+  return <div className="cards_container">
+    {products.map((prod) => (
+      <Card
+        key={prod._id}
+        id={prod._id}
+        title={prod.title}
+        stock={prod.stock}
+        photo={prod.photo}
+        price={prod.price}
+      />
+    ))}
+    {/* HACER CARROUSEL */}
+  </div>
 }
 
 export default Index;

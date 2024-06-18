@@ -48,6 +48,9 @@ function DropList() {
         case "profile":
           navigate("profile");
           break;
+        case "form":
+          navigate("form");
+          break;
 
         default:
           navigate("/");
@@ -121,15 +124,15 @@ function DropList() {
                 Compras
               </ListItemButton>
             </ListItem> */}
-            <ListItem>
+            {user.role == 2 ? <ListItem>
               <ListItemButton
                 onClick={checkIsLoggedIn}
                 component="a"
-                id="products"
+                id="form"
               >
-                Mis productos
+                Nuevo producto
               </ListItemButton>
-            </ListItem>
+            </ListItem> : ""}
           </List>
         </Box>
       </Drawer>

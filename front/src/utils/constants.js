@@ -1,3 +1,2 @@
-const PORT = 8080;
-
-export const apiUrl = `http://localhost:${PORT}/api`;
+export const apiUrl = `http://localhost:54000/api`;
+// export const apiUrl = `https://node-55655-production.up.railway.app/api`;

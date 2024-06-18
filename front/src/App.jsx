@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react";
-import { useNavigate, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 
 import { GlobalContext } from "./state";
 
@@ -10,25 +10,19 @@ import SearchForm from "./components/search-form";
 import "./App.css";
 
 function App() {
-  const navigate = useNavigate();
-
-  const { fetchData, setState, state } = useContext(GlobalContext);
+  const { fetchData, setState } = useContext(GlobalContext);
 
   useEffect(() => {
     const checkAuth = async () => {
       const data = await fetchData({ url: "sessions" })
 
-      if (data.statusCode != 200) {
-        navigate("/login")
-      } else {
+      if (data.statusCode == 200) {
         setState({ user: data.response, isLoggedIn: true })
       }
     }
 
     checkAuth()
   }, [])
-
-  console.log(state);
 
   return (
     <>

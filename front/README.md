@@ -1,1 +1,3 @@
-# DEPLOY : https://ecommerce-2vq91og81-tomas-projects-3db80bcd.vercel.app
+# DEPLOY FRONT: https://proteo-39cde.web.app/
+# DEPLOY BACK: https://node-55655-production.up.railway.app
+

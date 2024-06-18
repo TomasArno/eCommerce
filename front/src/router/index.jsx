@@ -8,9 +8,9 @@ import Index from "../pages/main/.";
 import ProducView from "../pages/product-view/.";
 import SearchPanel from "../pages/search/.";
 import Form from "../pages/form/.";
-import Orders from "../pages/orders/.";
 import Cart from "../pages/checkout/index.jsx";
 import Profile from "../pages/profile";
+import Thanks from "../pages/thanks";
 import NotFound from "../components/not-found/.";
 
 const router = createBrowserRouter([
@@ -35,10 +35,6 @@ const router = createBrowserRouter([
         element: <Form />,
       },
       {
-        path: "/orders",
-        element: <Orders />,
-      },
-      {
         path: "/cart",
         element: <Cart />,
       },
@@ -48,7 +44,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/thanks",
-        element: <Profile />,
+        element: <Thanks />,
       },
       {
         path: "*",
