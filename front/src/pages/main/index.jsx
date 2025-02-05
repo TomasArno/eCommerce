@@ -3,6 +3,9 @@ import { useContext } from "react";
 import { GlobalContext } from "../../state";
 
 import Card from "../../components/card";
+import Carousel from "../../components/carousel";
+
+import { Box } from "@mui/joy";
 
 function Index() {
   const { fetchData } = useContext(GlobalContext);
@@ -10,33 +13,48 @@ function Index() {
 
   useEffect(() => {
     const handleFetch = async () => {
-
-      const data = await fetchData({ url: "products" })
+      const data = await fetchData({ url: "products" });
 
       if (data?.statusCode == 200) {
         const { docs } = data.response;
 
-        setProducts(docs)
+        setProducts(docs);
       }
-    }
+    };
 
-    handleFetch()
+    handleFetch();
   }, []);
 
-
-  return <div className="cards_container">
-    {products.map((prod) => (
-      <Card
-        key={prod._id}
-        id={prod._id}
-        title={prod.title}
-        stock={prod.stock}
-        photo={prod.photo}
-        price={prod.price}
-      />
-    ))}
-    {/* HACER CARROUSEL */}
-  </div>
+  return (
+    <Box
+      sx={{
+        minHeight: "100vh",
+        width: "100%",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      <Carousel />
+      <Box
+        sx={{
+          display: "flex",
+          gap: "1rem",
+          p: "3rem",
+        }}
+      >
+        {products.map((prod) => (
+          <Card
+            key={prod._id}
+            id={prod._id}
+            title={prod.title}
+            stock={prod.stock}
+            photo={prod.photo}
+            price={prod.price}
+          />
+        ))}
+      </Box>
+    </Box>
+  );
 }
 
 export default Index;

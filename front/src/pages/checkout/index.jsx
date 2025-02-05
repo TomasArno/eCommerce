@@ -16,30 +16,30 @@ function Cart() {
 
   useEffect(() => {
     const handleFetch = async () => {
-      const data = await fetchData({ url: "orders" })
-      const dataAmount = await fetchData({ url: "tickets" })
+      const data = await fetchData({ url: "orders" });
+      const dataAmount = await fetchData({ url: "tickets" });
 
       if (data?.statusCode == 200 && dataAmount?.statusCode == 200) {
         const { docs } = data.response;
-        const { total } = dataAmount.response;
+        const { total } = dataAmount.response[0];
 
-        setAmount(total)
-        setState({ cartItems: docs })
+        setAmount(total);
+        setState({ cartItems: docs });
       }
-    }
+    };
 
-    handleFetch()
-  }, [])
+    handleFetch();
+  }, []);
 
   const handleBuy = async () => {
-    const data = await fetchData({ method: "POST", url: "payments/checkout" })
+    const data = await fetchData({ method: "POST", url: "payments/checkout" });
 
     if (data.statusCode == 201) {
-      const { url } = data.response
+      const { url } = data.response;
 
-      location.href = url
+      location.href = url;
     }
-  }
+  };
 
   let units = 0;
 
@@ -51,17 +51,17 @@ function Cart() {
       padding={"30px 60px"}
       sx={{ width: "100%", height: "100%", background: "#ddd" }}
     >
-      {
-        cartItems.length ?
-          <>
-            <Box sx={{ width: "60%", maxWidth: "800px" }}>
-              {cartItems.map((order) => {
-                units += order.quantity;
+      {cartItems.length ? (
+        <>
+          <Box sx={{ width: "60%", maxWidth: "800px" }}>
+            {cartItems.map((order) => {
+              units += order.quantity;
 
-                const { quantity, _id } = order
-                const { title, photo, stock } = order.productId
+              const { quantity, _id } = order;
+              const { title, photo, stock } = order.productId;
 
-                return <Product
+              return (
+                <Product
                   key={_id}
                   id={_id}
                   button="modifiers"
@@ -73,71 +73,78 @@ function Cart() {
                   date={""}
                   photo={photo}
                   padding={0}
-                  handleDelete={() => { }}
+                  handleDelete={() => {}}
                 />
-              })}
-            </Box>
-            <Box sx={{ width: "30%", maxWidth: "360px", height: "240px" }}>
-              <CardContent
-                sx={{
-                  height: "100%",
-                  borderRadius: "8px",
-                  display: "flex",
-                  flexDirection: "column",
-                  background: "#fbfcfe",
-                }}
-                orientation="horizontal"
+              );
+            })}
+          </Box>
+          <Box sx={{ width: "30%", maxWidth: "360px", height: "240px" }}>
+            <CardContent
+              sx={{
+                height: "100%",
+                borderRadius: "8px",
+                display: "flex",
+                flexDirection: "column",
+                background: "#fbfcfe",
+              }}
+              orientation="horizontal"
+            >
+              <Typography
+                color="black"
+                padding={"1rem"}
+                borderBottom={"1px solid #ddd"}
+                alignContent={"center"}
+                level="h2"
+                fontSize="lg"
+                fontWeight="lg"
               >
-                <Typography
-                  color="black"
-                  padding={"1rem"}
-                  borderBottom={"1px solid #ddd"}
-                  alignContent={"center"}
-                  level="h2"
-                  fontSize="lg"
-                  fontWeight="lg"
-                >
-                  Resumen de compra
-                </Typography>
-                <Box
-                  height={"100%"}
-                  display={"flex"}
-                  flexDirection={"column"}
-                  justifyContent={"space-between"}
-                  padding={"1rem"}
-                >
-                  <Box marginTop={"10px"}>
-                    <Typography fontSize="sm" level="body-sm">
-                      Unidades: {units}
-                    </Typography>
-                    <Typography
-                      color="black"
-                      level="body-sm"
-                      fontSize="xl"
-                      fontWeight="xl"
-                      display={"flex"}
-                      justifyContent={"space-between"}
-                    >
-                      Total: <span>${amount}</span>
-                    </Typography>
-                  </Box>
-                  <Box
-                    sx={{ display: "flex", flexDirection: "column", rowGap: "5px" }}
+                Resumen de compra
+              </Typography>
+              <Box
+                height={"100%"}
+                display={"flex"}
+                flexDirection={"column"}
+                justifyContent={"space-between"}
+                padding={"1rem"}
+              >
+                <Box marginTop={"10px"}>
+                  <Typography fontSize="sm" level="body-sm">
+                    Unidades: {units}
+                  </Typography>
+                  <Typography
+                    color="black"
+                    level="body-sm"
+                    fontSize="xl"
+                    fontWeight="xl"
+                    display={"flex"}
+                    justifyContent={"space-between"}
                   >
-                    <Button
-                      sx={{ background: "green" }}
-                      onClick={handleBuy}
-                      size="lg"
-                      endDecorator={<ArrowForward fontSize="xl" />}
-                    >
-                      Comprar ahora
-                    </Button>
-                  </Box>
+                    Total: <span>${amount}</span>
+                  </Typography>
                 </Box>
-              </CardContent>
-            </Box>
-          </> : <Typography level="h1">Nada por aquí...</Typography>
-      }
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    rowGap: "5px",
+                  }}
+                >
+                  <Button
+                    sx={{ background: "green" }}
+                    onClick={handleBuy}
+                    size="lg"
+                    endDecorator={<ArrowForward fontSize="xl" />}
+                  >
+                    Comprar ahora
+                  </Button>
+                </Box>
+              </Box>
+            </CardContent>
+          </Box>
+        </>
+      ) : (
+        <Typography level="h1">Nada por aquí...</Typography>
+      )}
     </Box>
   );
 }
