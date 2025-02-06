@@ -28,7 +28,6 @@ function Index() {
   return (
     <Box
       sx={{
-        minHeight: "100vh",
         width: "100%",
         display: "flex",
         flexDirection: "column",
@@ -37,6 +36,7 @@ function Index() {
       <Carousel />
       <Box
         sx={{
+          width: "100%",
           display: "flex",
           gap: "1rem",
           p: "3rem",

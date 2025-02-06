@@ -1,62 +1,70 @@
 import CarouselUI from "react-material-ui-carousel";
-import { Paper } from "@mui/material";
+import { Box, CardMedia, Card } from "@mui/material";
 
 export default function Carousel() {
   const items = [
     {
-      imgSrc: "https://picsum.photos/800/300",
-      alt: "Oferta 1",
+      img: "https://picsum.photos/1000/350",
+      title: "Producto 1",
+      description: "Descripción del producto 1",
     },
     {
-      imgSrc: "https://picsum.photos/800/300",
-      alt: "Oferta 2",
+      img: "https://picsum.photos/1000/350",
+      title: "Producto 2",
+      description: "Descripción del producto 2",
     },
     {
-      imgSrc: "https://picsum.photos/800/300",
-      alt: "Oferta 3",
+      img: "https://picsum.photos/1000/350",
+      title: "Producto 3",
+      description: "Descripción del producto 3",
     },
   ];
 
   return (
-    <CarouselUI
-      autoPlay={true}
-      interval={5000} // Intervalo de 5 segundos
-      animation="slide" // Animación de deslizamiento
-      navButtonsAlwaysVisible={true} // Los botones de navegación siempre visibles
-      indicators={true} // Los indicadores (puntos) visibles
-      cycleNavigation={true} // Vuelve al primer slide cuando llega al último
-      navButtonsProps={{
-        style: {
-          backgroundColor: "rgba(0, 0, 0, 0.6)", // Color de fondo de los botones de navegación
-          color: "white", // Color de los íconos
-          borderRadius: "50%", // Hacemos los botones circulares
-          padding: "10px", // Aumentamos el tamaño de los botones
-        },
+    <Box
+      sx={{
+        width: "100%",
+        height: 350, // Altura fija para evitar estiramientos
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
       }}
     >
-      {items.map((item, index) => (
-        <Paper
-          key={index}
-          style={{
-            minHeight: "150px",
-            maxHeight: "500px",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: "black", // Fondo negro para hacer destacar la imagen
-            borderRadius: 0,
-            boxShadow: "none",
-          }}
-        >
-          <img
-            src={item.imgSrc}
-            alt={item.alt}
-            style={{
-              objectFit: "cover", // Hace que la imagen cubra todo el espacio sin distorsionarse
+      <CarouselUI
+        animation="slide"
+        interval={4000}
+        navButtonsAlwaysVisible
+        indicators={false}
+        sx={{
+          width: "100%",
+          height: 350, // Fijamos la altura del carrusel
+        }}
+      >
+        {items.map((item, index) => (
+          <Card
+            key={index}
+            sx={{
+              width: "100%",
+              height: "100%", // Asegura que el Card respete la altura del carrusel
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              backgroundColor: "transparent",
             }}
-          />
-        </Paper>
-      ))}
-    </CarouselUI>
+          >
+            <CardMedia
+              component="img"
+              alt={item.title}
+              image={item.img}
+              sx={{
+                width: "100%",
+                height: 350, // Mantiene la imagen dentro del tamaño del carrusel
+                objectFit: "cover", // Evita deformaciones
+              }}
+            />
+          </Card>
+        ))}
+      </CarouselUI>
+    </Box>
   );
 }
