@@ -9,59 +9,18 @@ import {
   MenuButton,
   MenuItem,
   Dropdown,
-  Typography,
-  Divider,
   Button,
   ModalClose,
   Drawer,
-  List,
-  ListItem,
-  ListItemButton,
+  Divider,
 } from "@mui/joy";
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
 
 import SearchForm from "./components/search-form";
-import "./App.css";
+import ServiceList from "./components/service-list";
+import Footer from "./components/footer";
 
-const listItems = [
-  <Divider key={1}>Combos</Divider>,
-  "Disponibles",
-  "Arma tu combo",
-  <Divider key={2}>Computadoras</Divider>,
-  "Servidores",
-  "Escritorio",
-  "Laptops",
-  <Divider key={3}>Periféricos</Divider>,
-  "Monitores",
-  "Parlantes",
-  "Teclados",
-  "Mouses",
-  "Webcams",
-  <Divider key={4}>Componentes</Divider>,
-  "Microprocesadores",
-  "Tarjetas gráficas",
-  "Memoria RAM",
-  "Unidades SSD",
-  "Fuentes de alimentación",
-  "Motherboards",
-  <Divider key={5}>Almacenamiento Externo</Divider>,
-  "Pendrives",
-  "Tarjetas SD",
-  "Discos portátiles",
-  <Divider key={6}>Redes</Divider>,
-  "Cables de alimentación",
-  "Cables de audio",
-  "Conectores de red",
-  "Switches",
-  "Routers",
-  "Modems",
-  <Divider key={7}>Video</Divider>,
-  "Cámaras de seguridad",
-  <Divider key={8}>Servicios</Divider>,
-  "Limpieza de Hardware",
-  "Limpieza de Software",
-  "Formateo",
-];
+import "./App.css";
 
 function App() {
   const { fetchData, setState } = useContext(GlobalContext);
@@ -155,17 +114,7 @@ function App() {
                       mt: 2,
                     }}
                   />
-                  <List>
-                    {listItems.map((item, i) =>
-                      typeof item != "string" ? (
-                        item
-                      ) : (
-                        <ListItem key={i}>
-                          <ListItemButton>{item}</ListItemButton>
-                        </ListItem>
-                      )
-                    )}
-                  </List>
+                  <ServiceList />
                 </Box>
               </Drawer>
             </Box>
@@ -177,11 +126,7 @@ function App() {
         <Outlet />
       </main>
 
-      <Box borderTop="2px solid #ddd" component="footer">
-        <Typography level="body-xs" fontWeight="bold" textAlign="center">
-          © Core Technologies 2025
-        </Typography>
-      </Box>
+      <Footer />
     </>
   );
 }

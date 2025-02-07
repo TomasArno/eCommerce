@@ -55,10 +55,6 @@ scrollbar-track {
   position: fixed;
   z-index: 1000;
   border-bottom: 1px solid #ddd;
-}
-
-.header,
-.footer {
   background-color: white;
   width: 100%;
 

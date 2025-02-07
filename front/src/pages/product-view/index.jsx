@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { GlobalContext } from "../../state";
 
 import FullCard from "../../components/product-view";
-import { Box } from "@mui/joy";
 
 function ProducView() {
   const navigate = useNavigate();
@@ -17,16 +16,12 @@ function ProducView() {
   });
 
   return (
-    <Box
-      sx={{
-        minHeight: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-      }}
-    >
-      <FullCard photo={photo} title={title} price={price} stock={stock} />
-    </Box>
+    <FullCard
+      photos={[photo, "/images/Favicon.png"]}
+      title={title}
+      price={price}
+      stock={stock}
+    />
   );
 }
 

@@ -1,22 +1,223 @@
+// import { useState, useContext } from "react";
+// import { useNavigate } from "react-router-dom";
+
+// import { GlobalContext } from "../../state";
+
+// import {
+//   typographyClasses,
+//   Box,
+//   CssBaseline,
+//   Button,
+//   Divider,
+//   Typography,
+//   AspectRatio,
+// } from "@mui/joy";
+
+// import ArrowForward from "@mui/icons-material/ArrowForward";
+
+// import ButtonCounter from "../button-counter";
+
+// function FullCard({ photo, title, price, stock }) {
+//   const navigate = useNavigate();
+//   const [count, setCount] = useState(0);
+
+//   const { addProductInCart, state } = useContext(GlobalContext);
+
+//   const handleCart = (e) => {
+//     const { id } = state.productSelected;
+
+//     addProductInCart(id, count);
+//     if (e.target.id == "buy") navigate("/cart");
+//     else navigate("/");
+//   };
+
+//   const handleAdd = () => {
+//     setCount((c) => (c < stock ? c + 1 : c));
+//   };
+
+//   const handleRemove = () => {
+//     setCount((c) => (c > 0 ? c - 1 : 0));
+//   };
+
+//   return (
+//     <Box
+//       sx={{
+//         width: "100%",
+//         p: "2rem ",
+//       }}
+//     >
+//       <Box
+//         sx={(theme) => ({
+//           width: "fit-content",
+//           background: "#fbfcfe",
+//           borderRadius: "8px",
+//           border: "1px solid #cdd7e1",
+//           p: "1.7rem",
+//           display: "flex",
+//           flexDirection: "row-reverse",
+//           justifyContent: "center",
+//           gap: 1,
+//           [theme.breakpoints.up(834)]: {
+//             gap: 2,
+//           },
+//           [theme.breakpoints.up(1199)]: {
+//             gap: 4,
+//           },
+//         })}
+//       >
+//         <Box
+//           sx={(theme) => ({
+//             display: "flex",
+//             height: "fit-content",
+//             [theme.breakpoints.up(834)]: {
+//               minWidth: 420,
+//             },
+//             [`& .${typographyClasses.root}`]: {
+//               textWrap: "balance",
+//             },
+//           })}
+//         >
+//           <CssBaseline />
+//           <Box
+//             sx={{
+//               width: "100%",
+//               display: "flex",
+//               flexDirection: "column",
+//               justifyContent: "space-between",
+//               rowGap: "1rem",
+//             }}
+//           >
+//             <Box>
+//               <Typography
+//                 alignSelf={"start"}
+//                 color="primary"
+//                 fontSize="sm"
+//                 fontWeight="lg"
+//               >
+//                 MARCA
+//               </Typography>
+//               <Typography
+//                 level="h1"
+//                 fontWeight="xl"
+//                 fontSize="clamp(1.875rem, 1.3636rem + 2.1818vw, 3rem)"
+//               >
+//                 {title}
+//               </Typography>
+//             </Box>
+
+//             <Typography level="h3" textColor="text.secondary">
+//               $ {price}
+//             </Typography>
+
+//             <Box>
+//               <Typography>Disponible: {stock}</Typography>
+//               <ButtonCounter
+//                 sx={{ width: "fit-content" }}
+//                 onClickAdd={handleAdd}
+//                 onClickRemove={handleRemove}
+//                 count={count}
+//               />
+//             </Box>
+
+//             <Box
+//               sx={{
+//                 display: "flex",
+//                 flexDirection: "column",
+//                 rowGap: "10px",
+//               }}
+//             >
+//               <Button
+//                 id="buy"
+//                 onClick={handleCart}
+//                 size="lg"
+//                 endDecorator={<ArrowForward fontSize="xl" />}
+//               >
+//                 Comprar ahora
+//               </Button>
+//               <Button
+//                 id="add"
+//                 onClick={handleCart}
+//                 size="lg"
+//                 variant="soft"
+//                 endDecorator={<ArrowForward fontSize="xl" />}
+//               >
+//                 Agregar al carrito
+//               </Button>
+//             </Box>
+//           </Box>
+//         </Box>
+
+//         <Divider orientation="vertical" variant="middle" />
+
+//         <Box>
+//           <AspectRatio
+//             ratio={16 / 9}
+//             variant="outlined"
+//             sx={{
+//               width: "700px",
+//               height: "400px",
+//               alignSelf: "stretch",
+//               borderRadius: "sm",
+//               objectFit: "cover",
+//               pointerEvents: "none",
+//             }}
+//           >
+//             <img src={photo} alt="" />
+//           </AspectRatio>
+
+//           <Box width={"700px"}>
+//             <Typography variant="body2" sx={{ color: "text.secondary" }}>
+//               Esta es una descripción corta del producto. Aquí podrías poner
+//               detalles breves sobre las características del producto, como
+//               tamaño, color, material, etc.
+//             </Typography>
+
+//             <Divider sx={{ my: 2 }} />
+
+//             {/* Detalles adicionales */}
+//             <Box sx={{ marginTop: 2 }}>
+//               <Typography variant="body2" sx={{ fontWeight: "bold" }}>
+//                 Detalles del producto
+//               </Typography>
+//               <Typography
+//                 variant="body2"
+//                 sx={{ marginTop: 1, color: "text.secondary" }}
+//               >
+//                 - Material: Algodón 100%
+//                 <br />
+//                 - Tamaño: M<br />
+//                 - Color: Azul
+//                 <br />- Garantía: 6 meses
+//               </Typography>
+//             </Box>
+//           </Box>
+//         </Box>
+//       </Box>
+//     </Box>
+//   );
+// }
+
+// export default FullCard;
+
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-
 import { GlobalContext } from "../../state";
-
-import { typographyClasses } from "@mui/joy/Typography";
-import Box from "@mui/joy/Box";
-import CssBaseline from "@mui/joy/CssBaseline";
-import Button from "@mui/joy/Button";
-import Typography from "@mui/joy/Typography";
+import {
+  typographyClasses,
+  Box,
+  CssBaseline,
+  Button,
+  Divider,
+  Typography,
+  AspectRatio,
+} from "@mui/joy";
 import ArrowForward from "@mui/icons-material/ArrowForward";
-import AspectRatio from "@mui/joy/AspectRatio";
-import Container from "@mui/joy/Container";
-
 import ButtonCounter from "../button-counter";
 
-function FullCard({ photo, title, price, stock }) {
+function FullCard({ photos, title, price, stock }) {
   const navigate = useNavigate();
   const [count, setCount] = useState(0);
+  const [selectedImage, setSelectedImage] = useState(photos[0]);
 
   const { addProductInCart, state } = useContext(GlobalContext);
 
@@ -36,130 +237,204 @@ function FullCard({ photo, title, price, stock }) {
     setCount((c) => (c > 0 ? c - 1 : 0));
   };
 
+  const handleImageChange = (image) => {
+    setSelectedImage(image);
+  };
+
   return (
-    <Container
-      sx={(theme) => ({
-        background: "red",
-        display: "flex",
-        flexDirection: "row-reverse",
-        alignItems: "center",
-        justifyContent: "center",
-        gap: 4,
-        [theme.breakpoints.up(834)]: {
-          gap: 6,
-        },
-        [theme.breakpoints.up(1199)]: {
-          gap: 12,
-        },
-      })}
-    >
+    <Box sx={{ width: "100%", p: "2rem " }}>
       <Box
         sx={(theme) => ({
-          background: "orange",
-          height: "100%",
+          width: "fit-content",
+          background: "#fbfcfe",
+          borderRadius: "8px",
+          border: "1px solid #cdd7e1",
+          p: "1.7rem",
           display: "flex",
-          gap: "1rem",
-          maxWidth: "50ch",
-          flexShrink: 999,
+          flexDirection: "row-reverse",
+          justifyContent: "center",
+          gap: 1,
           [theme.breakpoints.up(834)]: {
-            minWidth: 420,
+            gap: 2,
           },
-          [`& .${typographyClasses.root}`]: {
-            textWrap: "balance",
+          [theme.breakpoints.up(1199)]: {
+            gap: 4,
           },
         })}
       >
-        <CssBaseline />
         <Box
-          sx={{
-            background: "yellow",
-            height: "100%",
-            width: "100%",
+          sx={(theme) => ({
             display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-between",
-          }}
+            height: "fit-content",
+            [theme.breakpoints.up(834)]: {
+              minWidth: 420,
+            },
+            [`& .${typographyClasses.root}`]: {
+              textWrap: "balance",
+            },
+          })}
         >
+          <CssBaseline />
           <Box
             sx={{
-              background: "green",
-            }}
-          >
-            <Typography
-              alignSelf={"start"}
-              color="primary"
-              fontSize="sm"
-              fontWeight="lg"
-            >
-              MARCA
-            </Typography>
-            <Typography
-              level="h1"
-              fontWeight="xl"
-              fontSize="clamp(1.875rem, 1.3636rem + 2.1818vw, 3rem)"
-            >
-              {title}
-            </Typography>
-          </Box>
-          <Typography level="h3" textColor="text.secondary" lineHeight="lg">
-            $ {price}
-          </Typography>
-          <Box
-            sx={{
-              background: "purple",
-            }}
-          >
-            <Typography>Disponible: {stock}</Typography>
-            <ButtonCounter
-              onClickAdd={handleAdd}
-              onClickRemove={handleRemove}
-              count={count}
-            />
-          </Box>
-
-          <Box
-            sx={{
-              background: "gray",
+              width: "100%",
               display: "flex",
               flexDirection: "column",
-              rowGap: "5px",
+              justifyContent: "space-between",
+              rowGap: "1rem",
             }}
           >
-            <Button
-              id="buy"
-              onClick={handleCart}
-              size="lg"
-              endDecorator={<ArrowForward fontSize="xl" />}
+            <Box>
+              <Typography
+                alignSelf={"start"}
+                color="primary"
+                fontSize="sm"
+                fontWeight="lg"
+              >
+                MARCA
+              </Typography>
+              <Typography
+                level="h1"
+                fontWeight="xl"
+                fontSize="clamp(1.875rem, 1.3636rem + 2.1818vw, 3rem)"
+              >
+                {title}
+              </Typography>
+            </Box>
+
+            <Typography level="h3" textColor="text.secondary">
+              $ {price}
+            </Typography>
+
+            <Box>
+              <Typography>Disponible: {stock}</Typography>
+              <ButtonCounter
+                sx={{ width: "fit-content" }}
+                onClickAdd={handleAdd}
+                onClickRemove={handleRemove}
+                count={count}
+              />
+            </Box>
+
+            <Box
+              sx={{ display: "flex", flexDirection: "column", rowGap: "10px" }}
             >
-              Comprar ahora
-            </Button>
-            <Button
-              id="add"
-              onClick={handleCart}
-              size="lg"
-              variant="soft"
-              endDecorator={<ArrowForward fontSize="xl" />}
+              <Button
+                id="buy"
+                onClick={handleCart}
+                size="lg"
+                endDecorator={<ArrowForward fontSize="xl" />}
+              >
+                Comprar ahora
+              </Button>
+              <Button
+                id="add"
+                onClick={handleCart}
+                size="lg"
+                variant="soft"
+                endDecorator={<ArrowForward fontSize="xl" />}
+              >
+                Agregar al carrito
+              </Button>
+            </Box>
+          </Box>
+        </Box>
+
+        <Divider orientation="vertical" />
+
+        <Box>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row-reverse",
+              mb: "0.7rem",
+            }}
+          >
+            <AspectRatio
+              ratio={16 / 9}
+              variant="outlined"
+              sx={{
+                width: "700px",
+                height: "400px",
+                alignSelf: "stretch",
+                borderRadius: "sm",
+                objectFit: "cover",
+                pointerEvents: "none",
+              }}
             >
-              Agregar al carrito
-            </Button>
+              <img src={selectedImage} alt="Producto" />
+            </AspectRatio>
+
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 1,
+                mr: "1rem",
+              }}
+            >
+              {photos.map((photo, index) => (
+                <Box
+                  key={index}
+                  sx={{
+                    width: "60px",
+                    height: "60px",
+                    borderRadius: "8px",
+                    overflow: "hidden",
+                    cursor: "pointer",
+                    boxShadow: selectedImage === photo ? 4 : 1, // resaltar la imagen seleccionada
+                    border: "1px solid", // Agregar un borde sutil
+                    borderColor:
+                      selectedImage === photo ? "primary.main" : "#cdd7e1", // Borde gris o azul para la selección
+                    transition: "border-color 0.3s ease", // Transición suave cuando cambia el borde
+                  }}
+                  onClick={() => handleImageChange(photo)}
+                >
+                  <img
+                    src={photo}
+                    alt={`Imagen ${index}`}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                      pointerEvents: "none",
+                    }}
+                  />
+                </Box>
+              ))}
+            </Box>
+          </Box>
+
+          <Box width={"700px"}>
+            <Typography variant="body2" sx={{ color: "text.secondary" }}>
+              Esta es una descripción corta del producto. Aquí podrías poner
+              detalles breves sobre las características del producto, como
+              tamaño, color, material, etc.
+            </Typography>
+
+            <Divider sx={{ my: 2 }} />
+
+            {/* Detalles adicionales */}
+            <Box sx={{ marginTop: 2 }}>
+              <Typography variant="body2" sx={{ fontWeight: "bold" }}>
+                Detalles del producto
+              </Typography>
+              <Typography
+                variant="body2"
+                sx={{ marginTop: 1, color: "text.secondary" }}
+              >
+                - Material: Algodón 100%
+                <br />
+                - Tamaño: M
+                <br />
+                - Color: Azul
+                <br />- Garantía: 6 meses
+              </Typography>
+            </Box>
           </Box>
         </Box>
       </Box>
-      <AspectRatio
-        ratio={16 / 9} // Mantén la proporción de 16:9 si deseas una forma rectangular
-        variant="outlined"
-        sx={{
-          display: "flex", // Centra la imagen
-          width: "700px", // Aumento el ancho para hacer la imagen un poco más ancha
-          height: "800px", // Hago que la imagen sea el doble de alta
-          alignSelf: "stretch",
-          borderRadius: "sm", // Bordes redondeados
-          objectFit: "cover", // Asegura que la imagen cubra el área sin distorsionarse
-        }}
-      >
-        <img src={photo} alt="" />
-      </AspectRatio>
-    </Container>
+    </Box>
   );
 }
 

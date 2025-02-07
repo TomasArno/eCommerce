@@ -9,7 +9,7 @@ import Input from "@mui/joy/Input";
 import ShoppingCartCheckout from "@mui/icons-material/ShoppingCartCheckout";
 import { Box } from "@mui/joy";
 
-import DropList from "../drop-list";
+import DropList from "../user-list";
 import Button from "../button";
 
 import "./index.css";
@@ -36,7 +36,11 @@ function SearchForm() {
     <div className="search-box_container">
       <Link component="a" underline="none" onClick={() => navigate("/")}>
         <Typography fontSize="xl">
-          <img style={{ height: "30px" }} src="/images/Proteo.png" alt="" />
+          <img
+            style={{ height: "30px" }}
+            src="/images/Favicon.png"
+            alt="Logo.png"
+          />
         </Typography>
       </Link>
       <form className="search-form">
