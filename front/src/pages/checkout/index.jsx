@@ -1,13 +1,46 @@
 import { useContext, useEffect, useState } from "react";
 import { GlobalContext } from "../../state";
 
-import CardContent from "@mui/joy/CardContent";
-import { Box } from "@mui/joy";
-import Typography from "@mui/joy/Typography";
-import { Button } from "@mui/joy";
+import { CardContent, Box, Link, Typography, Button } from "@mui/joy";
 import ArrowForward from "@mui/icons-material/ArrowForward";
 
 import Product from "../../components/order";
+
+function NoContent() {
+  return (
+    <Box
+      sx={{
+        width: "60%",
+      }}
+    >
+      <CardContent
+        sx={{
+          borderRadius: "8px",
+          background: "#fbfcfe",
+          display: "flex",
+          alignItems: "end",
+        }}
+        orientation="horizontal"
+      >
+        <Typography
+          color="black"
+          padding={"1rem"}
+          borderBottom={"1px solid #ddd"}
+          alignContent={"center"}
+          level="h1"
+          fontSize="lg"
+          fontWeight="lg"
+        >
+          Nada por aquí..
+        </Typography>
+
+        <Typography padding={"1rem"} level="body-sm">
+          <Link>Ver todas las novedades</Link>
+        </Typography>
+      </CardContent>
+    </Box>
+  );
+}
 
 function Cart() {
   const { fetchData, state, setState } = useContext(GlobalContext);
@@ -49,7 +82,11 @@ function Cart() {
       justifyContent={"center"}
       columnGap={"30px"}
       padding={"30px 60px"}
-      sx={{ width: "100%", height: "100%", background: "#ddd" }}
+      sx={{
+        width: "100%",
+        minHeight: "calc(100vh - 200px)",
+        // background: "#ddd",
+      }}
     >
       {cartItems.length ? (
         <>
@@ -143,7 +180,7 @@ function Cart() {
           </Box>
         </>
       ) : (
-        <Typography level="h1">Nada por aquí...</Typography>
+        <NoContent />
       )}
     </Box>
   );

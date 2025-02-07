@@ -8,17 +8,36 @@ function ButtonCounter({ onClickAdd, onClickRemove, count, sx }) {
         borderColor: "orange",
         alignSelf: "center",
         borderRadius: "6px",
-        ...sx
+        ...sx,
       }}
     >
-      <Box display={"flex"} columnGap={"15px"} border="1px solid #ddd" borderRadius={"6px"} >
-        <IconButton sx={{ border: "none" }} size="sm" variant="outlined" onClick={onClickRemove}>
+      <Box
+        display={"flex"}
+        columnGap={"30px"}
+        border="1px solid #ddd"
+        borderRadius={"6px"}
+      >
+        <IconButton
+          sx={{ border: "none" }}
+          size="sm"
+          variant="outlined"
+          onClick={onClickRemove}
+        >
           <Remove />
         </IconButton>
-        <Typography alignSelf={"center"} fontWeight="md" textColor="text.secondary">
+        <Typography
+          alignSelf={"center"}
+          fontWeight="md"
+          textColor="text.secondary"
+        >
           {count}
         </Typography>
-        <IconButton sx={{ border: "none" }} size="sm" variant="outlined" onClick={onClickAdd}>
+        <IconButton
+          sx={{ border: "none" }}
+          size="sm"
+          variant="outlined"
+          onClick={onClickAdd}
+        >
           <Add />
         </IconButton>
       </Box>
