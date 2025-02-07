@@ -21,11 +21,11 @@ function FullCard({ photo, title, price, stock }) {
   const { addProductInCart, state } = useContext(GlobalContext);
 
   const handleCart = (e) => {
-    const { id } = state.productSelected
+    const { id } = state.productSelected;
 
     addProductInCart(id, count);
     if (e.target.id == "buy") navigate("/cart");
-    else navigate("/")
+    else navigate("/");
   };
 
   const handleAdd = () => {
@@ -39,11 +39,11 @@ function FullCard({ photo, title, price, stock }) {
   return (
     <Container
       sx={(theme) => ({
+        background: "red",
         display: "flex",
         flexDirection: "row-reverse",
         alignItems: "center",
         justifyContent: "center",
-        py: 15,
         gap: 4,
         [theme.breakpoints.up(834)]: {
           gap: 6,
@@ -55,6 +55,7 @@ function FullCard({ photo, title, price, stock }) {
     >
       <Box
         sx={(theme) => ({
+          background: "orange",
           height: "100%",
           display: "flex",
           gap: "1rem",
@@ -71,6 +72,7 @@ function FullCard({ photo, title, price, stock }) {
         <CssBaseline />
         <Box
           sx={{
+            background: "yellow",
             height: "100%",
             width: "100%",
             display: "flex",
@@ -78,7 +80,11 @@ function FullCard({ photo, title, price, stock }) {
             justifyContent: "space-between",
           }}
         >
-          <Box>
+          <Box
+            sx={{
+              background: "green",
+            }}
+          >
             <Typography
               alignSelf={"start"}
               color="primary"
@@ -98,7 +104,11 @@ function FullCard({ photo, title, price, stock }) {
           <Typography level="h3" textColor="text.secondary" lineHeight="lg">
             $ {price}
           </Typography>
-          <Box>
+          <Box
+            sx={{
+              background: "purple",
+            }}
+          >
             <Typography>Disponible: {stock}</Typography>
             <ButtonCounter
               onClickAdd={handleAdd}
@@ -107,7 +117,14 @@ function FullCard({ photo, title, price, stock }) {
             />
           </Box>
 
-          <Box sx={{ display: "flex", flexDirection: "column", rowGap: "5px" }}>
+          <Box
+            sx={{
+              background: "gray",
+              display: "flex",
+              flexDirection: "column",
+              rowGap: "5px",
+            }}
+          >
             <Button
               id="buy"
               onClick={handleCart}
@@ -129,22 +146,16 @@ function FullCard({ photo, title, price, stock }) {
         </Box>
       </Box>
       <AspectRatio
-        ratio={4 / 3}
+        ratio={16 / 9} // Mantén la proporción de 16:9 si deseas una forma rectangular
         variant="outlined"
-        maxHeight={350}
-        sx={(theme) => ({
-          minWidth: 300,
-          maxWidth: 500,
+        sx={{
+          display: "flex", // Centra la imagen
+          width: "700px", // Aumento el ancho para hacer la imagen un poco más ancha
+          height: "800px", // Hago que la imagen sea el doble de alta
           alignSelf: "stretch",
-          [theme.breakpoints.up(834)]: {
-            alignSelf: "initial",
-            flexGrow: 1,
-            "--AspectRatio-maxHeight": "400px",
-            "--AspectRatio-minHeight": "320px",
-          },
-          borderRadius: "sm",
-          flexBasis: "50%",
-        })}
+          borderRadius: "sm", // Bordes redondeados
+          objectFit: "cover", // Asegura que la imagen cubra el área sin distorsionarse
+        }}
       >
         <img src={photo} alt="" />
       </AspectRatio>

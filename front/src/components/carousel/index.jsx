@@ -60,6 +60,7 @@ export default function Carousel() {
                 width: "100%",
                 height: 350, // Mantiene la imagen dentro del tamaño del carrusel
                 objectFit: "cover", // Evita deformaciones
+                pointerEvents: "none",
               }}
             />
           </Card>

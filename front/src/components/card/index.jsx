@@ -27,7 +27,14 @@ function BasicCard({ id, photo, title, price, stock }) {
   }
 
   return (
-    <Card id={id} sx={{ width: 220, height: 270 }}>
+    <Card
+      id={id}
+      sx={{
+        width: 220,
+        height: 270,
+        flexShrink: 0,
+      }}
+    >
       <div>
         <Typography level="title-lg">{title}</Typography>
         <Typography level="body-sm">Disponible: {stock}</Typography>

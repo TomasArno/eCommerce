@@ -34,8 +34,10 @@ function SearchForm() {
 
   return (
     <div className="search-box_container">
-      <Link component="a" underline="none" onClick={() => navigate("/")} >
-        <Typography fontSize="xl"><img style={{ height: "30px" }} src="/images/Proteo.png" alt="" /></Typography>
+      <Link component="a" underline="none" onClick={() => navigate("/")}>
+        <Typography fontSize="xl">
+          <img style={{ height: "30px" }} src="/images/Proteo.png" alt="" />
+        </Typography>
       </Link>
       <form className="search-form">
         <Input

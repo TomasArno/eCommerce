@@ -1,11 +1,9 @@
-import { useEffect, useState } from "react";
-import { useContext } from "react";
+import { useEffect, useState, useContext } from "react";
 import { GlobalContext } from "../../state";
 
+import { Box, Typography, Link } from "@mui/joy";
 import Card from "../../components/card";
 import Carousel from "../../components/carousel";
-
-import { Box } from "@mui/joy";
 
 function Index() {
   const { fetchData } = useContext(GlobalContext);
@@ -34,24 +32,165 @@ function Index() {
       }}
     >
       <Carousel />
+
       <Box
         sx={{
           width: "100%",
           display: "flex",
-          gap: "1rem",
+          flexDirection: "column",
+          p: "2rem 3rem",
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "end",
+          }}
+        >
+          <Typography fontWeight={"bold"} mr={"13px"} pb={"17px"} level="h3">
+            Ofertas
+          </Typography>
+          <Typography pb={"17px"} level="body-sm">
+            <Link>Ver todas las ofertas</Link>
+          </Typography>
+        </Box>
+
+        <Box
+          sx={{
+            display: "flex",
+            gap: "1rem",
+            overflowX: "auto",
+            flexWrap: "nowrap",
+            pb: "10px",
+          }}
+        >
+          {products.map((prod) => (
+            <Card
+              key={prod._id}
+              id={prod._id}
+              title={prod.title}
+              stock={prod.stock}
+              photo={prod.photo}
+              price={prod.price}
+            />
+          ))}
+          {products.map((prod) => (
+            <Card
+              key={prod._id}
+              id={prod._id}
+              title={prod.title}
+              stock={prod.stock}
+              photo={prod.photo}
+              price={prod.price}
+            />
+          ))}
+          {products.map((prod) => (
+            <Card
+              key={prod._id}
+              id={prod._id}
+              title={prod.title}
+              stock={prod.stock}
+              photo={prod.photo}
+              price={prod.price}
+            />
+          ))}
+          {products.map((prod) => (
+            <Card
+              key={prod._id}
+              id={prod._id}
+              title={prod.title}
+              stock={prod.stock}
+              photo={prod.photo}
+              price={prod.price}
+            />
+          ))}
+        </Box>
+      </Box>
+      <Box
+        sx={{
+          width: "100%",
+          display: "flex",
+          flexDirection: "column",
           p: "3rem",
         }}
       >
-        {products.map((prod) => (
-          <Card
-            key={prod._id}
-            id={prod._id}
-            title={prod.title}
-            stock={prod.stock}
-            photo={prod.photo}
-            price={prod.price}
-          />
-        ))}
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "end",
+          }}
+        >
+          <Typography fontWeight={"bold"} mr={"13px"} pb={"17px"} level="h3">
+            Lo más vendido
+          </Typography>
+          <Typography pb={"17px"} level="body-sm">
+            <Link>Ver todos los más vendidos</Link>
+          </Typography>
+        </Box>
+
+        <Box
+          sx={{
+            display: "flex",
+            gap: "1rem",
+            overflowX: "auto",
+            flexWrap: "nowrap",
+            pb: "10px",
+          }}
+        >
+          {products.map((prod) => (
+            <Card
+              key={prod._id}
+              id={prod._id}
+              title={prod.title}
+              stock={prod.stock}
+              photo={prod.photo}
+              price={prod.price}
+            />
+          ))}
+        </Box>
+      </Box>
+      <Box
+        sx={{
+          width: "100%",
+          display: "flex",
+          flexDirection: "column",
+          p: "3rem",
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "end",
+          }}
+        >
+          <Typography fontWeight={"bold"} mr={"13px"} pb={"17px"} level="h3">
+            Productos Destacados
+          </Typography>
+          <Typography pb={"17px"} level="body-sm">
+            <Link>Ver todos los destacados</Link>
+          </Typography>
+        </Box>
+
+        <Box
+          sx={{
+            display: "flex",
+            gap: "1rem",
+            overflowX: "auto",
+            flexWrap: "nowrap",
+            pb: "10px",
+          }}
+        >
+          {products.map((prod) => (
+            <Card
+              key={prod._id}
+              id={prod._id}
+              title={prod.title}
+              stock={prod.stock}
+              photo={prod.photo}
+              price={prod.price}
+            />
+          ))}
+        </Box>
       </Box>
     </Box>
   );
