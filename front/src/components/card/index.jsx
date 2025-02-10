@@ -5,17 +5,14 @@ import Typography from "@mui/joy/Typography";
 
 import Button from "../button";
 
-import { useContext } from "react";
-import { GlobalContext } from "../../state";
+import GlobalStore from "../../state";
 import { useNavigate } from "react-router-dom";
 
 function BasicCard({ id, photo, title, price, stock }) {
-  const { state, setState } = useContext(GlobalContext);
+  const { isLoggedIn, setState } = GlobalStore();
   const navigate = useNavigate();
 
   function handleBtn() {
-    const { isLoggedIn } = state;
-
     if (!isLoggedIn) {
       navigate("/login");
     } else {

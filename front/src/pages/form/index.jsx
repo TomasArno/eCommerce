@@ -1,6 +1,6 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { GlobalContext } from "../../state";
+import GlobalStore from "../../state";
 
 import Box from "@mui/joy/Box";
 import Button from "@mui/joy/Button";
@@ -20,7 +20,7 @@ function ProductsForm() {
   const [modal, setModal] = useState({ open: false, message: "" });
 
   const navigate = useNavigate();
-  const { fetchData } = useContext(GlobalContext);
+  const { fetchData } = GlobalStore();
 
   const handleSave = async (e) => {
     e.preventDefault();
@@ -34,18 +34,18 @@ function ProductsForm() {
       photo: formElements.photo.value,
     };
 
-    const res = await fetchData({ method: "POST", url: `products/`, data })
+    const res = await fetchData({ method: "POST", url: `products/`, data });
 
     if (res?.statusCode == 201) {
-      setModal({ open: true, message: "Producto creado con exito!" })
+      setModal({ open: true, message: "Producto creado con exito!" });
     } else {
-      setModal({ open: true, message: res?.response })
+      setModal({ open: true, message: res?.response });
     }
-  }
+  };
 
   const handleCancel = () => {
-    navigate("/")
-  }
+    navigate("/");
+  };
 
   return (
     <Box id={123} sx={{ flex: 1, width: "100%", background: "#ddd" }}>
@@ -117,9 +117,16 @@ function ProductsForm() {
                 </Stack>
               </Stack>
             </Stack>
-            <CardOverflow sx={{ borderTop: "1px solid", borderColor: "divider" }}>
+            <CardOverflow
+              sx={{ borderTop: "1px solid", borderColor: "divider" }}
+            >
               <CardActions sx={{ alignSelf: "flex-end", pt: 2 }}>
-                <Button size="sm" variant="outlined" color="neutral" onClick={handleCancel}>
+                <Button
+                  size="sm"
+                  variant="outlined"
+                  color="neutral"
+                  onClick={handleCancel}
+                >
                   Cancelar
                 </Button>
                 <Button type="submit" size="sm" variant="solid">
@@ -127,11 +134,18 @@ function ProductsForm() {
                 </Button>
               </CardActions>
             </CardOverflow>
-            {modal.open ? <CloseModal title={modal.message} onClose={() => setModal({ open: false, message: "" })} /> : ""}
+            {modal.open ? (
+              <CloseModal
+                title={modal.message}
+                onClose={() => setModal({ open: false, message: "" })}
+              />
+            ) : (
+              ""
+            )}
           </form>
         </Card>
-      </Stack >
-    </Box >
+      </Stack>
+    </Box>
   );
 }
 

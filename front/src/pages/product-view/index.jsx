@@ -1,14 +1,13 @@
-import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { GlobalContext } from "../../state";
+import GlobalStore from "../../state";
 
 import FullCard from "../../components/product-view";
 
 function ProducView() {
   const navigate = useNavigate();
-  const { state } = useContext(GlobalContext);
-  const { photo, title, price, stock } = state.productSelected;
+  const { productSelected } = GlobalStore();
+  const { photo, title, price, stock } = productSelected;
 
   window.addEventListener("load", () => {
     // solucion momentanea. Ver como pedir informacion y que re-renderize correctamente el componente

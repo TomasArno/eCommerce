@@ -1,6 +1,6 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { GlobalContext } from "../../state";
+import GlobalStore from "../../state";
 import {
   typographyClasses,
   Box,
@@ -18,10 +18,10 @@ function FullCard({ photos, title, price, stock }) {
   const [count, setCount] = useState(0);
   const [selectedImage, setSelectedImage] = useState(photos[0]);
 
-  const { addProductInCart, state } = useContext(GlobalContext);
+  const { addProductInCart, productSelected } = GlobalStore();
 
   const handleCart = (e) => {
-    const { id } = state.productSelected;
+    const { id } = productSelected;
 
     addProductInCart(id, count);
     if (e.target.id == "buy") navigate("/cart");

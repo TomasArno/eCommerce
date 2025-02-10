@@ -1,7 +1,7 @@
-import React, { useContext } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 
-import { GlobalContext } from "../../state";
+import GlobalStore from "../../state";
 
 import Person from "@mui/icons-material/Person";
 import Box from "@mui/joy/Box";
@@ -16,8 +16,7 @@ import ModalClose from "@mui/joy/ModalClose";
 function DropList() {
   const navigate = useNavigate();
 
-  const { state, fetchData } = useContext(GlobalContext);
-  const { isLoggedIn, user } = state;
+  const { isLoggedIn, user, fetchData } = GlobalStore();
 
   const [open, setOpen] = React.useState(false);
 
@@ -60,8 +59,8 @@ function DropList() {
   };
 
   const handleSignOut = () => {
-    fetchData({ method: "POST", url: "sessions/signout" })
-  }
+    fetchData({ method: "POST", url: "sessions/signout" });
+  };
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -92,12 +91,20 @@ function DropList() {
             ) : (
               <>
                 <ListItem>
-                  <ListItemButton id="profile" component="a" onClick={checkIsLoggedIn}>
+                  <ListItemButton
+                    id="profile"
+                    component="a"
+                    onClick={checkIsLoggedIn}
+                  >
                     {user.name?.toUpperCase()}
                   </ListItemButton>
                 </ListItem>
                 <ListItem>
-                  <ListItemButton component="a" href="login" onClick={handleSignOut}>
+                  <ListItemButton
+                    component="a"
+                    href="login"
+                    onClick={handleSignOut}
+                  >
                     Salir
                   </ListItemButton>
                 </ListItem>
@@ -107,32 +114,23 @@ function DropList() {
           <Divider />
           <List>
             <ListItem>
-              <ListItemButton
-                onClick={checkIsLoggedIn}
-                component="a"
-                id="cart"
-              >
+              <ListItemButton onClick={checkIsLoggedIn} component="a" id="cart">
                 Carrito
               </ListItemButton>
             </ListItem>
-            {/* <ListItem>
-              <ListItemButton
-                onClick={checkIsLoggedIn}
-                component="a"
-                id="orders"
-              >
-                Compras
-              </ListItemButton>
-            </ListItem> */}
-            {user.role == 2 ? <ListItem>
-              <ListItemButton
-                onClick={checkIsLoggedIn}
-                component="a"
-                id="form"
-              >
-                Nuevo producto
-              </ListItemButton>
-            </ListItem> : ""}
+            {user.role == 2 ? (
+              <ListItem>
+                <ListItemButton
+                  onClick={checkIsLoggedIn}
+                  component="a"
+                  id="form"
+                >
+                  Nuevo producto
+                </ListItemButton>
+              </ListItem>
+            ) : (
+              ""
+            )}
           </List>
         </Box>
       </Drawer>

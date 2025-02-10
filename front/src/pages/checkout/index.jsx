@@ -1,5 +1,5 @@
-import { useContext, useEffect, useState } from "react";
-import { GlobalContext } from "../../state";
+import { useEffect, useState } from "react";
+import GlobalStore from "../../state";
 
 import { CardContent, Box, Link, Typography, Button } from "@mui/joy";
 import ArrowForward from "@mui/icons-material/ArrowForward";
@@ -43,9 +43,8 @@ function NoContent() {
 }
 
 function Cart() {
-  const { fetchData, state, setState } = useContext(GlobalContext);
+  const { fetchData, setState, cartItems } = GlobalStore();
   const [amount, setAmount] = useState(0);
-  const { cartItems } = state;
 
   useEffect(() => {
     const handleFetch = async () => {

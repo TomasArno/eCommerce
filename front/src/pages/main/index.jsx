@@ -1,12 +1,12 @@
-import { useEffect, useState, useContext } from "react";
-import { GlobalContext } from "../../state";
+import { useEffect, useState } from "react";
+import GlobalStore from "../../state";
 
 import { Box, Typography, Link } from "@mui/joy";
 import Card from "../../components/card";
 import Carousel from "../../components/carousel";
 
 function Index() {
-  const { fetchData } = useContext(GlobalContext);
+  const { fetchData } = GlobalStore();
   const [products, setProducts] = useState([]);
 
   useEffect(() => {

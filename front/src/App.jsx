@@ -1,29 +1,20 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 
-import { GlobalContext } from "./state";
+import GlobalStore from "./state";
 
-import {
-  Box,
-  Menu,
-  MenuButton,
-  MenuItem,
-  Dropdown,
-  Button,
-  ModalClose,
-  Drawer,
-  Divider,
-} from "@mui/joy";
+import { Box, Button, ModalClose, Drawer, Divider } from "@mui/joy";
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
 
 import SearchForm from "./components/search-form";
-import ServiceList from "./components/service-list";
+import DropDownMenu from "./components/drop-menu";
+import ServicesList from "./components/service-list";
 import Footer from "./components/footer";
 
 import "./App.css";
 
 function App() {
-  const { fetchData, setState } = useContext(GlobalContext);
+  const { fetchData, setState } = GlobalStore();
   const [open, setOpen] = useState(false);
 
   const toggleDrawer = (inOpen) => (event) => {
@@ -61,29 +52,7 @@ function App() {
             gap: 1,
           }}
         >
-          <Dropdown>
-            <MenuButton>Computadoras</MenuButton>
-            <Menu>
-              <MenuItem>Escritorio</MenuItem>
-              <MenuItem>Notebooks</MenuItem>
-            </Menu>
-          </Dropdown>
-          <Dropdown>
-            <MenuButton>Placas de video</MenuButton>
-          </Dropdown>
-          <Dropdown>
-            <MenuButton>Microprocesadores</MenuButton>
-          </Dropdown>
-          <Dropdown>
-            <MenuButton>Memorias</MenuButton>
-          </Dropdown>
-          <Dropdown>
-            <MenuButton>Gabinetes</MenuButton>
-          </Dropdown>
-          <Dropdown>
-            <MenuButton>Arma tu PC</MenuButton>
-          </Dropdown>
-
+          <DropDownMenu />
           <Box
             sx={{
               position: "absolute",
@@ -114,7 +83,7 @@ function App() {
                       mt: 2,
                     }}
                   />
-                  <ServiceList />
+                  <ServicesList />
                 </Box>
               </Drawer>
             </Box>

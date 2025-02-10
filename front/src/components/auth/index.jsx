@@ -1,6 +1,6 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { GlobalContext } from "../../state";
+import GlobalStore from "../../state";
 
 import { CssVarsProvider } from "@mui/joy/styles";
 import GlobalStyles from "@mui/joy/GlobalStyles";
@@ -25,8 +25,7 @@ function Auth({ path = "login" }) {
   const [modal, setModal] = useState({ open: false, message: "" });
   const [triesEnterPassword, setTriesEnterPassword] = useState(0);
 
-  const { setState, state, fetchData } = useContext(GlobalContext);
-  const { isRegistered } = state;
+  const { setState, isRegistered, fetchData } = GlobalStore();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -37,7 +36,11 @@ function Auth({ path = "login" }) {
       password: formElements.password.value,
     };
 
-    const res = await fetchData({ url: "sessions/login", method: "POST", data })
+    const res = await fetchData({
+      url: "sessions/login",
+      method: "POST",
+      data,
+    });
 
     if (res?.statusCode == 200) {
       setState({ isLoggedIn: true, user: res?.response });
@@ -60,12 +63,16 @@ function Auth({ path = "login" }) {
       password: formElements.password.value,
     };
 
-    const res = await fetchData({ url: "sessions/register", method: "POST", data })
+    const res = await fetchData({
+      url: "sessions/register",
+      method: "POST",
+      data,
+    });
 
     if (res?.statusCode == 201) {
       setState({ isRegistered: true });
     } else {
-      setModal({ open: true, message: res?.response })
+      setModal({ open: true, message: res?.response });
     }
 
     e.target.reset();
@@ -80,12 +87,12 @@ function Auth({ path = "login" }) {
       verifyCode: formElements.verify.value,
     };
 
-    const res = await fetchData({ url: "sessions", method: "POST", data })
+    const res = await fetchData({ url: "sessions", method: "POST", data });
 
     if (res?.statusCode == 200) {
       navigate("/login");
     } else {
-      setModal({ open: true, message: res?.response })
+      setModal({ open: true, message: res?.response });
     }
 
     e.target.reset();
@@ -189,8 +196,8 @@ function Auth({ path = "login" }) {
                   path == "login"
                     ? handleLogin(event)
                     : !isRegistered
-                      ? handleRegister(event)
-                      : handleVerification(event)
+                    ? handleRegister(event)
+                    : handleVerification(event)
                 }
               >
                 {!isRegistered ? (
@@ -236,10 +243,8 @@ function Auth({ path = "login" }) {
                       )}
                     </FormControl>
                   </>
-                )
-                  :
+                ) : (
                   <>
-
                     <FormControl error={triesEnterPassword > 0} required>
                       <FormLabel>Email</FormLabel>
                       <Input type="text" name="email" />
@@ -265,7 +270,7 @@ function Auth({ path = "login" }) {
                       )}
                     </FormControl>
                   </>
-                }
+                )}
                 <Stack gap={4} sx={{ mt: 2 }}>
                   <Box
                     sx={{
@@ -286,11 +291,18 @@ function Auth({ path = "login" }) {
                     {path == "login"
                       ? "Iniciar sesión"
                       : !isRegistered
-                        ? "Registrarse"
-                        : "Verificar código"}
+                      ? "Registrarse"
+                      : "Verificar código"}
                   </Button>
                 </Stack>
-                {modal.open ? <CloseModal title={modal.message} onClose={() => setModal({ open: false, message: "" })} /> : ""}
+                {modal.open ? (
+                  <CloseModal
+                    title={modal.message}
+                    onClose={() => setModal({ open: false, message: "" })}
+                  />
+                ) : (
+                  ""
+                )}
               </form>
             </Stack>
           </Box>

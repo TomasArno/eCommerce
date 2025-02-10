@@ -1,6 +1,6 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { GlobalContext } from "../../state";
+import GlobalStore from "../../state";
 
 import AspectRatio from "@mui/joy/AspectRatio";
 import Box from "@mui/joy/Box";
@@ -24,9 +24,9 @@ function Profile() {
   const [modal, setModal] = useState({ open: false, message: "" });
 
   const navigate = useNavigate();
-  const { state, fetchData } = useContext(GlobalContext);
+  const { state, fetchData } = GlobalStore();
 
-  const { photo, name, email, _id } = state.user
+  const { photo, name, email, _id } = state.user;
   const handleSave = async (e) => {
     e.preventDefault();
 
@@ -37,18 +37,18 @@ function Profile() {
       email: formElements.email.value,
     };
 
-    const res = await fetchData({ method: "PUT", url: `users/${_id}`, data })
+    const res = await fetchData({ method: "PUT", url: `users/${_id}`, data });
 
     if (res?.statusCode == 200) {
-      setModal({ open: true, message: "Modificación realizada con exito!" })
+      setModal({ open: true, message: "Modificación realizada con exito!" });
     } else {
-      setModal({ open: true, message: "Hubo un problema..." })
+      setModal({ open: true, message: "Hubo un problema..." });
     }
-  }
+  };
 
   const handleCancel = () => {
-    navigate("/")
-  }
+    navigate("/");
+  };
 
   return (
     <Box id={123} sx={{ flex: 1, width: "100%", background: "#ddd" }}>
@@ -74,17 +74,12 @@ function Profile() {
               sx={{ display: { xs: "flex", md: "flex" }, my: 1 }}
             >
               <Stack direction="column" spacing={1}>
-
                 <AspectRatio
                   ratio="1"
                   maxHeight={200}
                   sx={{ flex: 1, minWidth: 120, borderRadius: "100%" }}
                 >
-                  <img
-                    src={photo}
-                    loading="lazy"
-                    alt=""
-                  />
+                  <img src={photo} loading="lazy" alt="" />
                 </AspectRatio>
                 <IconButton
                   aria-label="upload new picture"
@@ -132,9 +127,16 @@ function Profile() {
                 </Stack>
               </Stack>
             </Stack>
-            <CardOverflow sx={{ borderTop: "1px solid", borderColor: "divider" }}>
+            <CardOverflow
+              sx={{ borderTop: "1px solid", borderColor: "divider" }}
+            >
               <CardActions sx={{ alignSelf: "flex-end", pt: 2 }}>
-                <Button size="sm" variant="outlined" color="neutral" onClick={handleCancel}>
+                <Button
+                  size="sm"
+                  variant="outlined"
+                  color="neutral"
+                  onClick={handleCancel}
+                >
                   Cancelar
                 </Button>
                 <Button type="submit" size="sm" variant="solid">
@@ -142,11 +144,18 @@ function Profile() {
                 </Button>
               </CardActions>
             </CardOverflow>
-            {modal.open ? <CloseModal title={modal.message} onClose={() => setModal({ open: false, message: "" })} /> : ""}
+            {modal.open ? (
+              <CloseModal
+                title={modal.message}
+                onClose={() => setModal({ open: false, message: "" })}
+              />
+            ) : (
+              ""
+            )}
           </form>
         </Card>
-      </Stack >
-    </Box >
+      </Stack>
+    </Box>
   );
 }
 

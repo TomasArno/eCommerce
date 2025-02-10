@@ -1,5 +1,4 @@
-import { useContext } from "react";
-import { GlobalContext } from "../../state";
+import GlobalStore from "../../state";
 import { useNavigate } from "react-router-dom";
 
 import Link from "@mui/joy/Link";
@@ -9,13 +8,13 @@ import Input from "@mui/joy/Input";
 import ShoppingCartCheckout from "@mui/icons-material/ShoppingCartCheckout";
 import { Box } from "@mui/joy";
 
-import DropList from "../user-list";
+import SidePanelOptions from "../user-list";
 import Button from "../button";
 
 import "./index.css";
 
 function SearchForm() {
-  const { state } = useContext(GlobalContext);
+  const { cartItems } = GlobalStore();
 
   const navigate = useNavigate();
   // validar que sea mayor a cero
@@ -66,13 +65,13 @@ function SearchForm() {
           alignItems: "center",
         }}
       >
-        <DropList />
+        <SidePanelOptions />
         <Badge
           component={"a"}
           size="sm"
           onClick={handleCart}
           sx={{ color: "black", cursor: "pointer" }}
-          badgeContent={state.cartItems.length}
+          badgeContent={cartItems.length}
         >
           <ShoppingCartCheckout />
         </Badge>
