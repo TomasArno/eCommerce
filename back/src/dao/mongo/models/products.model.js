@@ -10,6 +10,7 @@ const productsSchema = new Schema(
     photo: { type: String },
     price: { type: Number, required: true, index: true },
     stock: { type: Number, required: true, default: 0 },
+    sold: { type: Number, required: true, index: true },
     isFeatured: { type: Boolean, required: true, default: false, index: true },
     discount: { type: Number, required: true, default: 0, index: true },
     ownerId: { type: Types.ObjectId, required: true, ref: "users" }, // innecesario porque los usuarios no pueden vender
