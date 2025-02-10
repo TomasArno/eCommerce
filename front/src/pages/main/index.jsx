@@ -1,5 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import GlobalStore from "../../state";
+
+import {
+  offersStore,
+  bestSellersStore,
+  featuredsStore,
+} from "../../store/products";
 
 import { Box, Typography, Link } from "@mui/joy";
 import Card from "../../components/card";
@@ -7,16 +13,41 @@ import Carousel from "../../components/carousel";
 
 function Index() {
   const { fetchData } = GlobalStore();
-  const [products, setProducts] = useState([]);
+  const { productsOffers, setOffers } = offersStore();
+  const { productsBestSellers, setBestSellers } = bestSellersStore();
+  const { productsFeatureds, setFeatureds } = featuredsStore();
 
   useEffect(() => {
     const handleFetch = async () => {
-      const data = await fetchData({ url: "products" });
+      const offers = await fetchData({
+        url: "products",
+        query: { isFeatured: true },
+      });
+      const bestSellers = await fetchData({
+        url: "products",
+        query: { bestSellers: true },
+      });
+      const featureds = await fetchData({
+        url: "products",
+        query: { discount: true },
+      });
 
-      if (data?.statusCode == 200) {
-        const { docs } = data.response;
+      if (offers?.statusCode == 200) {
+        const { docs } = offers.response;
 
-        setProducts(docs);
+        setOffers(docs);
+      }
+
+      if (bestSellers?.statusCode == 200) {
+        const { docs } = bestSellers.response;
+
+        setBestSellers(docs);
+      }
+
+      if (featureds?.statusCode == 200) {
+        const { docs } = featureds.response;
+
+        setFeatureds(docs);
       }
     };
 
@@ -64,7 +95,7 @@ function Index() {
             pb: "10px",
           }}
         >
-          {products.map((prod) => (
+          {productsOffers.map((prod) => (
             <Card
               key={prod._id}
               id={prod._id}
@@ -74,7 +105,7 @@ function Index() {
               price={prod.price}
             />
           ))}
-          {products.map((prod) => (
+          {productsOffers.map((prod) => (
             <Card
               key={prod._id}
               id={prod._id}
@@ -84,7 +115,7 @@ function Index() {
               price={prod.price}
             />
           ))}
-          {products.map((prod) => (
+          {productsOffers.map((prod) => (
             <Card
               key={prod._id}
               id={prod._id}
@@ -94,7 +125,7 @@ function Index() {
               price={prod.price}
             />
           ))}
-          {products.map((prod) => (
+          {productsOffers.map((prod) => (
             <Card
               key={prod._id}
               id={prod._id}
@@ -137,7 +168,7 @@ function Index() {
             pb: "10px",
           }}
         >
-          {products.map((prod) => (
+          {productsBestSellers.map((prod) => (
             <Card
               key={prod._id}
               id={prod._id}
@@ -180,7 +211,7 @@ function Index() {
             pb: "10px",
           }}
         >
-          {products.map((prod) => (
+          {productsFeatureds.map((prod) => (
             <Card
               key={prod._id}
               id={prod._id}
