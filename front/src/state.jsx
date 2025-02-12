@@ -1,6 +1,5 @@
 import { create } from "zustand";
 import axios from "axios";
-import qs from "qs";
 import { apiUrl } from "./utils/constants";
 
 axios.defaults.withCredentials = true;
@@ -19,7 +18,7 @@ const useGlobalStore = create((set) => ({
     const response = await axios(`${apiUrl}/${url}`, {
       method,
       data,
-      params: qs.stringify(query),
+      params: query,
     });
 
     return response.data;

@@ -21,16 +21,18 @@ function Index() {
     const handleFetch = async () => {
       const offers = await fetchData({
         url: "products",
-        query: { isFeatured: true },
+        query: { isFeatured: "true" },
       });
-      const bestSellers = await fetchData({
-        url: "products",
-        query: { bestSellers: true },
-      });
-      const featureds = await fetchData({
-        url: "products",
-        query: { discount: true },
-      });
+
+      // const bestSellers = await fetchData({
+      //   url: "products",
+      //   query: { bestSellers: true },
+      // });
+
+      // const featureds = await fetchData({
+      //   url: "products",
+      //   query: { discount: true },
+      // });
 
       if (offers?.statusCode == 200) {
         const { docs } = offers.response;
@@ -38,17 +40,17 @@ function Index() {
         setOffers(docs);
       }
 
-      if (bestSellers?.statusCode == 200) {
-        const { docs } = bestSellers.response;
+      // if (bestSellers?.statusCode == 200) {
+      //   const { docs } = bestSellers.response;
 
-        setBestSellers(docs);
-      }
+      //   setBestSellers(docs);
+      // }
 
-      if (featureds?.statusCode == 200) {
-        const { docs } = featureds.response;
+      // if (featureds?.statusCode == 200) {
+      //   const { docs } = featureds.response;
 
-        setFeatureds(docs);
-      }
+      //   setFeatureds(docs);
+      // }
     };
 
     handleFetch();
